@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 
 
-public class LoginFrame extends JFrame {
+public class SchedulerFrame extends JFrame {
 	/**
 	 * 
 	 */
@@ -12,7 +12,7 @@ public class LoginFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	SchedulerPanel currentPanel;
-	public LoginFrame() {
+	public SchedulerFrame() {
 		currentPanel =  new SchedulerPanel();
 		
 		setUpFrame();
