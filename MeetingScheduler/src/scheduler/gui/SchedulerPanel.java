@@ -17,17 +17,20 @@ public class SchedulerPanel extends JPanel {
 	private TimePanel timePanel;
 	private RoomPanel roomPanel;
 	private MeetingDetailsPanel detailsPanel;
+	private AdministratorPanel adminPanel;
 	
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
+		
 		loginPanel = new LoginPanel();
 		homePanel = new HomePanel();
 		meetingPanel = new MeetingPanel();
 		timePanel = new TimePanel();
 		roomPanel = new RoomPanel();
 		detailsPanel = new MeetingDetailsPanel();
+		adminPanel = new AdministratorPanel();
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");
@@ -35,5 +38,6 @@ public class SchedulerPanel extends JPanel {
 		this.add(timePanel, "time");
 		this.add(roomPanel, "room");
 		this.add(detailsPanel, "meetingDetails");
+		this.add(adminPanel, "adminHome");
 	}
 }
