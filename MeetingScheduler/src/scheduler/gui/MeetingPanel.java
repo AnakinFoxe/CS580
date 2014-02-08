@@ -1,10 +1,11 @@
 package scheduler.gui;
 
-import java.awt.Button;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
@@ -20,7 +21,7 @@ public class MeetingPanel extends JPanel {
 	private JRadioButton rdbtnEmployee_1;
 	private JRadioButton rdbtnEmployee;
 	private JLabel lblSelectAttendees;
-	private Button btnContinue;
+	private JButton btnContinue;
 	private CardLayout cardlayout;
 	private JPanel controller;
 	
@@ -53,7 +54,7 @@ public class MeetingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblSelectAttendees, 175, SpringLayout.WEST, this);
 		add(lblSelectAttendees);
 		
-		btnContinue = new Button("Continue");
+		btnContinue = new JButton("Continue");
 		btnContinue.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

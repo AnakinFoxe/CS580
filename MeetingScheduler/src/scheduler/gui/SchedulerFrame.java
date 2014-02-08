@@ -1,4 +1,6 @@
 package scheduler.gui;
+import java.awt.Color;
+
 import javax.swing.JFrame;
 
 

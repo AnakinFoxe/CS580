@@ -1,11 +1,12 @@
 package scheduler.gui;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
 import javax.swing.JRadioButton;
 
-import java.awt.Button;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +18,7 @@ public class TimePanel extends JPanel {
 	private static final long serialVersionUID = -3029601078739531195L;
 	private CardLayout cardlayout;
 	private JPanel controller;
-	private Button btnContinue;
+	private JButton btnContinue;
 	public TimePanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -61,7 +62,7 @@ public class TimePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, rdbtnPm_1, 0, SpringLayout.EAST, rdbtnPm);
 		add(rdbtnPm_1);
 		
-		btnContinue = new Button("Continue");
+		btnContinue = new JButton("Continue");
 		btnContinue.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
