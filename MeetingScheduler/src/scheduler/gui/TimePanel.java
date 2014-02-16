@@ -64,7 +64,6 @@ public class TimePanel extends JPanel {
 		
 		btnContinue = new JButton("Continue");
 		btnContinue.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();

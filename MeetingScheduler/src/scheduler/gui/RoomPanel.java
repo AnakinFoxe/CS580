@@ -67,7 +67,6 @@ public class RoomPanel extends JPanel {
 		
 		finishBtn = new JButton("finish");
 		finishBtn.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();
