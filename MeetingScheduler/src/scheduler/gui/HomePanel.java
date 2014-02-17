@@ -10,8 +10,13 @@ import javax.swing.SpringLayout;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
+
+import scheduler.model.Employee;
+import scheduler.model.EmployeeModel;
 
 import java.util.Date;
 
@@ -26,6 +31,9 @@ public class HomePanel extends JPanel {
 	private JCalendar calenderPanel;
 	private CardLayout cardlayout;
 	private JPanel controller;
+	private EmployeeModel employee;
+	private String name;
+	private JLabel lblName;
 	
 	public HomePanel() {
 		setBackground(Color.LIGHT_GRAY);
@@ -54,11 +62,11 @@ public class HomePanel extends JPanel {
 		});
 		add(btnUpdateProfile);
 		
-		lblUsername = new JLabel("Username:");
+		lblUsername = new JLabel("Name:");
 		add(lblUsername);
 		
-		JLabel lblJoe = new JLabel("Joe");
-		add(lblJoe);
+		lblName = new JLabel();
+		add(lblName);
 		
 		calenderPanel = new JCalendar();
 		
@@ -78,8 +86,8 @@ public class HomePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, lblUsername, 50, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblUsername, 50, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.WEST, lblJoe, 6, SpringLayout.EAST, lblUsername);
-		springLayout.putConstraint(SpringLayout.SOUTH, lblJoe, 0, SpringLayout.SOUTH, lblUsername);
+		springLayout.putConstraint(SpringLayout.WEST, lblName, 6, SpringLayout.EAST, lblUsername);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblName, 0, SpringLayout.SOUTH, lblUsername);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, calenderPanel, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, calenderPanel, -700, SpringLayout.EAST, this);
@@ -92,4 +100,20 @@ public class HomePanel extends JPanel {
 		controller = (JPanel) this.getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
+	
+	public void setModel(final EmployeeModel employee) {
+		  this.employee = employee;
+	      employee.addPropertyChangeListener(new PropertyChangeListener() {
+	    	  
+			public void propertyChange(PropertyChangeEvent evt) {
+				
+				if(EmployeeModel.modelName.equals(evt.getPropertyName())){
+					name = employee.getEmployee().getFirstName();
+					lblName.setText(name);
+				}
+				// TODO Auto-generated method stub
+				
+			}
+	      });
+	   }
 }

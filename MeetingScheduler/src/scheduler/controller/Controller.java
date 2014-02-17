@@ -11,7 +11,7 @@ import scheduler.model.Employee;
 import scheduler.model.User;
 
 public class Controller {
-	private static Connection connection = null;
+	protected static Connection connection = null;
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
 	
@@ -93,8 +93,8 @@ public class Controller {
 			
 			while (resultSet.next()) {
 				Employee employee = new Employee(resultSet.getString("emp_first_name"),
-						resultSet.getString("emp_middle_name"),
-						resultSet.getString("emp_last_name"));
+												 resultSet.getString("emp_middle_name"),
+												 resultSet.getString("emp_last_name"));
 				
 				return employee;
 			}
@@ -102,7 +102,7 @@ public class Controller {
 			// then check Administrator table
 			sql = "select * from administrator where adm_usr_id='" + usr_id + "'";
 			
-			statement = connection.createStatement();
+			//statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			
 			while (resultSet.next()) {

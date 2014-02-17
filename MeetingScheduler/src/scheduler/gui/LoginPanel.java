@@ -9,6 +9,7 @@ import javax.swing.SpringLayout;
 import scheduler.controller.Controller;
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
+import scheduler.model.EmployeeModel;
 import scheduler.model.User;
 
 import java.awt.CardLayout;
@@ -32,6 +33,7 @@ public class LoginPanel extends JPanel {
 	private JPasswordField psfPassword;
 	private CardLayout cardlayout;
 	private JPanel controller;
+	private EmployeeModel employee;
 
 	public LoginPanel() {
 		
@@ -79,10 +81,11 @@ public class LoginPanel extends JPanel {
             			User usr = Controller.getUser(usr_id);
             			
             			if (usr instanceof Employee) {
+            				employee.setEmployee((Employee) usr);
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
-            			}
+            			} 
             			
             		} else {
             			txfUsername.setText("");
@@ -142,5 +145,8 @@ public class LoginPanel extends JPanel {
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
 	
+	 public void setModel(EmployeeModel simpleModel) {
+	      this.employee = simpleModel;
+	   }
 
 }

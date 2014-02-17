@@ -19,6 +19,10 @@ public class Employee extends User {
 		this.middleName = middleName;
 		this.lastName = lastName;
 	}
+	
+	public String getUsername() {
+		return this.username;
+	}
 
 	public String getFirstName() {
 		return this.firstName;
