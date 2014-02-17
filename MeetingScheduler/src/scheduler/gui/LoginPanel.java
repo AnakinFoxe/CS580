@@ -6,6 +6,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SpringLayout;
 
+import scheduler.controller.Controller;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -63,6 +65,7 @@ public class LoginPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
+            	Controller.connect();
             	cardlayout.show(controller,"home");
             }
             
