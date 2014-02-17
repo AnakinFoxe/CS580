@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.SpringLayout;
 
 import scheduler.controller.Controller;
+import scheduler.model.Employee;
+import scheduler.model.User;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -65,8 +67,30 @@ public class LoginPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
-            	Controller.connect();
-            	cardlayout.show(controller,"home");
+            	String username = txfUsername.getText();
+            	String password = new String(psfPassword.getPassword());
+
+            	if (username != null) {
+            		Controller.connect();
+            		Integer usr_id = Controller.checkLogin(username, password);
+            		
+            		if (usr_id != 0) {
+            			User usr = Controller.getUser(usr_id);
+            			
+            			if (usr instanceof Employee) {
+            				cardlayout.show(controller,"home");
+            			} else {
+            				cardlayout.show(controller,"adminHome");
+            			}
+            			
+            		} else {
+            			txfUsername.setText("");
+            			psfPassword.setText("");
+            		}
+            		
+            	}
+            	
+            	
             }
             
 		});

@@ -4,8 +4,11 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.sql.Statement;
+
+import scheduler.model.Administrator;
+import scheduler.model.Employee;
+import scheduler.model.User;
 
 public class Controller {
 	private static Connection connection = null;
@@ -42,35 +45,81 @@ public class Controller {
 		} else {
 			System.out.println("Failed to make connection!");
 		}
+	  }
+	
+	
+	public static Integer checkLogin(String username, String password) {
+		if (connection == null)
+			return 0;
 		
 		try {
-			readData();
+			String sql = "select * from user where usr_username='" + username + "' and usr_password='" + password +"'";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+	
+			while (resultSet.next()) {
+				Integer usr_id = resultSet.getInt("usr_id");
+				String usr_username = resultSet.getString("usr_username");
+				
+				System.out.println("Successfully Login: id=" + usr_id + " username=" + usr_username);
+				return usr_id;
+			}
+			
+		
+			return 0;
 		} catch (SQLException e) {
 			Integer ec = e.getErrorCode();
 			String msg = e.getMessage();  
 			String state = e.getSQLState();
-		    System.out.println("The problem is :"+ec+":"+msg+":"+state);  
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
 			e.printStackTrace();
+			
+			return 0;
 		}
-	  }
+	}
 	
-	public static void readData() throws SQLException {
-		if (connection == null)
-			return;
+	
+	public static User getUser(Integer usr_id) {
+		if (usr_id == 0)
+			return null;
 		
-		statement = connection.createStatement();
-		
-		resultSet = statement.executeQuery("select * from employee");
-
-		resultSet.next();
-		Integer usr_id = resultSet.getInt("emp_usr_id");
-		String first_name = resultSet.getString("emp_first_name");
-		String last_name = resultSet.getString("emp_last_name");
-		
-		System.out.println("First: " + first_name);
-		System.out.println("Last: " + last_name);
-		
-
-		
+		try {
+			// check Employee table first
+			String sql = "select * from employee where emp_usr_id='" + usr_id + "'";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Employee employee = new Employee(resultSet.getString("emp_first_name"),
+						resultSet.getString("emp_middle_name"),
+						resultSet.getString("emp_last_name"));
+				
+				return employee;
+			}
+			
+			// then check Administrator table
+			sql = "select * from administrator where adm_usr_id='" + usr_id + "'";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Administrator admin = new Administrator(resultSet.getString("adm_description"));
+				
+				return admin;
+			}
+			
+			return null;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
 	}
 }
