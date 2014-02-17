@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 16, 2014 at 10:54 PM
+-- Generation Time: Feb 17, 2014 at 02:25 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -34,6 +34,13 @@ CREATE TABLE IF NOT EXISTS `administrator` (
   KEY `adm_usr_id` (`adm_usr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `administrator`
+--
+
+INSERT INTO `administrator` (`adm_usr_id`, `adm_description`) VALUES
+(2, 'I''m your master!');
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +70,16 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `emp_email` varchar(255) NOT NULL,
   KEY `emp_usr_id` (`emp_usr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`emp_usr_id`, `emp_first_name`, `emp_middle_name`, `emp_last_name`, `emp_title`, `emp_position`, `emp_email`) VALUES
+(1, 'Xing', NULL, 'Hu', NULL, 'Student', 'xingh@csupomona.edu'),
+(3, 'Yiming', NULL, 'Shan', NULL, NULL, 'shanyiming@hotmail.com'),
+(4, 'Brian', NULL, 'Truong', NULL, NULL, 'brntruong@gmail.com'),
+(5, 'Lupe', NULL, 'Talavera', NULL, NULL, 'lupe.talavera@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -132,7 +149,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `usr_password` varchar(255) NOT NULL,
   PRIMARY KEY (`usr_id`),
   UNIQUE KEY `usr_username` (`usr_username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`usr_id`, `usr_username`, `usr_password`) VALUES
+(1, 'xingh', 'aaa'),
+(2, 'admin', 'admin'),
+(3, 'yiming', 'yiming'),
+(4, 'brian', 'brian'),
+(5, 'lupe', 'lupe');
 
 --
 -- Constraints for dumped tables

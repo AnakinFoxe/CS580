@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.SpringLayout;
 
 import scheduler.controller.Controller;
+import scheduler.model.Administrator;
 import scheduler.model.Employee;
 import scheduler.model.User;
 
@@ -79,7 +80,7 @@ public class LoginPanel extends JPanel {
             			
             			if (usr instanceof Employee) {
             				cardlayout.show(controller,"home");
-            			} else {
+            			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
             			}
             			
