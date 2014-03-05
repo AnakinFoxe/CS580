@@ -6,8 +6,15 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SpringLayout;
 
+import scheduler.controller.Controller;
+import scheduler.model.Administrator;
+import scheduler.model.Employee;
+import scheduler.model.EmployeeModel;
+import scheduler.model.User;
+
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,64 +24,119 @@ public class LoginPanel extends JPanel {
 	 * 
 	 */ 
 	private static final long serialVersionUID = 4932513626147661013L;
-	private JTextField usernameTextField;
 	private JButton btnLogin;
-	private JLabel usernameLabel;
-	private JPasswordField passwordTextField;
-	private JLabel meetingSchedulerLabel;
-	private JLabel passwordLabel;
+	private JButton btnAdmin;	// Xing: only for GUI demo
+	private JLabel lblUsername;
+	private JLabel lblPassword;
+	private JLabel lblMeetingScheduler;
+	private JTextField txfUsername;
+	private JPasswordField psfPassword;
 	private CardLayout cardlayout;
 	private JPanel controller;
+	private EmployeeModel employee;
 
 	public LoginPanel() {
 		
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		usernameLabel = new JLabel();
-		springLayout.putConstraint(SpringLayout.NORTH, usernameLabel, 131, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, usernameLabel, 129, SpringLayout.WEST, this);
-		usernameLabel.setText("username");
-		add(usernameLabel);
+		lblMeetingScheduler = new JLabel();
+		lblMeetingScheduler.setText("Meeting Scheduler");
+		lblMeetingScheduler.setFont(new Font("Arial", Font.PLAIN, 48));
+		add(lblMeetingScheduler);
 		
-		usernameTextField = new JTextField();
-		springLayout.putConstraint(SpringLayout.NORTH, usernameTextField, 0, SpringLayout.NORTH, usernameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, usernameTextField, 6, SpringLayout.EAST, usernameLabel);
-		add(usernameTextField);
-		usernameTextField.setColumns(10);
+		lblUsername = new JLabel();
+		lblUsername.setText("Username");
+		lblUsername.setFont(new Font("Consolas", Font.PLAIN, 14));
+		add(lblUsername);
+		
+		txfUsername = new JTextField();
+		add(txfUsername);
+		txfUsername.setColumns(10);
+		
+		lblPassword = new JLabel();
+		lblPassword.setText("Password");
+		lblPassword.setFont(new Font("Consolas", Font.PLAIN, 14));
+		lblPassword.setBackground(new Color(240, 240, 240));
+		add(lblPassword);
+		
+		psfPassword = new JPasswordField();
+		add(psfPassword);
+		psfPassword.setColumns(10);
 		
 		btnLogin = new JButton("Login");
-		springLayout.putConstraint(SpringLayout.WEST, btnLogin, 0, SpringLayout.WEST, usernameTextField);
 		btnLogin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
             		getData();
             	}
-            	cardlayout.show(controller,"home");
+            	String username = txfUsername.getText();
+            	String password = new String(psfPassword.getPassword());
+
+            	if (username != null) {
+            		Controller.connect();
+            		Integer usr_id = Controller.checkLogin(username, password);
+            		
+            		if (usr_id != 0) {
+            			User usr = Controller.getUser(usr_id);
+            			
+            			if (usr instanceof Employee) {
+            				employee.setEmployee((Employee) usr);
+            				cardlayout.show(controller,"home");
+            			} else if (usr instanceof Administrator) {
+            				cardlayout.show(controller,"adminHome");
+            			} 
+            			
+            		} else {
+            			txfUsername.setText("");
+            			psfPassword.setText("");
+            		}
+            		
+            	}
+            	
+            	
             }
             
 		});
 		add(btnLogin);
+
+		btnAdmin = new JButton("Admin");
+		btnAdmin.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}
+            	cardlayout.show(controller,"adminHome");
+            }
+            
+		});
+		add(btnAdmin);
 		
-		passwordTextField = new JPasswordField();
-		springLayout.putConstraint(SpringLayout.NORTH, btnLogin, 6, SpringLayout.SOUTH, passwordTextField);
-		springLayout.putConstraint(SpringLayout.NORTH, passwordTextField, 5, SpringLayout.SOUTH, usernameTextField);
-		springLayout.putConstraint(SpringLayout.EAST, passwordTextField, 0, SpringLayout.EAST, usernameTextField);
-		add(passwordTextField);
-		passwordTextField.setColumns(10);
 		
-		passwordLabel = new JLabel();
-		passwordLabel.setText("password");
-		passwordLabel.setBackground(new Color(240, 240, 240));
-		springLayout.putConstraint(SpringLayout.WEST, passwordLabel, 0, SpringLayout.WEST, usernameLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, passwordLabel, 0, SpringLayout.SOUTH, passwordTextField);
-		add(passwordLabel);
 		
-		meetingSchedulerLabel = new JLabel();
-		springLayout.putConstraint(SpringLayout.WEST, meetingSchedulerLabel, 167, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, meetingSchedulerLabel, -39, SpringLayout.NORTH, usernameLabel);
-		meetingSchedulerLabel.setText("Meeting Scheduler");
-		add(meetingSchedulerLabel);
+		// Adjust alignment relationship for all the components
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, txfUsername, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txfUsername, 0, SpringLayout.VERTICAL_CENTER, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, psfPassword, 0, SpringLayout.SOUTH, txfUsername);
+		springLayout.putConstraint(SpringLayout.WEST, psfPassword, 0, SpringLayout.WEST, txfUsername);
+		
+		springLayout.putConstraint(SpringLayout.BASELINE, lblUsername, 0, SpringLayout.BASELINE, txfUsername);
+		springLayout.putConstraint(SpringLayout.EAST, lblUsername, 0, SpringLayout.WEST, txfUsername);
+		
+		springLayout.putConstraint(SpringLayout.BASELINE, lblPassword, 0, SpringLayout.BASELINE, psfPassword);
+		springLayout.putConstraint(SpringLayout.EAST, lblPassword, 0, SpringLayout.WEST, psfPassword);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnLogin, 0, SpringLayout.WEST, txfUsername);
+		springLayout.putConstraint(SpringLayout.NORTH, btnLogin, 0, SpringLayout.SOUTH, psfPassword);
+		
+		springLayout.putConstraint(SpringLayout.BASELINE, btnAdmin, 0, SpringLayout.BASELINE, btnLogin);
+		springLayout.putConstraint(SpringLayout.WEST, btnAdmin, 0, SpringLayout.EAST, btnLogin);
+		
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblMeetingScheduler, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblMeetingScheduler, -50, SpringLayout.NORTH, txfUsername);
+
+		
 	}
 	
 	protected void getData() {
@@ -83,5 +145,8 @@ public class LoginPanel extends JPanel {
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
 	
+	 public void setModel(EmployeeModel simpleModel) {
+	      this.employee = simpleModel;
+	   }
 
 }

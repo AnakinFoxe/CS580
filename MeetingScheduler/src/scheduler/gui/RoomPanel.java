@@ -1,5 +1,6 @@
 package scheduler.gui;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.SpringLayout;
@@ -8,9 +9,9 @@ import javax.swing.AbstractListModel;
 import javax.swing.JScrollPane;
 
 import java.awt.CardLayout;
+
 import javax.swing.JLabel;
 
-import java.awt.Button;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ public class RoomPanel extends JPanel {
 	private JList list;
 	private JScrollPane scrollPane;
 	private JLabel roomLabel;
-	private Button finishBtn;
+	private JButton finishBtn;
 	private JPanel controller;
 	private CardLayout cardlayout;
 	
@@ -64,9 +65,8 @@ public class RoomPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, roomLabel, 199, SpringLayout.WEST, this);
 		add(roomLabel);
 		
-		finishBtn = new Button("finish");
+		finishBtn = new JButton("finish");
 		finishBtn.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();

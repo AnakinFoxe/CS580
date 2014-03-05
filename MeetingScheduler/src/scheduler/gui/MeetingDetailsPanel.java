@@ -111,7 +111,6 @@ public class MeetingDetailsPanel extends JPanel {
 		
 		btnModify = new JButton("Modify");
 		btnModify.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();
@@ -124,7 +123,6 @@ public class MeetingDetailsPanel extends JPanel {
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();
@@ -141,7 +139,6 @@ public class MeetingDetailsPanel extends JPanel {
 		
 		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
             		getData();

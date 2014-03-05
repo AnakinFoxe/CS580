@@ -88,6 +88,7 @@ public class CalendarPanel extends JPanel {
     }
   }
 
+  /*
   public static void main(String[] args) {
     JFrame frame = new JFrame();
     CalendarPanel ch = new CalendarPanel();
@@ -101,7 +102,7 @@ public class CalendarPanel extends JPanel {
 
     frame.pack();
     frame.setVisible(true);
-  }
+  }*/
 }
 
 class MoveMouseListener implements MouseListener, MouseMotionListener {
