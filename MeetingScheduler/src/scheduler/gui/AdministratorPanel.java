@@ -59,37 +59,49 @@ public class AdministratorPanel extends JPanel {
 		
 		setBackground(Color.LIGHT_GRAY);
 		SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddEmp, 231, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, roomScrollPane, 6, SpringLayout.SOUTH, lblRooms);
-		springLayout.putConstraint(SpringLayout.SOUTH, roomScrollPane, -6, SpringLayout.NORTH, btnAddRoom);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddRoom, 106, SpringLayout.EAST, btnAddEmp);
-		springLayout.putConstraint(SpringLayout.EAST, btnAddRoom, 0, SpringLayout.EAST, btnModifyRoom);
-		springLayout.putConstraint(SpringLayout.NORTH, emScrollPane, 6, SpringLayout.SOUTH, lblEmployees);
-		springLayout.putConstraint(SpringLayout.SOUTH, emScrollPane, -6, SpringLayout.NORTH, btnAddEmp);
-		springLayout.putConstraint(SpringLayout.EAST, btnAddEmp, 0, SpringLayout.EAST, btnModifyEmp);
-		springLayout.putConstraint(SpringLayout.WEST, roomScrollPane, 76, SpringLayout.EAST, emScrollPane);
-		springLayout.putConstraint(SpringLayout.EAST, roomScrollPane, -65, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.EAST, emScrollPane, 166, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblRooms, 168, SpringLayout.EAST, lblEmployees);
-		springLayout.putConstraint(SpringLayout.WEST, lblEmployees, 23, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, btnDeleteRoom, 106, SpringLayout.EAST, btnDeleteEmp);
-		springLayout.putConstraint(SpringLayout.WEST, btnModifyRoom, 106, SpringLayout.EAST, btnModifyEmp);
-		springLayout.putConstraint(SpringLayout.NORTH, lblRooms, 0, SpringLayout.NORTH, lblEmployees);
-		springLayout.putConstraint(SpringLayout.WEST, btnDeleteEmp, 23, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, btnModifyEmp, 23, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddEmp, 23, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, lblEmployees, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnDeleteEmp, 0, SpringLayout.NORTH, btnDeleteRoom);
-		springLayout.putConstraint(SpringLayout.NORTH, btnModifyEmp, 0, SpringLayout.NORTH, btnModifyRoom);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnModifyRoom, -65, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnDeleteRoom, 15, SpringLayout.SOUTH, btnModifyRoom);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnAddRoom, -16, SpringLayout.NORTH, btnModifyRoom);
-		springLayout.putConstraint(SpringLayout.WEST, emScrollPane, 23, SpringLayout.WEST, this);
-		setLayout(springLayout);
-		
-		
 	
+		springLayout.putConstraint(SpringLayout.WEST, lblEmployees, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblEmployees, 20, SpringLayout.NORTH, this);
 		
+		springLayout.putConstraint(SpringLayout.WEST, emScrollPane, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, emScrollPane, 5, SpringLayout.SOUTH, lblEmployees);
+		springLayout.putConstraint(SpringLayout.EAST, emScrollPane, -20, SpringLayout.WEST, lblRooms);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnAddEmp, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddEmp, 0, SpringLayout.EAST, btnModifyEmp);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddEmp, 5, SpringLayout.SOUTH, emScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnModifyEmp, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, btnModifyEmp, 5, SpringLayout.SOUTH, btnAddEmp);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnDeleteEmp, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, btnDeleteEmp, 5, SpringLayout.SOUTH, btnModifyEmp);
+		springLayout.putConstraint(SpringLayout.EAST, btnDeleteEmp, 0, SpringLayout.EAST, btnModifyEmp);
+		
+		
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRooms, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblRooms, 0, SpringLayout.NORTH, lblEmployees);
+	
+		springLayout.putConstraint(SpringLayout.WEST, roomScrollPane, 0, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.NORTH, roomScrollPane, 5, SpringLayout.SOUTH, lblEmployees);
+		springLayout.putConstraint(SpringLayout.EAST, roomScrollPane, -75, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, roomScrollPane, 0, SpringLayout.SOUTH, emScrollPane);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnAddRoom, 0, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddRoom, 5, SpringLayout.SOUTH, roomScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddRoom, 0, SpringLayout.EAST, btnModifyRoom);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnModifyRoom, 0, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.NORTH, btnModifyRoom, 5, SpringLayout.SOUTH, btnAddRoom);
+		
+		springLayout.putConstraint(SpringLayout.WEST, btnDeleteRoom, 0, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.NORTH, btnDeleteRoom, 5, SpringLayout.SOUTH, btnModifyRoom);
+		springLayout.putConstraint(SpringLayout.EAST, btnDeleteRoom, 0, SpringLayout.EAST, btnModifyRoom);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, this, 5, SpringLayout.SOUTH, btnDeleteRoom);
+		springLayout.putConstraint(SpringLayout.SOUTH, this, 5, SpringLayout.SOUTH, btnDeleteEmp);
+		
+		setLayout(springLayout);
 	}
 	
 	protected void getData() {

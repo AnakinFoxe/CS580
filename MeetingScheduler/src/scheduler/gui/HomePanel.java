@@ -24,6 +24,8 @@ public class HomePanel extends JPanel {
 	/**
 	 * 
 	 */
+	
+	// some comments 
 	private static final long serialVersionUID = -5218352851092235305L;
 	private JButton btnCreateMeeting;
 	private JButton btnUpdateProfile;
