@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 
 import java.util.Date;
 
@@ -36,6 +37,7 @@ public class HomePanel extends JPanel {
 	private EmployeeModel employee;
 	private String name;
 	private JLabel lblName;
+	private Flag flag;
 	
 	public HomePanel() {
 		setBackground(Color.LIGHT_GRAY);
@@ -48,6 +50,7 @@ public class HomePanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				flag.setFlag(true);
             	cardlayout.show(controller,"meeting");
 			}
 		});
@@ -118,4 +121,9 @@ public class HomePanel extends JPanel {
 			}
 	      });
 	   }
+
+	public void setModel(Flag flag1) {
+		// TODO Auto-generated method stub
+		flag = flag1;
+	}
 }
