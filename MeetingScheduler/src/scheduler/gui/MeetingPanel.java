@@ -20,6 +20,7 @@ import javax.swing.JRadioButton;
 
 import scheduler.controller.Controller;
 import scheduler.model.Employee;
+import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 
@@ -38,6 +39,7 @@ public class MeetingPanel extends JPanel {
 	private JScrollPane jscrlBox;
 	private List<Employee> employeeList;
 	private List<Employee> attendeeList;
+	private EmployeeListModel attendeeListModel;
 	private Flag flag;
 
 	public MeetingPanel() {
@@ -82,8 +84,7 @@ public class MeetingPanel extends JPanel {
 				//System.out.println("attendee "+employeeList.get(i).getFirstName());
 			}
 		}
-		
-
+		attendeeListModel.setEmployeeList(attendeeList);
 	}
 
 	protected void getData() {
@@ -109,7 +110,7 @@ public class MeetingPanel extends JPanel {
 	}
 
 	public void setModel(Flag flag1) {
-		// TODO Auto-generated method stub
+
 		this.flag = flag1;
 		flag.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -119,7 +120,7 @@ public class MeetingPanel extends JPanel {
 
 					// add some kind of function that generates user ID
 					employeeList = Controller.genEmployeeList();
-
+					employeeBox.removeAll();
 					for (Integer idx=0; idx<employeeList.size(); ++idx){
 						//System.out.println(employeeList.get(idx).getFirstName());
 						JRadioButton rdbtn = new JRadioButton(employeeList.get(idx).getFirstName());
@@ -129,5 +130,9 @@ public class MeetingPanel extends JPanel {
 
 			}
 		});
+	}
+
+	public void setModel(EmployeeListModel attendeeList2) {
+		attendeeListModel = attendeeList2;
 	}
 }
