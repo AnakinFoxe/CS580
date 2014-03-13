@@ -5,10 +5,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
@@ -199,8 +202,10 @@ public class Controller {
 					statement = connection.createStatement();
 					ResultSet moreResultSet = statement.executeQuery(sql);
 					while (moreResultSet.next()) {
-						met.setStartTime(moreResultSet.getDate("sch_start_time"));
-						met.setEndTime(moreResultSet.getDate("sch_end_time"));
+						String startTime = moreResultSet.getString("sch_start_time");
+						String endTime = moreResultSet.getString("sch_end_time");
+						met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+						met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 					}
 					
 					// Only add those meetings that have not yet happened
@@ -242,6 +247,8 @@ public class Controller {
 		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
 			e.printStackTrace();
 			
+			return null;
+		} catch (ParseException e) {
 			return null;
 		}
 		
