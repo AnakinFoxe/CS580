@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
+import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 
@@ -24,20 +25,30 @@ public class SchedulerPanel extends JPanel {
 	private ProfilePanel profilePanel;
 	private EmployeeModel employeeModel;
 	private Flag flag1;
+	private EmployeeListModel attendeeList;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
+		
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
+		
 		homePanel = new HomePanel();
 		loginPanel.setModel(employeeModel);
+		
 		flag1 = new Flag(false);
 		homePanel.setModel(employeeModel);
 		homePanel.setModel(flag1);
+		
+		attendeeList = new EmployeeListModel();
 		meetingPanel = new MeetingPanel();
 		meetingPanel.setModel(flag1);
+		meetingPanel.setModel(attendeeList);
+		
 		timePanel = new TimePanel();
+		timePanel.setModel(attendeeList);
+		
 		roomPanel = new RoomPanel();
 		detailsPanel = new MeetingDetailsPanel();
 		adminPanel = new AdministratorPanel();
