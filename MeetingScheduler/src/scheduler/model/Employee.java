@@ -13,11 +13,23 @@ public class Employee extends User {
 	}
 	
 	public Employee(String firstName, 
-			String middleName, 
-			String lastName) {
+					String middleName, 
+					String lastName) {
+		super();
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+	}
+	
+	public Employee(String firstName, 
+					String middleName, 
+					String lastName,
+					Integer usr_id) {
+		super();
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.setUsrId(usr_id);
 	}
 	
 	public String getUsername() {

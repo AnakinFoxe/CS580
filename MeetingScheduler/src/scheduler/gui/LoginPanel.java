@@ -5,6 +5,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import scheduler.controller.Controller;
 import scheduler.model.Administrator;
@@ -17,6 +18,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginPanel extends JPanel {
@@ -82,6 +85,13 @@ public class LoginPanel extends JPanel {
             			
             			if (usr instanceof Employee) {
             				employee.setEmployee((Employee) usr);
+            				
+//            				List<Employee> attendee = new ArrayList<Employee>();
+//                        	Employee xing = (Employee) usr;
+//                        	xing.setUsrId(1);
+//                        	attendee.add(xing);
+//                        	Controller.genAvailableTime(attendee);
+            				
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
@@ -99,6 +109,7 @@ public class LoginPanel extends JPanel {
             
 		});
 		add(btnLogin);
+			
 
 		btnAdmin = new JButton("Admin");
 		btnAdmin.addActionListener(new ActionListener(){
@@ -106,12 +117,12 @@ public class LoginPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
+            	
             	cardlayout.show(controller,"adminHome");
             }
             
 		});
 		add(btnAdmin);
-		
 		
 		
 		// Adjust alignment relationship for all the components
@@ -136,7 +147,6 @@ public class LoginPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblMeetingScheduler, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblMeetingScheduler, -50, SpringLayout.NORTH, txfUsername);
 
-		
 	}
 	
 	protected void getData() {

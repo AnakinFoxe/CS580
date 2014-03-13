@@ -6,16 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
+import scheduler.model.Meeting;
 import scheduler.model.User;
 
 public class Controller {
 	protected static Connection connection = null;
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
+	private static String sql = null;
 	
 	public static void connect() {
 		 
@@ -55,7 +59,7 @@ public class Controller {
 			return 0;
 		
 		try {
-			String sql = "select * from user where usr_username='" + username + "' and usr_password='" + password +"'";
+			sql = "select * from user where usr_username='" + username + "' and usr_password='" + password +"'";
 			
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
@@ -88,7 +92,7 @@ public class Controller {
 		
 		try {
 			// check Employee table first
-			String sql = "select * from employee where emp_usr_id='" + usr_id + "'";
+			sql = "select * from employee where emp_usr_id='" + usr_id + "'";
 			
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
@@ -135,7 +139,7 @@ public class Controller {
 		List<Employee> empList = new ArrayList<Employee>();
 		
 		try {
-			String sql = "select * from employee";
+			sql = "select * from employee";
 			
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
@@ -146,7 +150,8 @@ public class Controller {
 //					continue;
 				Employee emp = new Employee(resultSet.getString("emp_first_name"),
 						 					resultSet.getString("emp_middle_name"),
-						 					resultSet.getString("emp_last_name"));
+						 					resultSet.getString("emp_last_name"),
+						 					resultSet.getInt("emp_usr_id"));
 				empList.add(emp);
 			}
 			
@@ -160,5 +165,85 @@ public class Controller {
 			
 			return null;
 		}
+	}
+	
+	
+	public static List<Date> genAvailableTime(List<Employee> attendee) {
+		if (Controller.connection == null)
+			return null;
+		
+		if (attendee == null)
+			return null;
+		
+		List<Date> dateList = new ArrayList<Date>();
+		List<Meeting> metList = new ArrayList<Meeting>();
+		Date now = new Date();
+		//Calendar now = Calendar.getInstance();
+		//int hour = Calendar.HOUR_OF_DAY;
+		try {
+			Integer idx = 0;
+			// Construct the List of Meetings based on attendee list
+			for (idx=0; idx<attendee.size(); ++idx) {
+				Employee emp = attendee.get(idx);
+				Integer emp_id = emp.getUsrId();
+				
+				sql = "select * from attendee where att_emp_id='" + emp_id + "'";
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(sql);
+				
+				while (resultSet.next()) {
+					Meeting met = new Meeting(resultSet.getInt("att_sch_id"),
+							 					resultSet.getInt("att_emp_id"));
+					
+					sql = "select * from schedule where sch_id='" + met.getSchId() + "'";
+					statement = connection.createStatement();
+					ResultSet moreResultSet = statement.executeQuery(sql);
+					while (moreResultSet.next()) {
+						met.setStartTime(moreResultSet.getDate("sch_start_time"));
+						met.setEndTime(moreResultSet.getDate("sch_end_time"));
+					}
+					
+					// Only add those meetings that have not yet happened
+					if (now.before(met.getStartTime()))
+						metList.add(met);
+				}
+			}
+
+			int[] timeslot = new int[168];
+			for (idx=0;idx<168;++idx) {
+				timeslot[idx] = 0;
+			}
+		
+			for (idx=0;idx<metList.size();++idx) {
+				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
+				long shift_sec = shift / 1000;
+				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+				timeslot[(int)shift_hour] = 1;
+			}
+			
+			for (idx=0;idx<168;++idx) {
+				if (timeslot[idx] == 0) {
+					long shift_hour = idx + 1;
+					long shift_sec = shift_hour * 3600;
+					long shift = shift_sec * 1000;
+					long date_millisec = shift + now.getTime();
+					Date date = new Date(date_millisec);
+					Date availableDate = new Date(date.getYear(), date.getMonth(), date.getDate(), date.getHours(), 0);
+					dateList.add(availableDate);
+				}
+			}
+			
+			return dateList;
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+		
 	}
 }
