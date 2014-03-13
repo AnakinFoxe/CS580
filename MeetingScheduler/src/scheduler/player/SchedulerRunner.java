@@ -1,7 +1,12 @@
 package scheduler.player;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import scheduler.gui.SchedulerFrame;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -24,7 +29,10 @@ class SchedulerRunner {
 		
 		// TODO Auto-generated method stub
 		SchedulerFrame schedulerFrame = new SchedulerFrame();
+		
 		schedulerFrame.start();
+		
+		
 	}
 
 }
