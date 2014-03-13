@@ -33,6 +33,7 @@ public class MeetingPanel extends JPanel {
 	/**
 	 * 
 	 */
+	//
 	private static final long serialVersionUID = 3159213351500534829L;
 	private JRadioButton rdbtnNewRadioButton;
 	private JRadioButton rdbtnEmployee_2;
