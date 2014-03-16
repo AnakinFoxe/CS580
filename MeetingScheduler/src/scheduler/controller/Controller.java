@@ -675,5 +675,72 @@ public class Controller {
 		
 		return true;
 	}
+	
+	public static boolean deleteEmployee(Employee emp) {
+		if (emp == null)
+			return false;
+		
+		try {
+			// Check existence 
+			sql = "select * from user where usr_username='" + emp.getUsername() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			Integer usr_id = -1;
+			if (resultSet.next())
+				usr_id = resultSet.getInt("usr_id");
+			else
+				return false;
+			
+			// Delete Attendee records
+			sql = "delete from attendee where att_emp_id='" + usr_id.toString() + "'";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Delete Meeting records and related attendee, schedule records
+			sql = "select * from meeting where met_emp_id=" + usr_id.toString();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				Integer sch_id = resultSet.getInt("met_sch_id");
+				
+				// Delete related Attendee
+				sql = "delete from attendee where att_sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+				
+				// Delete Meeting
+				sql = "delete from meeting where met_sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+				
+				// Delete Schedule
+				sql = "delete from schedule where sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+			}
+			
+			// Delete Employee record
+			sql = "delete from employee where emp_usr_id=" + usr_id.toString();
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Delete User record
+			sql = "delete from user where usr_id=" + usr_id.toString();
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
+	}
 
 }
