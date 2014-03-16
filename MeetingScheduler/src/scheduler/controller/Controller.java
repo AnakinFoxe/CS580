@@ -742,5 +742,63 @@ public class Controller {
 		
 		return true;
 	}
+	
+	
+	public static boolean deleteRoom(Room rom) {
+		if (rom == null)
+			return false;
+		
+		try {
+			// Check existence 
+			sql = "select * from rom where rom_name='" + rom.getName() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			Integer rom_id = -1;
+			if (resultSet.next())
+				rom_id = resultSet.getInt("rom_id");
+			else
+				return false;
+			
+			// Delete Meeting records and related attendee, schedule records
+			sql = "select * from meeting where met_rom_id=" + rom_id.toString();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				Integer sch_id = resultSet.getInt("met_sch_id");
+				
+				// Delete related Attendee
+				sql = "delete from attendee where att_sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+				
+				// Delete Meeting
+				sql = "delete from meeting where met_sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+				
+				// Delete Schedule
+				sql = "delete from schedule where sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+			}
+			
+			// Delete Room record
+			sql = "delete from room where rom_id=" + rom_id.toString();
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
+	}
 
 }
