@@ -447,20 +447,40 @@ public class Controller {
 		if (rom == null) 
 			return false;
 		
-//		try {
-//			// Check existence 
-//			sql = "select * from room where "
-//			
-//		} catch (SQLException e) {
-//			Integer ec = e.getErrorCode();
-//			String msg = e.getMessage();  
-//			String state = e.getSQLState();
-//		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
-//			e.printStackTrace();
-//			
-//			return false;
-//		}
-//		
+		try {
+			// Check existence 
+			sql = "select * from room where  om_name='" + rom.getName() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			if (resultSet.next())
+				return false;
+			
+			// Insert room
+			sql = "insert into room (`rom_name`, `rom_capacity`) values ('" 
+					+ rom.getName() + "', "
+					+ rom.getCapacity() + ")";
+			
+			statement = connection.createStatement();
+			statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			resultSet = statement.getGeneratedKeys();
+			Integer rom_id = -1;
+			if (resultSet.next()) 
+				rom_id = resultSet.getInt(1);
+			else
+				return false;
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
 		return true;
 	}
 	
