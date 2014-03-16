@@ -388,4 +388,30 @@ public class Controller {
 		
 		return true;
 	}
+	
+	public static void updateProfile(Integer usrID, String newUsername, String oldPassword, String newPassword, String newPasswordConfirmed,
+			 String newFirstname, String newLastname, String newMiddlename, String newTitle, String newPosition,
+			 String newEmail){
+		
+		try {
+				sql = "select * from user where usr_id='" + usrID + "'";
+
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(sql);
+
+				String Oldusername = resultSet.getString("usr_username");
+				String password = resultSet.getString("usr_password");
+
+
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+			System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+
+
+		}
+	}
+
 }

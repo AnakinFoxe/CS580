@@ -173,7 +173,7 @@ public class ProfilePanel extends JPanel {
             	}
             		
             	Integer id = employee.getEmployee().getUsrId();
-            	System.out.println(id+"  id");
+            	
             	Employee oldEmp = employee.getEmployee();
             	
             	username=txfUsername.getText().trim();

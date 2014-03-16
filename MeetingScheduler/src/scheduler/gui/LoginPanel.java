@@ -86,6 +86,7 @@ public class LoginPanel extends JPanel {
             			if (usr instanceof Employee) {
             				employee.setEmployee((Employee) usr);
             				
+            				
 //            				List<Employee> attendee = new ArrayList<Employee>();
 //                        	Employee xing = (Employee) usr;
 //                        	xing.setUsrId(1);
