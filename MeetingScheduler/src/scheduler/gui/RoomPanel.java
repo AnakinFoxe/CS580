@@ -1,8 +1,11 @@
 package scheduler.gui;
 
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JList;
+import javax.swing.JRadioButton;
 import javax.swing.SpringLayout;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
@@ -12,53 +15,47 @@ import java.awt.CardLayout;
 
 import javax.swing.JLabel;
 
+import scheduler.controller.Controller;
+import scheduler.model.DateModel;
+import scheduler.model.Employee;
+import scheduler.model.EmployeeListModel;
+import scheduler.model.Room;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
+import java.util.List;
 
 public class RoomPanel extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JList list;
 	private JScrollPane scrollPane;
 	private JLabel roomLabel;
 	private JButton finishBtn;
 	private JPanel controller;
 	private CardLayout cardlayout;
+	private EmployeeListModel attendeeList;
+	private DateModel selectedDate;
+	private Box roomBox;
+	private List<Room> availableRooms;
+	private ButtonGroup roomGroup;
+	private List<Employee> attendees;
 	
 	public RoomPanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
-		list = new JList();
-		list.setLayoutOrientation(JList.VERTICAL_WRAP);
-		springLayout.putConstraint(SpringLayout.NORTH, list, 109, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, list, 109, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, list, 182, SpringLayout.WEST, this);
-		list.setModel(new AbstractListModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			String[] values = new String[] {"room A", "room B", "room C", "room D", "room E", "room F"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		
-		scrollPane = new JScrollPane(list);
+		roomBox = Box.createVerticalBox();
+		scrollPane = new JScrollPane(roomBox);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 68, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 41, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 130, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 147, SpringLayout.WEST, this);
 		add(scrollPane);
-		
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		roomLabel = new JLabel("Choose a Room");
 		springLayout.putConstraint(SpringLayout.NORTH, roomLabel, 32, SpringLayout.NORTH, this);
@@ -71,6 +68,7 @@ public class RoomPanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				boolean roomSelected = getRoom();
             	cardlayout.show(controller,"home");
 			}
 
@@ -82,10 +80,59 @@ public class RoomPanel extends JPanel {
 		add(finishBtn);
 	}
 	
+	protected boolean getRoom() {
+		// TODO Auto-generated method stub
+		boolean isSelected = false;
+		for(int i = 0; i < roomBox.getComponentCount(); i++){
+			JRadioButton rdbtn = (JRadioButton) roomBox.getComponent(i);
+			if(rdbtn.isSelected()){
+				Room selectedRoom = availableRooms.get(i);
+				//Controller.insertMeeting();
+			}
+		}
+		return isSelected;
+	}
+
 	protected void getData() {
 		// TODO Auto-generated method stub
 		controller = (JPanel) this.getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
-
+	
+	public void setModel(EmployeeListModel employeeList) {
+		// TODO Auto-generated method stub
+		this.attendeeList = employeeList;
+		/*attendeeList.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evt) {
+				// TODO Auto-generated method stub
+				if(EmployeeListModel.modelName.equals(evt.getPropertyName())){
+					//add method for rooms
+				}
+			}
+		});*/
+	}
+	
+	public void setModel(DateModel dateModel){
+		this.selectedDate = dateModel;
+		selectedDate.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				if(DateModel.modelName.equals(arg0.getPropertyName())){
+					//add method for date
+					Date selected = selectedDate.getDate();
+					attendees = attendeeList.getList();
+					roomBox.removeAll();
+					roomGroup = new ButtonGroup();
+					//availableRooms = Controller.genRoomList(selected, attendees.size());
+					for(int i = 0; i < availableRooms.size(); i++){
+						JRadioButton rdbtn = new JRadioButton(availableRooms.get(i).toString()); 
+						roomBox.add(rdbtn);
+						roomGroup.add(rdbtn);
+					}
+				}
+			}
+		});
+	}
 }
