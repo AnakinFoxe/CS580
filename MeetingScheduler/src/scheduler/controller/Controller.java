@@ -108,6 +108,7 @@ public class Controller {
 												 resultSet.getString("emp_last_name"),
 												 resultSet.getString("emp_position"),
 												 resultSet.getString("emp_email"));
+				employee.setUsrId(usr_id);
 				
 				return employee;
 			}
@@ -120,6 +121,8 @@ public class Controller {
 			
 			while (resultSet.next()) {
 				Administrator admin = new Administrator(resultSet.getString("adm_description"));
+				
+				admin.setUsrId(usr_id);
 				
 				return admin;
 			}
