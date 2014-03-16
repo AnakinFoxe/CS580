@@ -197,7 +197,6 @@ public class Controller {
 				// Generate the list of rooms that are occupied at the date
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 				String strDate = df.format(date);
-				strDate = "2014-03-15 10:00:00";
 				
 				sql = "select * from schedule where sch_start_time='" + strDate + "'";
 				statement = connection.createStatement();
@@ -298,6 +297,10 @@ public class Controller {
 				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
 				long shift_sec = shift / 1000;
 				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+				
+				if (shift_hour >= 168)
+					return null;
+				
 				timeslot[(int)shift_hour] = 1;
 			}
 			
@@ -327,5 +330,57 @@ public class Controller {
 			return null;
 		}
 		
+	}
+	
+	public static boolean insertMeeting(List<Employee> empList, Date date, Room rom) {
+		if (empList == null || date == null || rom == null) 
+			return false;
+		
+		try {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			String startDate = df.format(date);
+			
+			// Insert Schedule Table
+			sql = "insert into schedule (`sch_start_time`) values ('" + startDate + "')";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			resultSet = statement.getGeneratedKeys();
+			Integer sch_id = -1;
+			if (resultSet.next()) 
+				sch_id = resultSet.getInt(1);
+			else
+				return false;
+
+			// Insert Meeting Table
+			sql = "insert into meeting (`met_sch_id`, `met_rom_id`, `met_emp_id`) values (" 
+					+ sch_id.toString() + ", " 
+					+ rom.getId().toString() + ", "
+					+ "1)";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Insert Attendee Table
+			int idx;
+			for (idx=0;idx<empList.size();++idx){
+				sql = "insert into attendee (`att_sch_id`, `att_emp_id`) values ("
+						+ sch_id.toString() + ", "
+						+ empList.get(idx).getUsrId().toString() + ")";
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+			}
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		
+		return true;
 	}
 }

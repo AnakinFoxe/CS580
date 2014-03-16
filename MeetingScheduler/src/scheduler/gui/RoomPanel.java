@@ -86,10 +86,12 @@ public class RoomPanel extends JPanel {
 		for(int i = 0; i < roomBox.getComponentCount(); i++){
 			JRadioButton rdbtn = (JRadioButton) roomBox.getComponent(i);
 			if(rdbtn.isSelected()){
-				Room selectedRoom = availableRooms.get(i);
-				List<Employee> attendees = attendeeList.getList();
-				Date selectedDate = this.selectedDate.getDate();
-				//Controller.insertMeeting();
+//				Room selectedRoom = availableRooms.get(i);
+//				List<Employee> attendees = attendeeList.getList();
+//				Date selectedDate = this.selectedDate.getDate();
+				Controller.insertMeeting(attendeeList.getList(),
+										this.selectedDate.getDate(),
+										availableRooms.get(i));
 			}
 		}
 		return isSelected;
