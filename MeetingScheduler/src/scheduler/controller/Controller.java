@@ -336,6 +336,44 @@ public class Controller {
 		
 	}
 	
+	
+	public static List<Date> getMeetingDate(Employee emp) {
+		if (emp == null)
+			return null;
+		
+		try {
+			sql = "select * from attendee where att_emp_id=" + emp.getUsrId().toString();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			List<Date> dates = new ArrayList<Date>();
+			while (resultSet.next()) {
+				Integer sch_id = resultSet.getInt("att_sch_id");
+				
+				sql = "select * from schedule where sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				ResultSet moreResultSet = statement.executeQuery(sql);
+				while (moreResultSet.next()) {
+					dates.add(moreResultSet.getDate("sch_start_time"));
+				}
+			}
+			
+			if (dates.size() > 0)
+				return dates;
+			else
+				return null;
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+	
 	public static boolean insertMeeting(List<Employee> empList, Date date, Room rom) {
 		if (empList == null || date == null || rom == null) 
 			return false;
@@ -800,5 +838,7 @@ public class Controller {
 		
 		return true;
 	}
+	
+	
 
 }
