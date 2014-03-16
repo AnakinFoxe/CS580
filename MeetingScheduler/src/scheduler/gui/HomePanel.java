@@ -147,8 +147,7 @@ public class HomePanel extends JPanel {
 					lblLastName.setText(employee.getEmployee().getLastName());
 					lblPosition.setText(employee.getEmployee().getPosition());
 					lblEmail.setText(employee.getEmployee().getEmail());
-					
-					
+										
 				}
 				// TODO Auto-generated method stub
 				

@@ -42,8 +42,9 @@ public class Employee extends User {
 	public String getUsername() {
 		return this.username;
 	}
-	
-	
+	public Integer getUsrId() {
+		return this.usr_id;
+	}
 	public String getFirstName() {
 		return this.firstName;
 	}
