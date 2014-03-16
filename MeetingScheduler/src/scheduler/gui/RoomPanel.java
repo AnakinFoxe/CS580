@@ -91,7 +91,8 @@ public class RoomPanel extends JPanel {
 //				Room selectedRoom = availableRooms.get(i);
 //				List<Employee> attendees = attendeeList.getList();
 //				Date selectedDate = this.selectedDate.getDate();
-				Controller.insertMeeting(attendeeList.getList(),
+				Controller.insertMeeting(user.getEmployee(),
+										attendeeList.getList(),
 										this.selectedDate.getDate(),
 										availableRooms.get(i));
 			}

@@ -374,8 +374,8 @@ public class Controller {
 		}
 	}
 	
-	public static boolean insertMeeting(List<Employee> empList, Date date, Room rom) {
-		if (empList == null || date == null || rom == null) 
+	public static boolean insertMeeting(Employee host, List<Employee> empList, Date date, Room rom) {
+		if (host == null || empList == null || date == null || rom == null) 
 			return false;
 		
 		try {
@@ -398,7 +398,7 @@ public class Controller {
 			sql = "insert into meeting (`met_sch_id`, `met_rom_id`, `met_emp_id`) values (" 
 					+ sch_id.toString() + ", " 
 					+ rom.getId().toString() + ", "
-					+ "1)";	// Xing: need host info
+					+ host.getUsrId().toString() + ")";	
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			
@@ -551,7 +551,6 @@ public class Controller {
 			// Update Meeting Table
 			sql = "update meeting set "
 					+ "`met_rom_id`=" + rom.getId().toString()  
-					+ "`met_emp_id`= 1" // Xing: need host info
 					+ " where `met_sch_id`=" + sch_id.toString();
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
