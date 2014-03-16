@@ -59,7 +59,9 @@ public class SchedulerPanel extends JPanel {
 		
 		detailsPanel = new MeetingDetailsPanel();
 		adminPanel = new AdministratorPanel();
+		
 		profilePanel = new ProfilePanel();
+		profilePanel.setModel(employeeModel);
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");
