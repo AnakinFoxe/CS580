@@ -139,12 +139,9 @@ public class Controller {
 		}
 	}
 	
-	public static List<Employee> genEmployeeList() {
+	public static List<Employee> genEmployeeList(Employee host) {
 		if (Controller.connection == null)
 			return null;
-		
-//		if (usr_id == null)
-//			return null;
 		
 		List<Employee> empList = new ArrayList<Employee>();
 		
@@ -155,13 +152,15 @@ public class Controller {
 			resultSet = statement.executeQuery(sql);
 			
 			while (resultSet.next()) {
-//				System.out.println(resultSet.getInt("emp_usr_id"));
-//				if (resultSet.getInt("emp_usr_id") ==  usr_id.intValue())
-//					continue;
 				Employee emp = new Employee(resultSet.getString("emp_first_name"),
 						 					resultSet.getString("emp_middle_name"),
 						 					resultSet.getString("emp_last_name"),
 						 					resultSet.getInt("emp_usr_id"));
+				
+				// For the case we want to exclude the host employee
+				if ((host != null) && (host.getUsrId() == emp.getUsrId())) 
+					continue;
+				
 				empList.add(emp);
 			}
 			
@@ -388,6 +387,62 @@ public class Controller {
 		
 		return true;
 	}
+	
+	
+	public static boolean insertEmployee(Employee emp, String pwd) {
+		if ((emp == null) || (pwd == null))
+			return false;
+		
+		try {
+			// Check existence 
+			sql = "select * from user where usr_username='" + emp.getUsername() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			if (resultSet.next())
+				return false;
+			
+			// Insert User
+			sql = "insert into user (`usr_username`, `usr_password`) values ('" 
+					+ emp.getUsername() + "', '"
+					+ pwd + "')";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			resultSet = statement.getGeneratedKeys();
+			Integer usr_id = -1;
+			if (resultSet.next()) 
+				usr_id = resultSet.getInt(1);
+			else
+				return false;
+			
+			// Insert Employee
+			sql = "insert into employee (`emp_usr_id`, `emp_first_name`, `emp_middle_name`,"
+					+ "`emp_last_name`, `emp_title`, `emp_position`, `emp_email`) values (" 
+					+ usr_id + ", '"
+					+ emp.getFirstName() + "','"
+					+ emp.getMiddleName() + "','"
+					+ emp.getLastName() + "','"
+					+ emp.getTitle() + "','"
+					+ emp.getPosition() + "','"
+					+ emp.getEmail() + "')";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
+	}
+	
 	
 	public static void updateProfile(Integer usrID, String newUsername, String oldPassword, String newPassword, String newPasswordConfirmed,
 			 String newFirstname, String newLastname, String newMiddlename, String newTitle, String newPosition,

@@ -119,7 +119,7 @@ public class MeetingPanel extends JPanel {
 				if(Flag.modelName.equals(evt.getPropertyName())){
 
 					// add some kind of function that generates user ID
-					employeeList = Controller.genEmployeeList();
+					employeeList = Controller.genEmployeeList(null);	// Xing: pass Employee object instead
 					employeeBox.removeAll();
 					for (Integer idx=0; idx<employeeList.size(); ++idx){
 						//System.out.println(employeeList.get(idx).getFirstName());
