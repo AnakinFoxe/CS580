@@ -443,6 +443,27 @@ public class Controller {
 		return true;
 	}
 	
+	public static boolean insertRoom(Room rom) {
+		if (rom == null) 
+			return false;
+		
+//		try {
+//			// Check existence 
+//			sql = "select * from room where "
+//			
+//		} catch (SQLException e) {
+//			Integer ec = e.getErrorCode();
+//			String msg = e.getMessage();  
+//			String state = e.getSQLState();
+//		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+//			e.printStackTrace();
+//			
+//			return false;
+//		}
+//		
+		return true;
+	}
+	
 	
 	public static void updateProfile(Integer usrID, String newUsername, String oldPassword, String newPassword, String newPasswordConfirmed,
 			 String newFirstname, String newLastname, String newMiddlename, String newTitle, String newPosition,

@@ -2,6 +2,8 @@ package scheduler.gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -56,7 +58,71 @@ public class AdministratorPanel extends JPanel {
 		add(btnAddEmp);
 		add(btnModifyEmp);
 		add(btnDeleteEmp);
+				
+		btnDeleteEmp.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       	
+            	DelEmpDialog delempDialog = new DelEmpDialog();
+            	delempDialog.setVisible(true);
+            }
+            
+		});		
 		
+		btnAddEmp.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       
+            	EmployeeDialog employeeDialog = new EmployeeDialog();
+            	employeeDialog.setVisible(true);
+            }       
+            
+		});
+		btnModifyEmp.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       	
+            	EmployeeDialog employeeDialog = new EmployeeDialog();
+            	employeeDialog.setVisible(true);
+            }
+            
+		});
+		
+		btnAddRoom.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       	
+            	RoomDialog roomDialog = new RoomDialog();
+            	roomDialog.setVisible(true);
+            }
+            
+		});
+		
+		btnDeleteRoom.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       	
+            	DelRoomDialog delroomDialog = new DelRoomDialog();
+            	delroomDialog.setVisible(true);
+            }
+		});	
+		
+		btnModifyRoom.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}       	
+            	RoomDialog roomDialog = new RoomDialog();
+            	roomDialog.setVisible(true);
+            }
+            
+		});
+
 		setBackground(Color.LIGHT_GRAY);
 		SpringLayout springLayout = new SpringLayout();
 	
