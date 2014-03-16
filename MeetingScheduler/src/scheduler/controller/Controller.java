@@ -281,7 +281,7 @@ public class Controller {
 						String startTime = moreResultSet.getString("sch_start_time");
 						String endTime = moreResultSet.getString("sch_end_time");
 						met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
-						met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+						//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 					}
 					
 					// Only add those meetings that have not yet happened
