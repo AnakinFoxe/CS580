@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
 import scheduler.model.Meeting;
+import scheduler.model.Room;
 import scheduler.model.User;
 
 public class Controller {
@@ -159,6 +161,79 @@ public class Controller {
 			}
 			
 			return empList;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+	
+	
+	public static List<Room> genRoomList(Date date, Integer empNum) {
+		if (Controller.connection == null)
+			return null;
+		
+		List<Room> romList = new ArrayList<Room>();
+		
+		try {
+			sql = "select * from room";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Room rom = new Room(resultSet.getInt("rom_id"),
+						 			resultSet.getString("rom_name"),
+						 			resultSet.getInt("rom_capacity"));
+				romList.add(rom);
+			}
+			
+			// Get Available Rooms for valid input
+			// Otherwise, just return all the rooms
+			if ((date != null) && (empNum != 0)) {
+				// Generate the list of rooms that are occupied at the date
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+				String strDate = df.format(date);
+				strDate = "2014-03-15 10:00:00";
+				
+				sql = "select * from schedule where sch_start_time='" + strDate + "'";
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(sql);
+				
+				List<Integer> rmRomIdList = new ArrayList<Integer>();
+				while (resultSet.next()) {
+					Integer sch_id = resultSet.getInt("sch_id");
+					sql = "select met_rom_id from meeting where met_sch_id='" + sch_id + "'";
+					statement = connection.createStatement();
+					ResultSet moreResultSet = statement.executeQuery(sql);
+					while (moreResultSet.next()) {
+						rmRomIdList.add(moreResultSet.getInt("met_rom_id"));
+					}
+				}
+				
+				// Remove all the rooms on the list
+				int i=0;
+				int j=0;
+				for (j=0;j<romList.size();++j) {
+					if (romList.get(j).getCapacity() < empNum) {
+						romList.remove(j);
+						--j;
+					}
+					for (i=0;i<rmRomIdList.size();++i) {
+						if (rmRomIdList.get(i) == romList.get(j).getId()) {
+							romList.remove(j);	
+							rmRomIdList.remove(i);
+							--i;
+							--j;
+						}
+					}
+				}
+			}		
+			
+			return romList;
 		} catch (SQLException e) {
 			Integer ec = e.getErrorCode();
 			String msg = e.getMessage();  

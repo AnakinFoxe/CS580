@@ -53,8 +53,7 @@ public class RoomPanel extends JPanel {
 		scrollPane = new JScrollPane(roomBox);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 68, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 41, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 130, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 147, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 194, SpringLayout.WEST, this);
 		add(scrollPane);
 		
 		roomLabel = new JLabel("Choose a Room");
@@ -63,6 +62,7 @@ public class RoomPanel extends JPanel {
 		add(roomLabel);
 		
 		finishBtn = new JButton("finish");
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, finishBtn);
 		finishBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -87,6 +87,8 @@ public class RoomPanel extends JPanel {
 			JRadioButton rdbtn = (JRadioButton) roomBox.getComponent(i);
 			if(rdbtn.isSelected()){
 				Room selectedRoom = availableRooms.get(i);
+				List<Employee> attendees = attendeeList.getList();
+				Date selectedDate = this.selectedDate.getDate();
 				//Controller.insertMeeting();
 			}
 		}
@@ -125,9 +127,9 @@ public class RoomPanel extends JPanel {
 					attendees = attendeeList.getList();
 					roomBox.removeAll();
 					roomGroup = new ButtonGroup();
-					//availableRooms = Controller.genRoomList(selected, attendees.size());
+					availableRooms = Controller.genRoomList(selected, attendees.size());
 					for(int i = 0; i < availableRooms.size(); i++){
-						JRadioButton rdbtn = new JRadioButton(availableRooms.get(i).toString()); 
+						JRadioButton rdbtn = new JRadioButton(availableRooms.get(i).getName().toString()); 
 						roomBox.add(rdbtn);
 						roomGroup.add(rdbtn);
 					}
