@@ -449,7 +449,7 @@ public class Controller {
 		
 		try {
 			// Check existence 
-			sql = "select * from room where  om_name='" + rom.getName() + "'";
+			sql = "select * from room where rom_name='" + rom.getName() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			
@@ -588,6 +588,46 @@ public class Controller {
 
 
 		}
+	}
+	
+	
+	public static boolean updateRoom(Room rom) {
+		if (rom == null) 
+			return false;
+		
+		try {
+			// Check existence 
+			sql = "select * from room where rom_name='" + rom.getName() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			Integer rom_id = -1;
+			if (resultSet.next())
+				rom_id = resultSet.getInt("rom_id");
+			else
+				return false;
+				
+			// Update room
+			sql = "update room set "
+					+ "`rom_name`='" + rom.getName() + "', "
+					+ "`rom_capacity`=" + rom.getCapacity().toString()
+					+ " where rom_id='" + rom_id.toString() + "'";
+			
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
 	}
 
 }
