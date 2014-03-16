@@ -105,7 +105,9 @@ public class Controller {
 			while (resultSet.next()) {
 				Employee employee = new Employee(resultSet.getString("emp_first_name"),
 												 resultSet.getString("emp_middle_name"),
-												 resultSet.getString("emp_last_name"));
+												 resultSet.getString("emp_last_name"),
+												 resultSet.getString("emp_position"),
+												 resultSet.getString("emp_email"));
 				
 				return employee;
 			}

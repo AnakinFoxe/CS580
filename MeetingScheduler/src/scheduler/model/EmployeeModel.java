@@ -23,6 +23,8 @@ public class EmployeeModel {
 		employee.setFirstName(e.getFirstName());
 		employee.setLastName(e.getLastName());
 		employee.setMiddleName(e.getMiddleName());
+		employee.setPosition(e.getPosition());
+		employee.setEmail(e.getEmail());
 		Employee newEmployee = this.employee;
 		pcSupport.firePropertyChange(modelName, oldEmployee, newEmployee);
 	}
