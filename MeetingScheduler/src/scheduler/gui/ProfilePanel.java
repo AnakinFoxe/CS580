@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,6 +14,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import scheduler.model.Employee;
+import scheduler.model.EmployeeModel;
+
+
 public class ProfilePanel extends JPanel {
 
 	//private static final long serialVersionUID = 4932513626147661013L;
@@ -19,23 +25,45 @@ public class ProfilePanel extends JPanel {
 	private JLabel lblOldPassword;
 	private JLabel lblNewPassword;
 	private JLabel lblFirstname;
+	private JLabel lblMiddlename;
 	private JLabel lblLastname;
 	private JLabel lblTitle;
 	private JLabel lblPosition;
+	private JLabel lblEmail;
+	private JLabel lblHeading;
+	
 	private JTextField txfUsername;
 	private JPasswordField psfOldPassword;
 	private JPasswordField psfNewPassword;
 	private JPasswordField psfNewPasswordConfirmed;
 	private JTextField txfFirstname;
+	private JTextField txfMiddlename;
 	private JTextField txfLastname;
 	private JTextField txfTitle;
 	private JTextField txfPosition;
+	private JTextField txfEmail;
+	
+	
+	private String username;
+	private String oldPassword;
+	private String newPassword;
+	private String newPasswordConfirmed;
+	private String firstname;
+	private String lastname;
+	private String middlename;
+	private String title;
+	private String position;
+	private String email;
+	
+	
 	private CardLayout cardlayout;
 	private JPanel controller;
 	
 	private JButton btnUpdate;
 	private JButton btnClear;
 	private JButton btnBack;
+	
+	private EmployeeModel employee;
 	
 	
 	
@@ -45,6 +73,11 @@ public class ProfilePanel extends JPanel {
 	public ProfilePanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		
+		lblHeading = new JLabel();
+		lblHeading.setText("Update Profile");
+		lblHeading.setFont(new Font("Consolas", Font.PLAIN, 20));
+		add(lblHeading);
 		
 		lblUsername = new JLabel();
 		lblUsername.setText("Username");
@@ -86,6 +119,16 @@ public class ProfilePanel extends JPanel {
 		add(txfFirstname);
 		txfFirstname.setColumns(10);
 		
+		lblMiddlename = new JLabel();
+		lblMiddlename.setText("Middle Name");
+		lblMiddlename.setFont(new Font("Consolas", Font.PLAIN, 14));
+		add(lblMiddlename);
+		
+		txfMiddlename = new JTextField();
+		add(txfMiddlename);
+		txfMiddlename.setColumns(10);
+		
+		
 		lblLastname = new JLabel();
 		lblLastname.setText("Last Name");
 		lblLastname.setFont(new Font("Consolas", Font.PLAIN, 14));
@@ -113,28 +156,59 @@ public class ProfilePanel extends JPanel {
 		add(txfPosition);
 		txfPosition.setColumns(10);
 		
+		lblEmail = new JLabel();
+		lblEmail.setText("Email");
+		lblEmail.setFont(new Font("Consolas", Font.PLAIN, 14));
+		add(lblEmail);
+		
+		txfEmail = new JTextField();
+		add(txfEmail);
+		txfEmail.setColumns(10);
+		
 		btnUpdate = new JButton("Update");
-//		btnUpdate.addActionListener(new ActionListener(){
-//            public void actionPerformed(ActionEvent e){
-//            	if (controller == null){
-//            		getData();
-//            	}
-//            	cardlayout.show(controller,"home");
-//            }
-//            
-//		});
+	btnUpdate.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+           		getData();
+            	}
+            		
+            	Integer id = employee.getEmployee().getUsrId();
+            	System.out.println(id+"  id");
+            	Employee oldEmp = employee.getEmployee();
+            	
+            	username=txfUsername.getText().trim();
+            	oldPassword=psfOldPassword.getText().trim();
+            	newPassword=psfNewPassword.getText().trim();
+            	newPasswordConfirmed=psfNewPasswordConfirmed.getText().trim();
+            	firstname=txfFirstname.getText().trim();
+            	lastname=txfLastname.getText().trim();
+            	middlename=txfMiddlename.getText().trim();
+            	title=txfTitle.getText().trim();
+            	position=txfPosition.getText().trim();
+            	email=txfEmail.getText().trim();
+            	
+            	            	
+            	Employee updatedEmployee = new Employee(firstname,middlename,lastname,position,email);
+            	employee.setEmployee(updatedEmployee);
+            	            	
+            	clearFields();
+            	cardlayout.show(controller,"home");
+           }
+           
+		});
+	
 		add(btnUpdate);
 		
 		btnClear = new JButton("Clear");
-//		btnClear.addActionListener(new ActionListener(){
-//            public void actionPerformed(ActionEvent e){
-//            	if (controller == null){
-//            		getData();
-//            	}
-//            	cardlayout.show(controller,"home");
-//            }
-//            
-//		});
+		btnClear.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	if (controller == null){
+            		getData();
+            	}
+            	clearFields();
+            }
+            
+		});
 		add(btnClear);
 		
 		btnBack = new JButton("Back");
@@ -143,15 +217,18 @@ public class ProfilePanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
+            	clearFields();
             	cardlayout.show(controller,"home");
             }
             
 		});
 		add(btnBack);
 		
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblHeading, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblHeading, 50, SpringLayout.NORTH, this);
 		
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, txfUsername, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, txfUsername, 0, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.NORTH, txfUsername, 25, SpringLayout.SOUTH, lblHeading);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, psfOldPassword, 0, SpringLayout.SOUTH, txfUsername);
 		springLayout.putConstraint(SpringLayout.WEST, psfOldPassword, 0, SpringLayout.WEST, txfUsername);
@@ -165,14 +242,20 @@ public class ProfilePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, txfFirstname, 0, SpringLayout.SOUTH, psfNewPasswordConfirmed);
 		springLayout.putConstraint(SpringLayout.WEST, txfFirstname, 0, SpringLayout.WEST, psfNewPasswordConfirmed);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, txfLastname, 0, SpringLayout.SOUTH, txfFirstname);
-		springLayout.putConstraint(SpringLayout.WEST, txfLastname, 0, SpringLayout.WEST, txfFirstname);
+		springLayout.putConstraint(SpringLayout.NORTH, txfMiddlename, 0, SpringLayout.SOUTH, txfFirstname);
+		springLayout.putConstraint(SpringLayout.WEST, txfMiddlename, 0, SpringLayout.WEST, txfFirstname);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, txfLastname, 0, SpringLayout.SOUTH, txfMiddlename);
+		springLayout.putConstraint(SpringLayout.WEST, txfLastname, 0, SpringLayout.WEST, txfMiddlename);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, txfTitle, 0, SpringLayout.SOUTH, txfLastname);
 		springLayout.putConstraint(SpringLayout.WEST, txfTitle, 0, SpringLayout.WEST, txfLastname);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, txfPosition, 0, SpringLayout.SOUTH, txfTitle);
 		springLayout.putConstraint(SpringLayout.WEST, txfPosition, 0, SpringLayout.WEST, txfTitle);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, txfEmail, 0, SpringLayout.SOUTH, txfPosition);
+		springLayout.putConstraint(SpringLayout.WEST, txfEmail, 0, SpringLayout.WEST, txfPosition);
 		
 		springLayout.putConstraint(SpringLayout.BASELINE, lblUsername, 0, SpringLayout.BASELINE, txfUsername);
 		springLayout.putConstraint(SpringLayout.EAST, lblUsername, 0, SpringLayout.WEST, txfUsername);
@@ -186,6 +269,9 @@ public class ProfilePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.BASELINE, lblFirstname, 0, SpringLayout.BASELINE, txfFirstname);
 		springLayout.putConstraint(SpringLayout.EAST, lblFirstname, 0, SpringLayout.WEST, txfFirstname);
 		
+		springLayout.putConstraint(SpringLayout.BASELINE, lblMiddlename, 0, SpringLayout.BASELINE, txfMiddlename);
+		springLayout.putConstraint(SpringLayout.EAST, lblMiddlename, 0, SpringLayout.WEST, txfMiddlename);
+		
 		springLayout.putConstraint(SpringLayout.BASELINE, lblLastname, 0, SpringLayout.BASELINE, txfLastname);
 		springLayout.putConstraint(SpringLayout.EAST, lblLastname, 0, SpringLayout.WEST, txfLastname);
 		
@@ -195,8 +281,11 @@ public class ProfilePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.BASELINE, lblPosition, 0, SpringLayout.BASELINE, txfPosition);
 		springLayout.putConstraint(SpringLayout.EAST, lblPosition, 0, SpringLayout.WEST, txfPosition);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, btnUpdate, 0, SpringLayout.SOUTH, txfPosition);
-		springLayout.putConstraint(SpringLayout.WEST, btnUpdate, 0, SpringLayout.WEST, txfPosition);
+		springLayout.putConstraint(SpringLayout.BASELINE, lblEmail, 0, SpringLayout.BASELINE, txfEmail);
+		springLayout.putConstraint(SpringLayout.EAST, lblEmail, 0, SpringLayout.WEST, txfEmail);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, btnUpdate, 15, SpringLayout.SOUTH, txfEmail);
+		springLayout.putConstraint(SpringLayout.WEST, btnUpdate, -30, SpringLayout.WEST, txfEmail);
 		
 		springLayout.putConstraint(SpringLayout.BASELINE, btnClear, 0, SpringLayout.BASELINE, btnUpdate);
 		springLayout.putConstraint(SpringLayout.WEST, btnClear, 0, SpringLayout.EAST, btnUpdate);
@@ -211,5 +300,21 @@ public class ProfilePanel extends JPanel {
 		controller = (JPanel) this.getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
-
+	protected void clearFields(){
+		txfUsername.setText(null);
+		psfOldPassword.setText(null);
+		psfNewPassword.setText(null);
+		psfNewPasswordConfirmed.setText(null);
+		txfFirstname.setText(null);
+		txfMiddlename.setText(null);
+		txfLastname.setText(null);
+		txfTitle.setText(null);
+		txfPosition.setText(null);		
+		txfEmail.setText(null);
+	}
+	
+	public void setModel(final EmployeeModel employee) {
+		  this.employee = employee;
+	}
+	      
 }
