@@ -4,11 +4,8 @@ import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.SpringLayout;
-import javax.swing.ListSelectionModel;
-import javax.swing.AbstractListModel;
 import javax.swing.JScrollPane;
 
 import java.awt.CardLayout;
@@ -19,6 +16,7 @@ import scheduler.controller.Controller;
 import scheduler.model.DateModel;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
+import scheduler.model.EmployeeModel;
 import scheduler.model.Room;
 
 import java.awt.event.ActionEvent;
@@ -44,6 +42,7 @@ public class RoomPanel extends JPanel {
 	private List<Room> availableRooms;
 	private ButtonGroup roomGroup;
 	private List<Employee> attendees;
+	private EmployeeModel user;
 	
 	public RoomPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -69,7 +68,10 @@ public class RoomPanel extends JPanel {
             		getData();
             	}
 				boolean roomSelected = getRoom();
-            	cardlayout.show(controller,"home");
+				if(roomSelected){
+					cardlayout.show(controller,"home");
+				}
+            	
 			}
 
 		});
@@ -117,6 +119,9 @@ public class RoomPanel extends JPanel {
 		});*/
 	}
 	
+	public void setModel(EmployeeModel employee){
+		this.user = employee;
+	}
 	public void setModel(DateModel dateModel){
 		this.selectedDate = dateModel;
 		selectedDate.addPropertyChangeListener(new PropertyChangeListener() {

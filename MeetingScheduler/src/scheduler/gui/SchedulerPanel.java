@@ -56,6 +56,7 @@ public class SchedulerPanel extends JPanel {
 		roomPanel = new RoomPanel();
 		roomPanel.setModel(date);
 		roomPanel.setModel(attendeeList);
+		roomPanel.setModel(employeeModel);
 		
 		detailsPanel = new MeetingDetailsPanel();
 		adminPanel = new AdministratorPanel();
