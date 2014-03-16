@@ -629,5 +629,51 @@ public class Controller {
 		
 		return true;
 	}
+	
+	
+	public static boolean deleteMeeting(Meeting met) {
+		if (met == null) 
+			return false;
+		
+		try {
+			sql = "select * from schedule where sch_id='" + met.getSchId().toString() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			Integer sch_id = -1;
+			if (resultSet.next()) {
+				sch_id = resultSet.getInt("sch_id");
+				
+			} else
+				return false;
+			
+			// Delete Attendee Table
+			sql = "delete * from attendee where att_sch_id='" + sch_id.toString() + "'";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+	
+			// Delete Meeting Table
+			sql = "delete * from meeting where met_sch_id='" + sch_id.toString() + "'";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Delete Schedule Table
+			sql = "delete * from schedule where sch_id='" + sch_id.toString() + "'";
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		
+		return true;
+	}
 
 }
