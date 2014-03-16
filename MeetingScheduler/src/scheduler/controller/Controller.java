@@ -360,7 +360,7 @@ public class Controller {
 			sql = "insert into meeting (`met_sch_id`, `met_rom_id`, `met_emp_id`) values (" 
 					+ sch_id.toString() + ", " 
 					+ rom.getId().toString() + ", "
-					+ "1)";
+					+ "1)";	// Xing: need host info
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			
@@ -480,6 +480,86 @@ public class Controller {
 			
 			return false;
 		}
+		
+		return true;
+	}
+	
+	public static boolean updateMeeting(Meeting met, List<Employee> empList, Date date, Room rom) {
+		if (met == null || empList == null || date == null || rom == null) 
+			return false;
+		
+		try {
+			sql = "select * from schedule where sch_id='" + met.getSchId().toString() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			Integer sch_id = -1;
+			if (resultSet.next()) {
+				sch_id = resultSet.getInt("sch_id");
+				
+			} else
+				return false;
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			String startDate = df.format(date);
+			
+			// Update Schedule Table
+			sql = "update schedule set "
+					+ "`sch_start_time`='" + startDate 
+					+ "' where sch_id=" + sch_id.toString();
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Update Meeting Table
+			sql = "update meeting set "
+					+ "`met_rom_id`=" + rom.getId().toString()  
+					+ "`met_emp_id`= 1" // Xing: need host info
+					+ " where `met_sch_id`=" + sch_id.toString();
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			// Update Attendee Table
+			sql = "select * from attendee where att_sch_id='" + sch_id.toString() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			int idx;
+			while (resultSet.next()) {				
+				Integer att_emp_id = resultSet.getInt("att_emp_id");
+				Integer listSize = empList.size();
+				
+				// Remove employees that already exist
+				for (idx=0;idx<empList.size();++idx) {
+					if (att_emp_id == empList.get(idx).getUsrId()) {
+						empList.remove(idx);
+						break;	// Xing: not sure if this break is right
+					}
+				}
+				
+				// Remove employees that not attending anymore
+				if (idx >= listSize) {
+					sql = "delete from attendee where att_emp_id='" + att_emp_id.toString() + "'";
+					statement = connection.createStatement();
+					statement.executeUpdate(sql);
+				}
+			}
+			for (idx=0;idx<empList.size();++idx){	// Add employees that are new
+				sql = "insert into attendee (`att_sch_id`, `att_emp_id`) values ("
+						+ sch_id.toString() + ", "
+						+ empList.get(idx).getUsrId().toString() + ")";
+				statement = connection.createStatement();
+				statement.executeUpdate(sql);
+			}	
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
 		
 		return true;
 	}
