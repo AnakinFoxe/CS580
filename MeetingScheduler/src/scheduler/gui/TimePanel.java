@@ -42,7 +42,6 @@ public class TimePanel extends JPanel {
 	public TimePanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		group = new ButtonGroup();
 		JLabel lblNewLabel = new JLabel("Select a Time");
 		springLayout.putConstraint(SpringLayout.NORTH, lblNewLabel, 27, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblNewLabel, 186, SpringLayout.WEST, this);
@@ -114,6 +113,7 @@ public class TimePanel extends JPanel {
 				if(EmployeeListModel.modelName.equals(evt.getPropertyName())){
 					times = Controller.genAvailableTime(attendeeList.getList());
 					timeBox.removeAll();
+					group = new ButtonGroup();
 					for (int i = 0; i < times.size(); i++) {
 						String dateString = new SimpleDateFormat("HH:mm dd-MM-yyyy").format(times.get(i));
 						JRadioButton rdbtn = new JRadioButton(dateString);
