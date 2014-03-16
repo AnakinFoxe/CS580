@@ -5,6 +5,9 @@ public class Employee extends User {
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	private String position;
+	private String email;
+	
 	
 	
 	
@@ -14,11 +17,15 @@ public class Employee extends User {
 	
 	public Employee(String firstName, 
 					String middleName, 
-					String lastName) {
+					String lastName,
+					String position,
+					String email) {
 		super();
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+		this.position = position;
+		this.email = email;
 	}
 	
 	public Employee(String firstName, 
@@ -58,5 +65,19 @@ public class Employee extends User {
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getPosition() {
+		return this.position;
+	}
+	
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setEmail(String lastName) {
+		this.email = lastName;
 	}
 }

@@ -37,6 +37,10 @@ public class HomePanel extends JPanel {
 	private EmployeeModel employee;
 	private String name;
 	private JLabel lblName;
+	private JLabel lblMiddleName;
+	private JLabel lblLastName;
+	private JLabel lblPosition;
+	private JLabel lblEmail;
 	private Flag flag;
 	
 	public HomePanel() {
@@ -72,6 +76,18 @@ public class HomePanel extends JPanel {
 		
 		lblName = new JLabel();
 		add(lblName);
+		lblMiddleName = new JLabel();
+		add(lblMiddleName);
+			
+		
+		lblLastName = new JLabel();
+		add(lblLastName);
+		
+		lblPosition = new JLabel();
+		add(lblPosition);
+		
+		lblEmail = new JLabel();
+		add(lblEmail);
 		
 		calenderPanel = new JCalendar();
 		
@@ -94,6 +110,18 @@ public class HomePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblName, 6, SpringLayout.EAST, lblUsername);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblName, 0, SpringLayout.SOUTH, lblUsername);
 		
+		springLayout.putConstraint(SpringLayout.WEST, lblMiddleName, 6, SpringLayout.EAST, lblName);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblMiddleName, 0, SpringLayout.SOUTH, lblName);
+				
+		springLayout.putConstraint(SpringLayout.WEST, lblLastName, 6, SpringLayout.EAST, lblMiddleName);
+		springLayout.putConstraint(SpringLayout.SOUTH, lblLastName, 0, SpringLayout.SOUTH, lblName);
+		
+		springLayout.putConstraint(SpringLayout.WEST, lblPosition, 0, SpringLayout.WEST, lblName);
+		springLayout.putConstraint(SpringLayout.NORTH, lblPosition, 6, SpringLayout.SOUTH, lblName);
+		
+		springLayout.putConstraint(SpringLayout.WEST, lblEmail, 0, SpringLayout.WEST, lblName);
+		springLayout.putConstraint(SpringLayout.NORTH, lblEmail, 6, SpringLayout.SOUTH, lblPosition);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, calenderPanel, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, calenderPanel, -700, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, calenderPanel, 0, SpringLayout.SOUTH, this);
@@ -115,6 +143,12 @@ public class HomePanel extends JPanel {
 				if(EmployeeModel.modelName.equals(evt.getPropertyName())){
 					name = employee.getEmployee().getFirstName();
 					lblName.setText(name);
+					lblMiddleName.setText(employee.getEmployee().getMiddleName());
+					lblLastName.setText(employee.getEmployee().getLastName());
+					lblPosition.setText(employee.getEmployee().getPosition());
+					lblEmail.setText(employee.getEmployee().getEmail());
+					System.out.println(lblPosition.getText()+"  "+lblEmail.getText());
+					
 				}
 				// TODO Auto-generated method stub
 				
