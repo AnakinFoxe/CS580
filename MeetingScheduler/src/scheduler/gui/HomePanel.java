@@ -42,8 +42,10 @@ public class HomePanel extends JPanel {
 	private JLabel lblPosition;
 	private JLabel lblEmail;
 	private Flag flag;
+	private Flag isVisible;
+	private JButton prvsMonth;
 	
-	public HomePanel() {
+	public HomePanel(JCalendar calender) {
 		setBackground(Color.LIGHT_GRAY);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -55,6 +57,7 @@ public class HomePanel extends JPanel {
             		getData();
             	}
 				flag.setFlag(true);
+				isVisible.setFlag(false);
             	cardlayout.show(controller,"meeting");
 			}
 		});
@@ -71,7 +74,7 @@ public class HomePanel extends JPanel {
 		});
 		add(btnUpdateProfile);
 		
-		lblUsername = new JLabel("Name:");
+		lblUsername = new JLabel("Hello:");
 		add(lblUsername);
 		
 		lblName = new JLabel();
@@ -90,6 +93,9 @@ public class HomePanel extends JPanel {
 		add(lblEmail);
 		
 		calenderPanel = new JCalendar();
+		
+		springLayout.putConstraint(SpringLayout.NORTH, calenderPanel, 65, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, calenderPanel, -588, SpringLayout.EAST, this);
 		
 		calenderPanel.setBackground(new Color(153, 204, 255));
 		//calenderPanel.setDate(new Date());
@@ -121,11 +127,18 @@ public class HomePanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.WEST, lblEmail, 0, SpringLayout.WEST, lblName);
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmail, 6, SpringLayout.SOUTH, lblPosition);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, calenderPanel, 0, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, calenderPanel, -700, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, calenderPanel, 0, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, calenderPanel, 0, SpringLayout.EAST, this);
+		
+		prvsMonth = new JButton("previous");
+		add(prvsMonth);
+		
+		JButton nxtMonth = new JButton("next");
+		springLayout.putConstraint(SpringLayout.SOUTH, nxtMonth, -1, SpringLayout.NORTH, calenderPanel);
+		springLayout.putConstraint(SpringLayout.NORTH, prvsMonth, 0, SpringLayout.NORTH, nxtMonth);
+		springLayout.putConstraint(SpringLayout.EAST, prvsMonth, -237, SpringLayout.WEST, nxtMonth);
+		springLayout.putConstraint(SpringLayout.EAST, nxtMonth, -25, SpringLayout.EAST, this);
+		add(nxtMonth);
 	}
 
 	protected void getData() {
@@ -134,8 +147,8 @@ public class HomePanel extends JPanel {
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
 	
-	public void setModel(final EmployeeModel employee) {
-		  this.employee = employee;
+	public void setModel(final EmployeeModel employeeModel) {
+		  this.employee = employeeModel;
 	      employee.addPropertyChangeListener(new PropertyChangeListener() {
 	    	  
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -147,7 +160,7 @@ public class HomePanel extends JPanel {
 					lblLastName.setText(employee.getEmployee().getLastName());
 					lblPosition.setText(employee.getEmployee().getPosition());
 					lblEmail.setText(employee.getEmployee().getEmail());
-										
+					
 				}
 				// TODO Auto-generated method stub
 				
@@ -155,8 +168,21 @@ public class HomePanel extends JPanel {
 	      });
 	   }
 
-	public void setModel(Flag flag1) {
+	public void setModel(Flag flag1, int index) {
 		// TODO Auto-generated method stub
-		flag = flag1;
+		if(index == 0){
+			flag = flag1;
+		}
+		else if(index == 1)
+		{
+			isVisible = flag1;
+			isVisible.addPropertyChangeListener(new PropertyChangeListener() {
+				
+				public void propertyChange(PropertyChangeEvent arg0) {
+					// TODO Auto-generated method stub
+					// refresh calender
+				}
+			});
+		}
 	}
 }

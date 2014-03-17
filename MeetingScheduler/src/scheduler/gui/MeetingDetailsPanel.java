@@ -8,12 +8,17 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JScrollBar;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
+
+import scheduler.model.DateModel;
 
 public class MeetingDetailsPanel extends JPanel {
 	private JLabel lblRoom;
@@ -31,6 +36,7 @@ public class MeetingDetailsPanel extends JPanel {
 	private JLabel rooDetails;
 	private JPanel controller;
 	private CardLayout cardlayout;
+	private DateModel selectedDate;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -89,7 +95,7 @@ public class MeetingDetailsPanel extends JPanel {
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		add(lblTime);
 		
-		timeDetails = new JLabel("01/27/2014 5:00PM");
+		timeDetails = new JLabel();
 		springLayout.putConstraint(SpringLayout.NORTH, timeDetails, 0, SpringLayout.NORTH, lblTime);
 		springLayout.putConstraint(SpringLayout.WEST, timeDetails, 0, SpringLayout.WEST, rooDetails);
 		timeDetails.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -154,8 +160,19 @@ public class MeetingDetailsPanel extends JPanel {
 	}
 	
 	protected void getData() {
-		// TODO Auto-generated method stub
 		controller = (JPanel) this.getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
+	}
+
+	public void setModel(DateModel calenderDateModel) {
+		this.selectedDate = calenderDateModel;
+		selectedDate.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evt) {
+				// TODO Auto-generated method stub
+				SimpleDateFormat dtFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+				timeDetails.setText(dtFormat.format(selectedDate.getDate()));
+			}
+		});
 	}
 }
