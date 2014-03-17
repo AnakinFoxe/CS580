@@ -32,6 +32,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import scheduler.model.DateModel;
+import scheduler.model.Flag;
 
 /** This class renders and provides some UI interaction for a single calendar month.  When rendered, it
  * stretches to fit the area the component must occupy.  It provides action events for clicks and
@@ -42,6 +43,7 @@ public class JCalendar extends JPanel {
 	private CardLayout cardlayout;
 	private JPanel controller;
 	private static DateModel selectedDate;
+	private static Flag isVisible;
     /** This action event name indicates that the cursor has moved between date cells
      * within the calendar. */
     public static final String ACTION_CURSOR_MOVED = "cursorMoved";
@@ -179,6 +181,7 @@ public class JCalendar extends JPanel {
                         if (controller == null){
                     		getData();
                     	}
+                        isVisible.setFlag(false);
                         cardlayout.show(controller,"meetingDetails");
                     }
                     
@@ -441,4 +444,9 @@ public class JCalendar extends JPanel {
     public void setDateModel(DateModel dateModel){
     	this.selectedDate = dateModel;
     }
+    
+    public void setModel(Flag flag){
+    	isVisible = flag;
+    }
+    
 } 

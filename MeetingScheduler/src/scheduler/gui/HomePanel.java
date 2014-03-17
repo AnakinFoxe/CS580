@@ -15,11 +15,14 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
+import scheduler.controller.Controller;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class HomePanel extends JPanel {
 	/**
@@ -43,7 +46,7 @@ public class HomePanel extends JPanel {
 	private JLabel lblEmail;
 	private Flag flag;
 	private Flag isVisible;
-	private JButton prvsMonth;
+	protected List<Date> meetings;
 	
 	public HomePanel(JCalendar calender) {
 		setBackground(Color.LIGHT_GRAY);
@@ -69,6 +72,7 @@ public class HomePanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				isVisible.setFlag(false);
             	cardlayout.show(controller,"profile");
 			}
 		});
@@ -129,16 +133,6 @@ public class HomePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmail, 6, SpringLayout.SOUTH, lblPosition);
 		springLayout.putConstraint(SpringLayout.SOUTH, calenderPanel, 0, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, calenderPanel, 0, SpringLayout.EAST, this);
-		
-		prvsMonth = new JButton("previous");
-		add(prvsMonth);
-		
-		JButton nxtMonth = new JButton("next");
-		springLayout.putConstraint(SpringLayout.SOUTH, nxtMonth, -1, SpringLayout.NORTH, calenderPanel);
-		springLayout.putConstraint(SpringLayout.NORTH, prvsMonth, 0, SpringLayout.NORTH, nxtMonth);
-		springLayout.putConstraint(SpringLayout.EAST, prvsMonth, -237, SpringLayout.WEST, nxtMonth);
-		springLayout.putConstraint(SpringLayout.EAST, nxtMonth, -25, SpringLayout.EAST, this);
-		add(nxtMonth);
 	}
 
 	protected void getData() {
@@ -177,10 +171,22 @@ public class HomePanel extends JPanel {
 		{
 			isVisible = flag1;
 			isVisible.addPropertyChangeListener(new PropertyChangeListener() {
-				
+
 				public void propertyChange(PropertyChangeEvent arg0) {
 					// TODO Auto-generated method stub
 					// refresh calender
+					if(isVisible.getFlag()){
+						meetings = Controller.getMeetingDate(employee.getEmployee());
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(calenderPanel.getCalendarView());
+						for(int i = 0; i < meetings.size(); i++){
+							int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
+							if( range >= 0 && range <=  30){
+								calenderPanel.setDateHighlight(meetings.get(i), Color.ORANGE);
+							}
+							
+						}
+					}
 				}
 			});
 		}

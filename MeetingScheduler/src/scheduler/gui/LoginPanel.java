@@ -11,6 +11,7 @@ import scheduler.controller.Controller;
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 import scheduler.model.User;
 
 import java.awt.CardLayout;
@@ -37,6 +38,7 @@ public class LoginPanel extends JPanel {
 	private CardLayout cardlayout;
 	private JPanel controller;
 	private EmployeeModel employee;
+	private Flag homeVisible;
 
 	public LoginPanel() {
 		
@@ -87,12 +89,6 @@ public class LoginPanel extends JPanel {
             				employee.setEmployee((Employee) usr);
             				
             				
-//            				List<Employee> attendee = new ArrayList<Employee>();
-//                        	Employee xing = (Employee) usr;
-//                        	xing.setUsrId(1);
-//                        	attendee.add(xing);
-//                        	Controller.genAvailableTime(attendee);
-            				
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
@@ -118,7 +114,7 @@ public class LoginPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
-            	
+            	homeVisible.setFlag(true);
             	cardlayout.show(controller,"adminHome");
             }
             
@@ -159,5 +155,9 @@ public class LoginPanel extends JPanel {
 	 public void setModel(EmployeeModel simpleModel) {
 	      this.employee = simpleModel;
 	   }
+	 
+	 public void setModel(Flag flag){
+		 this.homeVisible = flag;
+	 }
 
 }

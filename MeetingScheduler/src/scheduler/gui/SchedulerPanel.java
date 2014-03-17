@@ -36,16 +36,19 @@ public class SchedulerPanel extends JPanel {
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
+		homeVisible = new Flag(false);
 		
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
+		loginPanel.setModel(homeVisible);
 		
 		calendar = new JCalendar();
+		calendar.setModel(homeVisible);
 		calenderDateModel = new DateModel();
 		calenderDateModel.set(new Date());
 		calendar.setDateModel(calenderDateModel);
 		
-		homeVisible = new Flag(false);
+		
 		homePanel = new HomePanel(calendar);
 		homePanel.setModel(homeVisible, 1);
 		loginPanel.setModel(employeeModel);
