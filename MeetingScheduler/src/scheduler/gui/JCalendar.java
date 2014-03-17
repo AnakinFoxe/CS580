@@ -31,6 +31,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import scheduler.model.DateModel;
+
 /** This class renders and provides some UI interaction for a single calendar month.  When rendered, it
  * stretches to fit the area the component must occupy.  It provides action events for clicks and
  * cell changes.  It is intended to be used in more complex components to provide date selection, or
@@ -39,6 +41,7 @@ public class JCalendar extends JPanel {
 	
 	private CardLayout cardlayout;
 	private JPanel controller;
+	private static DateModel selectedDate;
     /** This action event name indicates that the cursor has moved between date cells
      * within the calendar. */
     public static final String ACTION_CURSOR_MOVED = "cursorMoved";
@@ -144,10 +147,9 @@ public class JCalendar extends JPanel {
 
     private MouseListener mouseListener = new MouseListener() {
         public void mouseClicked(MouseEvent e) {
-        	if (controller == null){
-        		getData();
-        	}
-        	cardlayout.show(controller,"meetingDetails");
+        	
+        	//System.out.println(beginClickDate.textDate);
+        	
         }
 
         public void mousePressed(MouseEvent e) {
@@ -162,6 +164,24 @@ public class JCalendar extends JPanel {
                 if (mouseOverDate != null && beginClickDate.equals(new BasicDate(mouseOverDate))) {
                     ActionEvent event = new ActionEvent(JCalendar.this, ActionEvent.ACTION_PERFORMED, ACTION_CLICKED, System.currentTimeMillis(), 0);
                     fireActionPerformed(event);
+                    
+                    //add stuff here for each date
+                   // System.out.println(mouseOverDate.toString());
+                    Date select = null;
+                    try {
+						select = new SimpleDateFormat("yyyyMMdd").parse(beginClickDate.textDate);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    if(select != null){
+                    	selectedDate.set(select);
+                        if (controller == null){
+                    		getData();
+                    	}
+                        cardlayout.show(controller,"meetingDetails");
+                    }
+                    
                 }
                 beginClickDate = null;
             }
@@ -417,4 +437,8 @@ public class JCalendar extends JPanel {
 		controller = (JPanel) this.getParent().getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
+    
+    public void setDateModel(DateModel dateModel){
+    	this.selectedDate = dateModel;
+    }
 } 

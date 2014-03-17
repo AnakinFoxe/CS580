@@ -95,6 +95,7 @@ public class RoomPanel extends JPanel {
 										attendeeList.getList(),
 										this.selectedDate.getDate(),
 										availableRooms.get(i));
+				isSelected = true;
 			}
 		}
 		return isSelected;

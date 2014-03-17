@@ -1,6 +1,7 @@
 package scheduler.gui;
 
 import java.awt.CardLayout;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -26,8 +27,11 @@ public class SchedulerPanel extends JPanel {
 	private ProfilePanel profilePanel;
 	private EmployeeModel employeeModel;
 	private Flag flag1;
+	private Flag homeVisible;
 	private EmployeeListModel attendeeList;
 	private DateModel date;
+	private DateModel calenderDateModel;
+	private JCalendar calendar;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
@@ -36,12 +40,19 @@ public class SchedulerPanel extends JPanel {
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
 		
-		homePanel = new HomePanel();
+		calendar = new JCalendar();
+		calenderDateModel = new DateModel();
+		calenderDateModel.set(new Date());
+		calendar.setDateModel(calenderDateModel);
+		
+		homeVisible = new Flag(false);
+		homePanel = new HomePanel(calendar);
+		homePanel.setModel(homeVisible, 1);
 		loginPanel.setModel(employeeModel);
 		
 		flag1 = new Flag(false);
 		homePanel.setModel(employeeModel);
-		homePanel.setModel(flag1);
+		homePanel.setModel(flag1, 0);
 		
 		attendeeList = new EmployeeListModel();
 		meetingPanel = new MeetingPanel();
@@ -59,6 +70,8 @@ public class SchedulerPanel extends JPanel {
 		roomPanel.setModel(employeeModel);
 		
 		detailsPanel = new MeetingDetailsPanel();
+		detailsPanel.setModel(calenderDateModel);
+		
 		adminPanel = new AdministratorPanel();
 		
 		profilePanel = new ProfilePanel();
