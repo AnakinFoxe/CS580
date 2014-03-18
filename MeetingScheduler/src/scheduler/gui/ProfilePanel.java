@@ -9,11 +9,13 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import scheduler.controller.Controller;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
 
@@ -109,7 +111,7 @@ public class ProfilePanel extends JPanel {
 		psfNewPasswordConfirmed = new JPasswordField();
 		add(psfNewPasswordConfirmed);
 		psfNewPasswordConfirmed.setColumns(10);
-		
+						
 		lblFirstname = new JLabel();
 		lblFirstname.setText("First Name");
 		lblFirstname.setFont(new Font("Consolas", Font.PLAIN, 14));
@@ -163,17 +165,15 @@ public class ProfilePanel extends JPanel {
 		
 		txfEmail = new JTextField();
 		add(txfEmail);
-		txfEmail.setColumns(10);
+		txfEmail.setColumns(10);		
 		
 		btnUpdate = new JButton("Update");
-	btnUpdate.addActionListener(new ActionListener(){
+		btnUpdate.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
            		getData();
             	}
             		
-            	Integer id = employee.getEmployee().getUsrId();
-            	
             	Employee oldEmp = employee.getEmployee();
             	
             	username=txfUsername.getText().trim();
@@ -186,15 +186,22 @@ public class ProfilePanel extends JPanel {
             	title=txfTitle.getText().trim();
             	position=txfPosition.getText().trim();
             	email=txfEmail.getText().trim();
+            	            	
+            	String errorMessage = Controller.updateProfile(oldEmp, username, oldPassword, newPassword, newPasswordConfirmed, 
+            													firstname, middlename, lastname, title, position, email);       	
             	
-            	            	
-            	Employee updatedEmployee = new Employee(firstname,middlename,lastname,position,email);
-            	employee.setEmployee(updatedEmployee);
-            	            	
-            	clearFields();
-            	cardlayout.show(controller,"home");
-           }
-           
+            	if(errorMessage.equals("")){
+            		employee.setEmployee(oldEmp);
+            		JOptionPane.showMessageDialog(null, "Profile Updated", "Status Message", JOptionPane.INFORMATION_MESSAGE);
+            		clearFields();
+            		cardlayout.show(controller,"home");
+            	}
+              	else{ 
+            	
+            		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            		clearFields();
+            	}
+            }           
 		});
 	
 		add(btnUpdate);

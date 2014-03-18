@@ -602,32 +602,104 @@ public class Controller {
 	}
 	
 	
-	public static void updateProfile(Integer usrID, String newUsername, String oldPassword, String newPassword, String newPasswordConfirmed,
-			 String newFirstname, String newLastname, String newMiddlename, String newTitle, String newPosition,
-			 String newEmail){
+	static String validateData(String username, String oldPassword, String newPassword, String newPasswordConfirmed,
+			   String email){
+		String errorMessage="";
+		if(!username.equals("")&&username.length()<=3)
+			errorMessage = errorMessage.concat("Username length must be greater than 3\r\n");
+		if(oldPassword.equals(""))
+			errorMessage = errorMessage.concat("You must enter your old password\r\n");
+		if(!newPassword.equals("")&&!newPassword.equals(newPasswordConfirmed))
+			errorMessage = errorMessage.concat("Your new passwords must match\r\n");
+		if(!email.equals("")&&!email.matches("[A-Za-z0-9._%+-][A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{3}"))
+			errorMessage = errorMessage.concat("Enter valid Email address");
+
+		return errorMessage;
+	}
+
+	public static String updateProfile(Employee employee, String newUsername, String oldPassword, String newPassword, String newPasswordConfirmed,
+					String newFirstname, String newMiddlename, String newLastname, String newTitle, String newPosition, String newEmail){
 		
-		try {
-				sql = "select * from user where usr_id='" + usrID + "'";
+		Integer id = employee.getUsrId();
 
-				statement = connection.createStatement();
-				resultSet = statement.executeQuery(sql);
+		if (employee.getUsrId()==0)
+			return "Invalid User";
 
-				String Oldusername = resultSet.getString("usr_username");
-				String password = resultSet.getString("usr_password");
+		String errorMessage = validateData(newUsername, oldPassword, newPassword, newPasswordConfirmed, newEmail);
 
+		if (!errorMessage.equals(""))
+			return errorMessage;
 
-		} catch (SQLException e) {
+		try{
+			 
+			String currentPassword="";
+			sql = "select * from user where usr_id='" + id + "'";
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+
+			while (resultSet.next()) {
+				currentPassword=resultSet.getString("usr_password");
+			}			
+
+			if(!currentPassword.equals(oldPassword))
+				return "Invalid Old Password";
+
+			//update user table
+			if(!newUsername.equals("")&&!newPassword.equals("")){
+				sql = "UPDATE user SET usr_username='"+newUsername+"', usr_password='"+newPassword+"' WHERE  usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+			}
+			else if(!newUsername.equals("")){
+				sql = "UPDATE user SET usr_username='"+newUsername+"' usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+			}
+			else if (!newPassword.equals("")){
+				sql = "UPDATE user SET usr_password='"+newPassword+"' WHERE  usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+			}
+			//	Update employee table
+			if(!newFirstname.equals("")){
+				sql = "UPDATE employee SET emp_first_name='"+newFirstname+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setFirstName(newFirstname);
+			}
+			if(!newMiddlename.equals("")){
+				sql = "UPDATE employee SET emp_middle_name='"+newMiddlename+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setMiddleName(newMiddlename);
+			}
+			if(!newLastname.equals("")){
+				sql = "UPDATE employee SET emp_last_name='"+newLastname+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setLastName(newLastname);
+			}
+			if(!newTitle.equals("")){
+				sql = "UPDATE employee SET emp_title='"+newLastname+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setTitle(newTitle);
+			}
+			if(!newPosition.equals("")){
+				sql = "UPDATE employee SET emp_position='"+newPosition+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setPosition(newPosition);
+			}
+			if(!newEmail.equals("")){
+				sql = "UPDATE employee SET emp_email='"+newEmail+"' WHERE  emp_usr_id='" + id + "'";
+				statement.executeUpdate(sql);
+				employee.setEmail(newEmail);
+			}			
+			return "";
+		}catch (SQLException e) {
 			Integer ec = e.getErrorCode();
 			String msg = e.getMessage();  
 			String state = e.getSQLState();
 			System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
 			e.printStackTrace();
-
-
 		}
+		return"ERROR!! Check your information";
 	}
-	
-	
+		
 	public static boolean updateRoom(Room rom) {
 		if (rom == null) 
 			return false;
