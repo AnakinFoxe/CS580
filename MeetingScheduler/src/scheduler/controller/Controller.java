@@ -94,19 +94,42 @@ public class Controller {
 		if (connection == null || usr_id == null)
 			return null;
 		
+		List<Meeting> metList = new ArrayList<Meeting>();
 		
 		try {
 			sql = "select * from attendee where att_usr_id='" + usr_id.toString() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 	
-//			while (resultSet.next()) {
-//				Integer usr_id = resultSet.getInt("usr_id");
-//				String usr_username = resultSet.getString("usr_username");
-//				
-//				System.out.println("Successfully Login: id=" + usr_id + " username=" + usr_username);
-//				return usr_id;
-//			}
+			while (resultSet.next()) {
+				String accept = resultSet.getString("att_accept");
+				if (accept == null) {
+					Integer sch_id = resultSet.getInt("att_sch_id");
+					Meeting met = new Meeting();
+					
+					// Only provide start/end time, description
+					sql = "select * from schedule where sch_id='" + sch_id + "'";
+					statement = connection.createStatement();
+					ResultSet moreResultSet = statement.executeQuery(sql);
+					if (moreResultSet.next()) {
+						String startTime = moreResultSet.getString("sch_start_time");
+						String endTime = moreResultSet.getString("sch_end_time");
+						met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+						met.setSchId(sch_id);
+					} else
+						continue;
+					
+					sql = "select * from meeting where met_sch_id='" + sch_id + "'";
+					statement = connection.createStatement();
+					moreResultSet = statement.executeQuery(sql);
+					if (moreResultSet.next()) {
+						met.setMeetingDescription(moreResultSet.getString("met_description"));
+					} else
+						continue;
+					
+					metList.add(met);
+				}
+			}
 			
 		
 			return null;
@@ -118,6 +141,9 @@ public class Controller {
 			e.printStackTrace();
 			
 			return null;
+		} catch (ParseException e) {
+			System.out.println("Parse Time Error");  
+			return metList;
 		}
 	}
 	
@@ -1004,6 +1030,33 @@ public class Controller {
 		return true;
 	}
 	
+	public static boolean updateAcceptance(Integer usr_id, Integer sch_id, String accept) {
+		if (connection == null || usr_id == null || sch_id == null || accept == null)
+			return false;
+		
+		try {
+			// Update Attendee info
+			sql = "update attendee set "
+					+ "`att_accept`='" + accept + "', "
+					+ " where att_sch_id='" + sch_id.toString() + "'"
+					+ " and att_emp_id='" + usr_id.toString() + "'";
+			
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
+	}
 	
 	public static boolean deleteMeeting(Meeting met) {
 		if (met == null) 
