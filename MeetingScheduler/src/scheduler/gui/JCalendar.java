@@ -169,22 +169,7 @@ public class JCalendar extends JPanel {
                     
                     //add stuff here for each date
                    // System.out.println(mouseOverDate.toString());
-                    Date select = null;
-                    try {
-						select = new SimpleDateFormat("yyyyMMdd").parse(beginClickDate.textDate);
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                    if(select != null){
-                    	selectedDate.set(select);
-                        if (controller == null){
-                    		getData();
-                    	}
-                        isVisible.setFlag(false);
-                        cardlayout.show(controller,"meetingDetails");
-                    }
-                    
+                                      
                 }
                 beginClickDate = null;
             }
@@ -435,11 +420,6 @@ public class JCalendar extends JPanel {
         return cursorDate != null ? cursorDate.getDate() : null;
     }
     
-    protected void getData() {
-		// TODO Auto-generated method stub
-		controller = (JPanel) this.getParent().getParent();
-		cardlayout  = (CardLayout) controller.getLayout();
-	}
     
     public void setDateModel(DateModel dateModel){
     	this.selectedDate = dateModel;
