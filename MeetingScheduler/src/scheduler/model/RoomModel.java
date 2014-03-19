@@ -1,9 +1,8 @@
-package scheduler.gui;
+package scheduler.model;
 
 import java.beans.PropertyChangeListener;
-import javax.swing.event.SwingPropertyChangeSupport;
 
-import scheduler.model.Room;
+import javax.swing.event.SwingPropertyChangeSupport;
 
 public class RoomModel {
 	private SwingPropertyChangeSupport pcSupport = new SwingPropertyChangeSupport(this);

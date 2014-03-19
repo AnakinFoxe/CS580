@@ -9,6 +9,7 @@ import scheduler.model.DateModel;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.RoomModel;
 
 public class SchedulerPanel extends JPanel {
 

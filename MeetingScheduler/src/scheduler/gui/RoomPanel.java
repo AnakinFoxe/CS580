@@ -18,6 +18,7 @@ import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.Meeting;
 import scheduler.model.Room;
 
 import java.awt.event.ActionEvent;
@@ -49,6 +50,7 @@ public class RoomPanel extends JPanel {
 	private Flag rPanelVisible;
 	private Flag fromMeetingDet;
 	private Room selectedRoom;
+	private Meeting meet;
 
 	public RoomPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -99,10 +101,18 @@ public class RoomPanel extends JPanel {
 				//				Room selectedRoom = availableRooms.get(i);
 				//				List<Employee> attendees = attendeeList.getList();
 				//				Date selectedDate = this.selectedDate.getDate();
-				Controller.insertMeeting(user.getEmployee(),
-						attendeeList.getList(),
-						this.selectedDate.getDate(),
-						availableRooms.get(i));
+				if(fromMeetingDet.getFlag()){
+					Controller.updateMeeting(meet, attendeeList.getList(), 
+							this.selectedDate.getDate(), 
+							availableRooms.get(i));
+					fromMeetingDet.setFlag(false);
+				}else{
+					Controller.insertMeeting(user.getEmployee(),
+							attendeeList.getList(),
+							this.selectedDate.getDate(),
+							availableRooms.get(i));
+				}
+				
 				isSelected = true;
 			}
 		}
@@ -175,5 +185,9 @@ public class RoomPanel extends JPanel {
 	public void setModel(Room model) {
 		// TODO Auto-generated method stub
 		this.selectedRoom = model;
+	}
+	
+	public void setMeeting(Meeting meeting){
+		this.meet = meeting;
 	}
 }

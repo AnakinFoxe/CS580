@@ -23,6 +23,7 @@ import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.MeetingModel;
 
 public class MeetingPanel extends JPanel {
 	/**
