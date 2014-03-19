@@ -8,6 +8,7 @@ public class Meeting extends Schedule {
 	private Integer emp_id;
 	private String meetingDescription;
 	private List<Employee> attendee;
+	private Room rom;
 	
 	public Meeting() {
 		
@@ -61,6 +62,14 @@ public class Meeting extends Schedule {
 
 	public void setAttendee(List<Employee> attendee) {
 		this.attendee = attendee;
+	}
+
+	public Room getRom() {
+		return rom;
+	}
+
+	public void setRom(Room rom) {
+		this.rom = rom;
 	}
 
 	

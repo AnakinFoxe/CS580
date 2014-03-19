@@ -220,6 +220,18 @@ public class Controller {
 			} else
 				return null;
 			
+			// Fill room from Room Table
+			sql = "select * from room where rom_id='" + met.getRoom_id() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			if (resultSet.next()) {
+				Room rom = new Room(met.getRoom_id(),
+									resultSet.getString("rom_name"),
+									resultSet.getInt("rom_capacity"));
+				met.setRom(rom);
+			} else
+				return null;
+			
 			// Fill attendee from Attendee Table
 			sql = "select * from attendee where att_sch_id='" + sch_id + "'";
 			statement = connection.createStatement();
@@ -227,6 +239,10 @@ public class Controller {
 			
 			while (resultSet.next()) {
 				Integer usr_id = resultSet.getInt("att_emp_id");
+				
+				// Only display those who accept the meeting request
+				if (resultSet.getString("att_accept").equals("NO"))
+					continue;
 				
 				sql = "select * from employee where emp_usr_id='" + usr_id + "'";
 				statement = connection.createStatement();
@@ -472,16 +488,29 @@ public class Controller {
 		if (date == null || usr_id == null)
 			return null;
 		
-		
+		List<Integer> metIdList = new ArrayList<Integer>();
 		List<Meeting> metList = new ArrayList<Meeting>();
 		
 		try {
+			// Meetings this guy hosting
+			sql = "select * from meeting where met_emp_id='" + usr_id + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				metIdList.add(resultSet.getInt("met_sch_id"));
+			}
+			
+			// Meetings this guy attending
 			sql = "select * from attendee where att_emp_id='" + usr_id + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
-			
 			while (resultSet.next()) {
-				Integer sch_id = resultSet.getInt("att_sch_id");
+				metIdList.add(resultSet.getInt("att_sch_id"));
+			}
+			
+			Integer idx;
+			for (idx=0;idx<metIdList.size();++idx) {
+				Integer sch_id = metIdList.get(idx);
 				Meeting met = new Meeting();
 				
 				// Only provide start/end time, description
