@@ -316,8 +316,8 @@ public class Controller {
 						 					resultSet.getInt("emp_usr_id"));
 				
 				// For the case we want to exclude the host employee
-				if ((host != null) && (host.getUsrId() == emp.getUsrId())) 
-					continue;
+				//if ((host != null) && (host.getUsrId() == emp.getUsrId())) 
+				//	continue;
 				
 				empList.add(emp);
 			}
@@ -337,9 +337,6 @@ public class Controller {
 	
 	public static List<Room> genRoomList(Date date, Integer empNum) {
 		if (Controller.connection == null)
-			return null;
-		
-		if (date == null || empNum <= 0)
 			return null;
 		
 		List<Room> romList = new ArrayList<Room>();
@@ -410,18 +407,17 @@ public class Controller {
 	}
 	
 	
-	public static List<Date> genAvailableTime(List<Employee> attendee) {
+	public static List<Date> genAvailableTime(Employee host, List<Employee> attendee) {
 		if (Controller.connection == null)
 			return null;
 		
-		if (attendee == null)
+		if (host == null || attendee == null)
 			return null;
 		
 		List<Date> dateList = new ArrayList<Date>();
 		List<Meeting> metList = new ArrayList<Meeting>();
 		Date now = new Date();
-		//Calendar now = Calendar.getInstance();
-		//int hour = Calendar.HOUR_OF_DAY;
+
 		try {
 			Integer idx = 0;
 			// Construct the List of Meetings based on attendee list
@@ -451,6 +447,29 @@ public class Controller {
 					if (now.before(met.getStartTime()))
 						metList.add(met);
 				}
+			}
+			
+			// Add more meetings based on the host info
+			sql = "select * from meeting where met_emp_id='" + host.getUsrId().toString() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				Meeting met = new Meeting(resultSet.getInt("met_sch_id"),
+	 									resultSet.getInt("met_emp_id"));
+
+				sql = "select * from schedule where sch_id='" + met.getSchId() + "'";
+				statement = connection.createStatement();
+				ResultSet moreResultSet = statement.executeQuery(sql);
+				while (moreResultSet.next()) {
+					String startTime = moreResultSet.getString("sch_start_time");
+					String endTime = moreResultSet.getString("sch_end_time");
+					met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+					//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+				}
+				
+				// Only add those meetings that have not yet happened
+				if (now.before(met.getStartTime()))
+					metList.add(met);
 			}
 
 			int[] timeslot = new int[168];
