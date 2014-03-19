@@ -13,6 +13,7 @@ import scheduler.controller.Controller;
 import scheduler.model.DateModel;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,9 @@ public class TimePanel extends JPanel {
 	private DateModel selectedTime;
 	private JLabel lblPleaseSelectOne;
 	private EmployeeModel user;
+	private Flag tPanelVisible;
+	private Flag roomPVisible;
+	private Flag fromMeetingDet;
 	
 	public TimePanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -63,6 +67,8 @@ public class TimePanel extends JPanel {
 				lblPleaseSelectOne.setForeground(Color.BLACK);
 				boolean timeSelected = getTime();
 				if(timeSelected){
+					tPanelVisible.setFlag(false);
+					roomPVisible.setFlag(true);
 					cardlayout.show(controller,"room");
 				}
 				else
@@ -108,23 +114,6 @@ public class TimePanel extends JPanel {
 	public void setModel(EmployeeListModel employeeList) {
 		// TODO Auto-generated method stub
 		this.attendeeList = employeeList;
-		attendeeList.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			public void propertyChange(PropertyChangeEvent evt) {
-				// TODO Auto-generated method stub
-				if(EmployeeListModel.modelName.equals(evt.getPropertyName())){
-					times = Controller.genAvailableTime(user.getEmployee(), attendeeList.getList());
-					timeBox.removeAll();
-					group = new ButtonGroup();
-					for (int i = 0; i < times.size(); i++) {
-						String dateString = new SimpleDateFormat("HH:mm dd-MM-yyyy").format(times.get(i));
-						JRadioButton rdbtn = new JRadioButton(dateString);
-						timeBox.add(rdbtn);
-						group.add(rdbtn);
-					}
-				}
-			}
-		});
 	}
 
 	public void setModel(DateModel date) {
@@ -136,5 +125,48 @@ public class TimePanel extends JPanel {
 		// TODO Auto-generated method stub
 		this.user = employee;
 	}
+
+	public void setFlag(Flag timePVisible) {
+		// TODO Auto-generated method stub
+		this.tPanelVisible = timePVisible;
+		tPanelVisible.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evnt) {
+				// TODO Auto-generated method stub
+				Boolean isVisible = tPanelVisible.getFlag();
+				if(isVisible){
+					times = Controller.genAvailableTime(user.getEmployee(), attendeeList.getList());
+					timeBox.removeAll();
+					group = new ButtonGroup();
+					for (int i = 0; i < times.size(); i++) {
+						Date current = times.get(i);
+						String dateString = new SimpleDateFormat("HH:mm dd-MM-yyyy").format(current);
+						JRadioButton rdbtn = new JRadioButton(dateString);
+						if(selectedTime != null && fromMeetingDet.getFlag()){
+							if(current.equals(selectedTime)){
+								rdbtn.setSelected(true);
+							}
+						}
+						
+						timeBox.add(rdbtn);
+						group.add(rdbtn);
+					}
+				}
+			}
+		});
+	}
+
+	public void setRFlag(Flag roomPVisible) {
+		// TODO Auto-generated method stub
+		this.roomPVisible = roomPVisible;
+	}
+
+	public void setDFlag(Flag fromMeetingDet) {
+		// TODO Auto-generated method stub
+		this.fromMeetingDet = fromMeetingDet;
+	}
+	
+	
+
 	
 }

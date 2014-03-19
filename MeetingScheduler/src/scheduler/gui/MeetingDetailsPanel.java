@@ -21,12 +21,16 @@ import javax.swing.JButton;
 import scheduler.controller.Controller;
 import scheduler.model.DateModel;
 import scheduler.model.Employee;
+import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 import scheduler.model.Meeting;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
+
 import java.awt.Color;
+
 import javax.swing.UIManager;
 
 public class MeetingDetailsPanel extends JPanel {
@@ -52,6 +56,14 @@ public class MeetingDetailsPanel extends JPanel {
 	private List<Employee> attendeeList;
 	private JLabel lblDescript;
 	private JTextPane descriptDetail;
+	private EmployeeListModel attendeeListModel;
+	private Flag meetingPVisible;
+	private DateModel timeModel;
+	private RoomModel roomModel;
+	private Meeting meeting;
+	private Flag tPanelVisible;
+	private Flag rPanelVisible;
+	private Flag fromMeetingDet;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -125,6 +137,10 @@ public class MeetingDetailsPanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				meetingPVisible.setFlag(true);
+				attendeeListModel.setEmployeeList(attendeeList);
+				timeModel.set(meeting.getStartTime());
+				roomModel.setRoom(meeting.getRom());
             	cardlayout.show(controller,"meeting");
 			}
 
@@ -227,7 +243,7 @@ public class MeetingDetailsPanel extends JPanel {
 	
 	protected void displayMeetingDetails(int index) {
 		// TODO Auto-generated method stub
-		Meeting meeting = meetingDate.get(index);
+		meeting = meetingDate.get(index);
 		descriptDetail.setText(meeting.getMeetingDescription());
 		meeting = Controller.getMeetingDetail(meeting.getSchId());
 		attendeeList = meeting.getAttendee();
@@ -253,5 +269,27 @@ public class MeetingDetailsPanel extends JPanel {
 
 	public void setModel(EmployeeModel model){
 		this.user = model;
+	}
+	
+	public void setModel(EmployeeListModel model){
+		this.attendeeListModel = model;
+	}
+
+	public void setModel(Flag flag1) {
+		this.meetingPVisible = flag1;
+	}
+
+	public void setTimeModel(DateModel model) {
+		this.timeModel = model;
+		
+	}
+
+	public void setModel(RoomModel room) {
+		this.roomModel = room;
+	}
+
+	public void setFlag(Flag fromMeetingDet) {
+		// TODO Auto-generated method stub
+		this.fromMeetingDet = fromMeetingDet;
 	}
 }

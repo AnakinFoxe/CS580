@@ -92,4 +92,21 @@ public class Employee extends User {
 	public void setEmail(String lastName) {
 		this.email = lastName;
 	}
+	
+	public boolean equals(Object obj){
+		if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Employee))
+            return false;
+		
+        Employee employee = (Employee) obj;
+        if(this.usr_id == employee.usr_id){
+        	return true;
+        }else{
+        	return false;
+        }
+        	
+	}
 }

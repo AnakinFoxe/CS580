@@ -32,12 +32,19 @@ public class SchedulerPanel extends JPanel {
 	private DateModel date;
 	private DateModel calenderDateModel;
 	private JCalendar calendar;
+	private RoomModel room;
+	private Flag timePVisible;
+	private Flag roomPVisible;
+	private Flag fromMeetingDet;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
 		homeVisible = new Flag(false);
 		
+		timePVisible = new Flag(false);
+		roomPVisible = new Flag(false);
+		fromMeetingDet = new Flag(false);
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
 		loginPanel.setModel(homeVisible);
@@ -61,21 +68,34 @@ public class SchedulerPanel extends JPanel {
 		meetingPanel.setModel(flag1);
 		meetingPanel.setModel(attendeeList);
 		meetingPanel.setModel(employeeModel);
+		meetingPanel.setTFlag(timePVisible);
 		
 		date = new DateModel();
 		timePanel = new TimePanel();
 		timePanel.setModel(attendeeList);
 		timePanel.setModel(date);
 		timePanel.setModel(employeeModel);
+		timePanel.setFlag(timePVisible);
+		timePanel.setRFlag(roomPVisible);
+		timePanel.setDFlag(fromMeetingDet);
 		
+		room = new RoomModel();
 		roomPanel = new RoomPanel();
 		roomPanel.setModel(date);
 		roomPanel.setModel(attendeeList);
 		roomPanel.setModel(employeeModel);
+		roomPanel.setModel(homeVisible);
+		roomPanel.setFlag(roomPVisible);
+		roomPanel.setDFlag(fromMeetingDet);
 		
 		detailsPanel = new MeetingDetailsPanel();
 		detailsPanel.setModel(calenderDateModel);
 		detailsPanel.setModel(employeeModel);
+		detailsPanel.setModel(attendeeList);
+		detailsPanel.setModel(flag1);
+		detailsPanel.setTimeModel(date);
+		detailsPanel.setModel(room);
+		detailsPanel.setFlag(fromMeetingDet);
 		
 		adminPanel = new AdministratorPanel();
 		

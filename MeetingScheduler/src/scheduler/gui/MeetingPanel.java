@@ -41,6 +41,7 @@ public class MeetingPanel extends JPanel {
 	private List<Employee> attendeeList;
 	private EmployeeListModel attendeeListModel;
 	private Flag flag;
+	private Flag timePVisible;
 
 	public MeetingPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -56,6 +57,8 @@ public class MeetingPanel extends JPanel {
 					getData();
 				}
 				getAttendees();
+				flag.setFlag(false);
+				timePVisible.setFlag(true);
 				cardlayout.show(controller,"time");
 			}
 
@@ -135,5 +138,31 @@ public class MeetingPanel extends JPanel {
 
 	public void setModel(EmployeeListModel attendeeList2) {
 		attendeeListModel = attendeeList2;
+		attendeeListModel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				attendeeList = attendeeListModel.getList();
+				if(employeeList != null && attendeeList != null){
+					
+					if(employeeList.size() >= attendeeList.size()){
+						for(int i = 0; i < attendeeList.size(); i++){
+							Employee attendee = attendeeList.get(i);
+							if(employeeList.contains(attendee)){
+								JRadioButton rdbtn = (JRadioButton) employeeBox.getComponent(employeeList.indexOf(attendee));
+								rdbtn.setSelected(true);
+							}
+						}
+					}
+				}
+				
+			}
+		});
 	}
+
+	public void setTFlag(Flag timePVisible) {
+		// TODO Auto-generated method stub
+		this.timePVisible = timePVisible;
+	}
+	
 }
