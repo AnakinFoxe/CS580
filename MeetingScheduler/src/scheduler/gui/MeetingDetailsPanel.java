@@ -25,6 +25,8 @@ import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 import scheduler.model.Meeting;
+import scheduler.model.MeetingModel;
+import scheduler.model.RoomModel;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
@@ -64,6 +66,7 @@ public class MeetingDetailsPanel extends JPanel {
 	private Flag tPanelVisible;
 	private Flag rPanelVisible;
 	private Flag fromMeetingDet;
+	private MeetingModel meetingModel;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -141,6 +144,8 @@ public class MeetingDetailsPanel extends JPanel {
 				attendeeListModel.setEmployeeList(attendeeList);
 				timeModel.set(meeting.getStartTime());
 				roomModel.setRoom(meeting.getRom());
+				fromMeetingDet.setFlag(true);
+				meetingModel.setMeeting(meeting);
             	cardlayout.show(controller,"meeting");
 			}
 
@@ -291,5 +296,9 @@ public class MeetingDetailsPanel extends JPanel {
 	public void setFlag(Flag fromMeetingDet) {
 		// TODO Auto-generated method stub
 		this.fromMeetingDet = fromMeetingDet;
+	}
+	
+	public void setModel(MeetingModel model){
+		this.meetingModel = model;
 	}
 }
