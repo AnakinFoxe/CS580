@@ -18,9 +18,9 @@ import scheduler.controller.Controller;
 import scheduler.model.Room;
 
 public class RoomDialog extends JDialog {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+
+	private JTextField txfName;
+	private JTextField txfCapacity;
 
 	/**
 	 * Launch the application.
@@ -54,10 +54,10 @@ public class RoomDialog extends JDialog {
 						dispose();
 						
 						Room room = new Room();
-						room.setId(Integer.parseInt(textField.getText().toString()));
-						room.setName(textField_1.getText().toString());
-						room.setCapacity(Integer.parseInt(textField.getText().toString()));
-						Controller Controller = new Controller();
+
+						room.setName(txfName.getText());
+						room.setCapacity(Integer.parseInt(txfCapacity.getText()));
+
 						Controller.insertRoom(room);
 
 					}
@@ -77,36 +77,27 @@ public class RoomDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-		{
-			JLabel lblNewLabel = new JLabel("Room ID");
-			lblNewLabel.setBounds(45, 40, 97, 16);
-			getContentPane().add(lblNewLabel);
-		}
+
 		{
 			JLabel lblRoomCapacity = new JLabel("Room Name");
 			lblRoomCapacity.setBounds(45, 87, 97, 16);
 			getContentPane().add(lblRoomCapacity);
 		}
+
 		{
-			textField = new JTextField();
-			textField.setBounds(246, 34, 134, 29);
-			getContentPane().add(textField);
-			textField.setColumns(10);
-		}
-		{
-			textField_1 = new JTextField();
-			textField_1.setColumns(10);
-			textField_1.setBounds(246, 74, 134, 29);
-			getContentPane().add(textField_1);
+			txfName = new JTextField();
+			txfName.setColumns(10);
+			txfName.setBounds(246, 74, 134, 29);
+			getContentPane().add(txfName);
 		}
 		
 		JLabel lblRoomName = new JLabel("Room Capacity");
 		lblRoomName.setBounds(45, 136, 97, 16);
 		getContentPane().add(lblRoomName);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(246, 130, 134, 29);
-		getContentPane().add(textField_2);
+		txfCapacity = new JTextField();
+		txfCapacity.setColumns(10);
+		txfCapacity.setBounds(246, 130, 134, 29);
+		getContentPane().add(txfCapacity);
 	}
 }

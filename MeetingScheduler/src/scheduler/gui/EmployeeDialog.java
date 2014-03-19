@@ -69,7 +69,6 @@ public class EmployeeDialog extends JDialog {
 						emp.setUsername(textField_4.getText());
 						emp.setEmail(textField_6.getText());
 											
-						Controller Controller = new Controller();
 						Controller.insertEmployee(emp, textField_5.getText());
 						
 						//Employee emp = new Employee();
