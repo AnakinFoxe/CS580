@@ -167,7 +167,9 @@ public class MeetingDetailsPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				int selectedTime = comboBox.getSelectedIndex();
-				displayMeetingDetails(selectedTime);
+				if(selectedTime >= 0){
+					displayMeetingDetails(selectedTime);
+				}
 			}
 		});
 		
@@ -216,6 +218,7 @@ public class MeetingDetailsPanel extends JPanel {
 					comboBox.addItem(timeString);
 				}
 				displayMeetingDetails(0);
+				comboBox.setSelectedIndex(0);
 			}
 		});
 	}
@@ -223,8 +226,11 @@ public class MeetingDetailsPanel extends JPanel {
 	protected void displayMeetingDetails(int index) {
 		// TODO Auto-generated method stub
 		Meeting meeting = meetingDate.get(index);
+		descriptDetail.setText(meeting.getMeetingDescription());
+		meeting = Controller.getMeetingDetail(meeting.getSchId());
 		attendeeList = meeting.getAttendee();
 		Employee employee;
+		attendeesBox.removeAll();
 		if(attendeeList != null){
 			for (int j = 0; j < attendeeList.size(); j++) {
 				employee = attendeeList.get(j);
@@ -239,7 +245,7 @@ public class MeetingDetailsPanel extends JPanel {
 		timeDetails.setText(startTime);
 		//rooDetails.setText(meeting.getRoom_id());
 		//hostDetails.setText(meeting.getHost());
-		descriptDetail.setText(meeting.getMeetingDescription());
+		
 		
 	}
 
