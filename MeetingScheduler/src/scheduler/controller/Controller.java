@@ -462,7 +462,6 @@ public class Controller {
 	}
 	
 	
-	
 	public static List<Room> genRoomList(Date date, Integer empNum) {
 		if (Controller.connection == null)
 			return null;
@@ -564,7 +563,6 @@ public class Controller {
 		}
 	}
 
-	
 	
 	public static List<Date> genAvailableTime(Employee host, List<Employee> attendee) {
 		if (Controller.connection == null)

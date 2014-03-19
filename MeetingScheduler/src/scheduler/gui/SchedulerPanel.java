@@ -10,9 +10,9 @@ import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 import scheduler.model.RoomListModel;
-
 import scheduler.model.MeetingModel;
 import scheduler.model.RoomModel;
+
 
 
 public class SchedulerPanel extends JPanel {
@@ -53,6 +53,7 @@ public class SchedulerPanel extends JPanel {
 
 	private MeetingModel meetingModel;
 	private Flag meetingDetVisible;
+
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
@@ -75,6 +76,7 @@ public class SchedulerPanel extends JPanel {
 		loginPanel.setModel(employeeList);
 		employeeAdmin = new EmployeeModel();
 		//calendar.setModel(homeVisible);
+
 
 		
 		
@@ -132,6 +134,7 @@ public class SchedulerPanel extends JPanel {
 		adminPanel.setModel(employeeList);
 		adminPanel.setModel(roomListModel);
 		adminPanel.setModel(employeeAdmin);
+
 		
 		adminRoomPanel = new AMRoomPanel();
 		adminRoomPanel.setModel(roomListModel);
@@ -158,5 +161,6 @@ public class SchedulerPanel extends JPanel {
 		this.add(adminEmpPanel, "empPanel");
 		this.add(delempPanel, "delempPanel");
 		this.add(delroomPanel, "delroomPanel");
+
 	}
 }

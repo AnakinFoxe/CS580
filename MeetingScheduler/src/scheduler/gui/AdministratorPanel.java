@@ -38,6 +38,9 @@ public class AdministratorPanel extends JPanel {
 	private JButton btnDeleteEmp;
 	private CardLayout cardlayout;
 	private JPanel controller;
+
+	protected RoomDialog roomDialog;
+	
 	
 	private Box employeeBox;
 	private JScrollPane jscrlempBox;
@@ -254,7 +257,7 @@ public class AdministratorPanel extends JPanel {
 	public void setModel(EmployeeModel model){
 		this.employeeModel = model;
 	}
-	
+
 	protected void getData() {
 		// TODO Auto-generated method stub
 		controller = (JPanel) this.getParent();
