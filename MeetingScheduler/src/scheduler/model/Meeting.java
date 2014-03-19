@@ -9,6 +9,7 @@ public class Meeting extends Schedule {
 	private String meetingDescription;
 	private List<Employee> attendee;
 	private Room rom;
+	private Employee host;
 	
 	public Meeting() {
 		
@@ -70,6 +71,14 @@ public class Meeting extends Schedule {
 
 	public void setRom(Room rom) {
 		this.rom = rom;
+	}
+
+	public Employee getHost() {
+		return host;
+	}
+
+	public void setHost(Employee host) {
+		this.host = host;
 	}
 
 	

@@ -232,6 +232,23 @@ public class Controller {
 			} else
 				return null;
 			
+			// Fill host from Employee Table
+			sql = "select * from employee where emp_usr_id='" + met.getEmp_id() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			if (resultSet.next()) {
+				Employee host = new Employee(resultSet.getString("emp_first_name"),
+											resultSet.getString("emp_middle_name"),
+											resultSet.getString("emp_last_name"),
+											resultSet.getString("emp_position"),
+											resultSet.getString("emp_email"));
+				host.setUsrId(met.getEmp_id());
+				host.setTitle(resultSet.getString("emp_title"));
+				
+				met.setHost(host);
+			} else
+				return null;
+			
 			// Fill attendee from Attendee Table
 			sql = "select * from attendee where att_sch_id='" + sch_id + "'";
 			statement = connection.createStatement();
