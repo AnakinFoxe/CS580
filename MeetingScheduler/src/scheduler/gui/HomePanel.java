@@ -41,6 +41,7 @@ public class HomePanel extends JPanel {
 	private static final long serialVersionUID = -5218352851092235305L;
 	private JButton btnCreateMeeting;
 	private JButton btnUpdateProfile;
+	private JButton btnLogout;
 	private JLabel lblUsername;
 	private static JCalendar calenderPanel;
 	private CardLayout cardlayout;
@@ -86,6 +87,21 @@ public class HomePanel extends JPanel {
 			}
 		});
 		add(btnUpdateProfile);
+		
+//		btnLogout = new JButton("Logout");
+//		btnLogout.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				if (controller == null){
+//            		getData();
+//            	}
+//				employee = new EmployeeModel();
+//				flag.setFlag(true);
+//				isVisible.setFlag(false);
+//				Controller.disconnect();
+//            	cardlayout.show(controller,"login");
+//			}
+//		});
+//		add(btnLogout);
 		
 		lblUsername = new JLabel("Hello:");
 		lblUsername.setFont(new Font("Arial", Font.BOLD, 18));
@@ -171,6 +187,9 @@ public class HomePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, btnUpdateProfile, 10, SpringLayout.SOUTH, btnCreateMeeting);
 		springLayout.putConstraint(SpringLayout.WEST, btnUpdateProfile, 0, SpringLayout.WEST, btnCreateMeeting);
 		springLayout.putConstraint(SpringLayout.EAST, btnUpdateProfile, 0, SpringLayout.EAST, btnCreateMeeting);
+		
+//		springLayout.putConstraint(SpringLayout.NORTH, btnLogout, 0, SpringLayout.NORTH, btnUpdateProfile);
+//		springLayout.putConstraint(SpringLayout.WEST, btnLogout, 15, SpringLayout.EAST, btnUpdateProfile);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, lblUsername, 65, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblUsername, 65, SpringLayout.WEST, this);

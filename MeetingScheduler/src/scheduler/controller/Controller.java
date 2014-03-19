@@ -56,7 +56,25 @@ public class Controller {
 		} else {
 			System.out.println("Failed to make connection!");
 		}
-	  }
+	}
+	
+	public static void disconnect() {
+	 
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				System.out.println("Disconnection Failed!");
+				e.printStackTrace();
+				return;
+			}
+			connection = null;
+			
+			System.out.println("Disconnected from database!");
+		} else {
+			System.out.println("Failed to disconnect!");
+		}
+	}
 	
 	
 	public static Integer checkLogin(String username, String password) {
@@ -97,7 +115,7 @@ public class Controller {
 		List<Meeting> metList = new ArrayList<Meeting>();
 		
 		try {
-			sql = "select * from attendee where att_usr_id='" + usr_id.toString() + "'";
+			sql = "select * from attendee where att_emp_id='" + usr_id.toString() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 	
@@ -133,7 +151,7 @@ public class Controller {
 			}
 			
 		
-			return null;
+			return metList;
 		} catch (SQLException e) {
 			Integer ec = e.getErrorCode();
 			String msg = e.getMessage();  
@@ -144,7 +162,7 @@ public class Controller {
 			return null;
 		} catch (ParseException e) {
 			System.out.println("Parse Time Error");  
-			return metList;
+			return null;
 		}
 	}
 	
@@ -231,6 +249,9 @@ public class Controller {
 			resultSet = statement.executeQuery(sql);				
 			while (resultSet.next()) {
 				Integer sch_id = resultSet.getInt("att_sch_id");
+				String accept = resultSet.getString("att_accept");
+				if (accept == null || accept.equals("NO"))
+					continue;
 				
 				sql = "select * from schedule where sch_id=" + sch_id.toString();
 				statement = connection.createStatement();
@@ -616,7 +637,9 @@ public class Controller {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
-				metIdList.add(resultSet.getInt("att_sch_id"));
+				String accept = resultSet.getString("att_accept");
+				if (accept != null && accept.equals("YES"))
+					metIdList.add(resultSet.getInt("att_sch_id"));
 			}
 			
 			Integer idx;
@@ -1052,7 +1075,7 @@ public class Controller {
 		try {
 			// Update Attendee info
 			sql = "update attendee set "
-					+ "`att_accept`='" + accept + "', "
+					+ "`att_accept`='" + accept + "'"
 					+ " where att_sch_id='" + sch_id.toString() + "'"
 					+ " and att_emp_id='" + usr_id.toString() + "'";
 			

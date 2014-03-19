@@ -12,6 +12,7 @@ import scheduler.model.Administrator;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.Meeting;
 import scheduler.model.User;
 
 import java.awt.CardLayout;
@@ -88,16 +89,23 @@ public class LoginPanel extends JPanel {
             			if (usr instanceof Employee) {
             				employee.setEmployee((Employee) usr);
             				
+//            				List<Meeting> metList = Controller.checkAcceptance(usr_id);
+//            				for (int idx=0;idx<metList.size();++idx) {
+//            					Controller.updateAcceptance(usr_id, 
+//            												metList.get(idx).getSchId(), 
+//            												"YES");
+//            				}
+            				
             				homeVisible.setFlag(true);
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
             			} 
             			
-            		} else {
-            			txfUsername.setText("");
-            			psfPassword.setText("");
-            		}
+            		} 
+            		
+            		txfUsername.setText("");
+        			psfPassword.setText("");
             		
             	}
             	
