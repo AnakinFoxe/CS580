@@ -1,11 +1,13 @@
 package scheduler.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Meeting extends Schedule {
 	private Integer room_id;
 	private Integer emp_id;
 	private String meetingDescription;
+	private List<Employee> attendee;
 	
 	public Meeting() {
 		
@@ -53,4 +55,13 @@ public class Meeting extends Schedule {
 		this.meetingDescription = meetingDescription;
 	}
 
+	public List<Employee> getAttendee() {
+		return attendee;
+	}
+
+	public void setAttendee(List<Employee> attendee) {
+		this.attendee = attendee;
+	}
+
+	
 }

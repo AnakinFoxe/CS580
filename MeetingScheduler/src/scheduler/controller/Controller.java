@@ -139,6 +139,86 @@ public class Controller {
 		}
 	}
 	
+	
+	public static Meeting getMeetingDetail(Integer sch_id) {
+		if (sch_id == 0)
+			return null;
+		
+		try {
+			Meeting met = new Meeting();
+			List<Employee> attendee = new ArrayList<Employee>();
+			
+			// Find the Meeting
+			sql = "select * from meeting where met_sch_id='" + sch_id + "'";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);	
+			
+			// Fill info from Meeting Table
+			if (resultSet.next()) {
+				met.setRoom_id(resultSet.getInt("met_rom_id"));
+				met.setEmp_id(resultSet.getInt("met_emp_id"));
+				met.setMeetingDescription(resultSet.getString("met_description"));
+				met.setSchId(sch_id);
+			} else
+				return null;
+			
+			// Fill date from Schedule Table
+			sql = "select * from schedule where sch_id='" + sch_id + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			if (resultSet.next()) {
+				String startTime = resultSet.getString("sch_start_time");
+				String endTime = resultSet.getString("sch_end_time");
+				met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+				met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+			} else
+				return null;
+			
+			// Fill attendee from Attendee Table
+			sql = "select * from attendee where att_sch_id='" + sch_id + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Integer usr_id = resultSet.getInt("att_emp_id");
+				
+				sql = "select * from employee where emp_usr_id='" + usr_id + "'";
+				statement = connection.createStatement();
+				ResultSet moreResultSet = statement.executeQuery(sql);
+				if (moreResultSet.next()) {
+					Employee emp = new Employee(moreResultSet.getString("emp_first_name"),
+												moreResultSet.getString("emp_middle_name"),
+												moreResultSet.getString("emp_last_name"),
+												moreResultSet.getString("emp_position"),
+												moreResultSet.getString("emp_email"));
+					emp.setUsrId(usr_id);
+					emp.setTitle(moreResultSet.getString("emp_title"));
+					
+					attendee.add(emp);
+				} else {
+					System.out.println("Employee mismatching");  
+					return null;
+				}
+			}
+			
+			met.setAttendee(attendee);
+			
+			return met;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		} catch (ParseException e) {
+			System.out.println("Parse Time Error");  
+			return null;
+		}
+	}
+	
 	public static List<Employee> genEmployeeList(Employee host) {
 		if (Controller.connection == null)
 			return null;
@@ -331,6 +411,7 @@ public class Controller {
 			
 			return null;
 		} catch (ParseException e) {
+			System.out.println("Parse Time Error");  
 			return null;
 		}
 		
