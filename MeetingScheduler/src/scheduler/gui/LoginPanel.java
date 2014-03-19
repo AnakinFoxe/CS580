@@ -10,9 +10,11 @@ import javax.swing.SwingUtilities;
 import scheduler.controller.Controller;
 import scheduler.model.Administrator;
 import scheduler.model.Employee;
+import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
-import scheduler.model.Meeting;
+import scheduler.model.Room;
+import scheduler.model.RoomListModel;
 import scheduler.model.User;
 
 import java.awt.CardLayout;
@@ -40,6 +42,8 @@ public class LoginPanel extends JPanel {
 	private JPanel controller;
 	private EmployeeModel employee;
 	private Flag homeVisible;
+	private EmployeeListModel empListModel;
+	private RoomListModel roomListModel;
 
 	public LoginPanel() {
 		
@@ -99,7 +103,17 @@ public class LoginPanel extends JPanel {
             				homeVisible.setFlag(true);
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
+            				
+            				List<Room> roomList = Controller.genRoomList();
+            				roomListModel.setRoomList(roomList);
+            				
+            				List<Employee> empList = Controller.genEmployeeList();
+            				empListModel.setEmployeeList(empList);
+            				
             				cardlayout.show(controller,"adminHome");
+            			
+            				System.out.println(roomListModel.getList().get(1).getName());
+            				
             			} 
             			
             		} 
@@ -166,6 +180,12 @@ public class LoginPanel extends JPanel {
 	 
 	 public void setModel(Flag flag){
 		 this.homeVisible = flag;
+	 }
+	 public void setModel(RoomListModel roomListModel){
+		 this.roomListModel=roomListModel;
+	 }
+	 public void setModel(EmployeeListModel empListModel){
+		 this.empListModel = empListModel;
 	 }
 
 }
