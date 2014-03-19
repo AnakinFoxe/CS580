@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.SpringLayout;
 
@@ -87,21 +88,25 @@ public class HomePanel extends JPanel {
 		add(btnUpdateProfile);
 		
 		lblUsername = new JLabel("Hello:");
+		lblUsername.setFont(new Font("Arial", Font.BOLD, 18));
 		add(lblUsername);
 		
 		lblName = new JLabel();
+		lblName.setFont(new Font("Arial", Font.BOLD, 18));
 		add(lblName);
 		lblMiddleName = new JLabel();
+		lblMiddleName.setFont(new Font("Arial", Font.BOLD, 18));
 		add(lblMiddleName);
-			
-		
 		lblLastName = new JLabel();
+		lblLastName.setFont(new Font("Arial", Font.BOLD, 18));
 		add(lblLastName);
 		
 		lblPosition = new JLabel();
+		lblPosition.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(lblPosition);
 		
 		lblEmail = new JLabel();
+		lblEmail.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(lblEmail);
 		
 		calenderPanel = new JCalendar();
@@ -167,8 +172,8 @@ public class HomePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnUpdateProfile, 0, SpringLayout.WEST, btnCreateMeeting);
 		springLayout.putConstraint(SpringLayout.EAST, btnUpdateProfile, 0, SpringLayout.EAST, btnCreateMeeting);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, lblUsername, 50, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblUsername, 50, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblUsername, 65, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblUsername, 65, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.WEST, lblName, 6, SpringLayout.EAST, lblUsername);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblName, 0, SpringLayout.SOUTH, lblUsername);
@@ -204,7 +209,7 @@ public class HomePanel extends JPanel {
 					name = employee.getEmployee().getFirstName();
 					lblName.setText(name);
 					lblMiddleName.setText(employee.getEmployee().getMiddleName());
-					lblLastName.setText(employee.getEmployee().getLastName());
+					lblLastName.setText(employee.getEmployee().getLastName().toUpperCase());
 					lblPosition.setText(employee.getEmployee().getPosition());
 					lblEmail.setText(employee.getEmployee().getEmail());
 					

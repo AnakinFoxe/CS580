@@ -115,6 +115,7 @@ public class Controller {
 						String startTime = moreResultSet.getString("sch_start_time");
 						String endTime = moreResultSet.getString("sch_end_time");
 						met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+						met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 						met.setSchId(sch_id);
 					} else
 						continue;
@@ -289,7 +290,7 @@ public class Controller {
 				String startTime = resultSet.getString("sch_start_time");
 				String endTime = resultSet.getString("sch_end_time");
 				met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
-				//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+				met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 			} else
 				return null;
 			
@@ -331,7 +332,8 @@ public class Controller {
 				Integer usr_id = resultSet.getInt("att_emp_id");
 				
 				// Only display those who accept the meeting request
-				if (resultSet.getString("att_accept").equals("NO"))
+				String accept = resultSet.getString("att_accept");
+				if (accept == null || accept.equals("NO"))
 					continue;
 				
 				sql = "select * from employee where emp_usr_id='" + usr_id + "'";
@@ -513,7 +515,7 @@ public class Controller {
 						String startTime = moreResultSet.getString("sch_start_time");
 						String endTime = moreResultSet.getString("sch_end_time");
 						met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
-						//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+						met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 					}
 					
 					// Only add those meetings that have not yet happened
@@ -537,7 +539,7 @@ public class Controller {
 					String startTime = moreResultSet.getString("sch_start_time");
 					String endTime = moreResultSet.getString("sch_end_time");
 					met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
-					//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+					met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 				}
 				
 				// Only add those meetings that have not yet happened
@@ -630,6 +632,7 @@ public class Controller {
 					String startTime = moreResultSet.getString("sch_start_time");
 					String endTime = moreResultSet.getString("sch_end_time");
 					met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+					met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 					met.setSchId(sch_id);
 				} else
 					continue;
@@ -670,11 +673,17 @@ public class Controller {
 			return false;
 		
 		try {
+			// Calculate the end time by adding one hour to the start time
+			Date endTime = new Date(date.getTime() + 3600*1000);
+			
+			// Date to String
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 			String startDate = df.format(date);
+			String endDate = df.format(endTime);	
 			
 			// Insert Schedule Table
-			sql = "insert into schedule (`sch_start_time`) values ('" + startDate + "')";
+			sql = "insert into schedule (`sch_start_time`,`sch_end_time`) values ('" 
+					+ startDate + "','" + endDate + "')";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			
@@ -829,13 +838,19 @@ public class Controller {
 			} else
 				return false;
 			
+			// Calculate the end time by adding one hour to the start time
+			Date endTime = new Date(date.getTime() + 3600*1000);
+			
+			// Date to String
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 			String startDate = df.format(date);
+			String endDate = df.format(endTime);
 			
 			// Update Schedule Table
 			sql = "update schedule set "
-					+ "`sch_start_time`='" + startDate 
-					+ "' where sch_id=" + sch_id.toString();
+					+ "`sch_start_time`='" + startDate + "',"
+					+ "`sch_end_time`='" + endDate + "'"
+					+ " where sch_id=" + sch_id.toString();
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			
@@ -1227,7 +1242,6 @@ public class Controller {
 		
 		return true;
 	}
-	
 	
 
 }

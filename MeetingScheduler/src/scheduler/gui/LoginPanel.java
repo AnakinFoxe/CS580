@@ -29,7 +29,7 @@ public class LoginPanel extends JPanel {
 	 */ 
 	private static final long serialVersionUID = 4932513626147661013L;
 	private JButton btnLogin;
-	private JButton btnAdmin;	// Xing: only for GUI demo
+//	private JButton btnAdmin;	// Xing: only for GUI demo
 	private JLabel lblUsername;
 	private JLabel lblPassword;
 	private JLabel lblMeetingScheduler;
@@ -108,18 +108,18 @@ public class LoginPanel extends JPanel {
 		add(btnLogin);
 			
 
-		btnAdmin = new JButton("Admin");
-		btnAdmin.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-            	if (controller == null){
-            		getData();
-            	}
-            	//homeVisible.setFlag(true);
-            	cardlayout.show(controller,"adminHome");
-            }
-            
-		});
-		add(btnAdmin);
+//		btnAdmin = new JButton("Admin");
+//		btnAdmin.addActionListener(new ActionListener(){
+//            public void actionPerformed(ActionEvent e){
+//            	if (controller == null){
+//            		getData();
+//            	}
+//            	//homeVisible.setFlag(true);
+//            	cardlayout.show(controller,"adminHome");
+//            }
+//            
+//		});
+//		add(btnAdmin);
 		
 		
 		// Adjust alignment relationship for all the components
@@ -138,8 +138,8 @@ public class LoginPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnLogin, 0, SpringLayout.WEST, txfUsername);
 		springLayout.putConstraint(SpringLayout.NORTH, btnLogin, 0, SpringLayout.SOUTH, psfPassword);
 		
-		springLayout.putConstraint(SpringLayout.BASELINE, btnAdmin, 0, SpringLayout.BASELINE, btnLogin);
-		springLayout.putConstraint(SpringLayout.WEST, btnAdmin, 0, SpringLayout.EAST, btnLogin);
+//		springLayout.putConstraint(SpringLayout.BASELINE, btnAdmin, 0, SpringLayout.BASELINE, btnLogin);
+//		springLayout.putConstraint(SpringLayout.WEST, btnAdmin, 0, SpringLayout.EAST, btnLogin);
 		
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblMeetingScheduler, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblMeetingScheduler, -50, SpringLayout.NORTH, txfUsername);
