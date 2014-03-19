@@ -509,6 +509,7 @@ public class Controller {
 					if (romList.get(j).getCapacity() < empNum) {
 						romList.remove(j);
 						--j;
+						continue;
 					}
 					for (i=0;i<rmRomIdList.size();++i) {
 						if (rmRomIdList.get(i) == romList.get(j).getId()) {
@@ -958,7 +959,14 @@ public class Controller {
 				for (idx=0;idx<empList.size();++idx) {
 					if (att_emp_id == empList.get(idx).getUsrId()) {
 						empList.remove(idx);
-						break;	// Xing: not sure if this break is right
+						
+						// Also, update the accept to NULL
+						sql = "update attendee set `att_accept`=NULL "
+								+ "where att_emp_id=" + att_emp_id.toString() + " and "
+								+ "att_sch_id=" + sch_id.toString();
+						statement = connection.createStatement();
+						statement.executeUpdate(sql);
+						break;
 					}
 				}
 				
