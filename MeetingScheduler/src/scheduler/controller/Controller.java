@@ -1174,17 +1174,17 @@ public class Controller {
 				return false;
 			
 			// Delete Attendee Table
-			sql = "delete * from attendee where att_sch_id='" + sch_id.toString() + "'";
+			sql = "delete from attendee where att_sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 	
 			// Delete Meeting Table
-			sql = "delete * from meeting where met_sch_id='" + sch_id.toString() + "'";
+			sql = "delete from meeting where met_sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			
 			// Delete Schedule Table
-			sql = "delete * from schedule where sch_id='" + sch_id.toString() + "'";
+			sql = "delete from schedule where sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			

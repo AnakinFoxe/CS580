@@ -114,6 +114,7 @@ public class SchedulerPanel extends JPanel {
 		detailsPanel.setModel(room);
 		detailsPanel.setFlag(fromMeetingDet);
 		detailsPanel.setModel(meetingModel);
+		detailsPanel.setHFlag(homeVisible);
 		
 		adminPanel = new AdministratorPanel();
 		adminPanel.setModel(employeeList);
