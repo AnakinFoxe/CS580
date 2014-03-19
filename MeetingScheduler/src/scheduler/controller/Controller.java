@@ -510,6 +510,7 @@ public class Controller {
 					if (romList.get(j).getCapacity() < empNum) {
 						romList.remove(j);
 						--j;
+						continue;
 					}
 					for (i=0;i<rmRomIdList.size();++i) {
 						if (rmRomIdList.get(i) == romList.get(j).getId()) {
@@ -636,9 +637,12 @@ public class Controller {
 			}
 		
 			for (idx=0;idx<metList.size();++idx) {
-				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
-				long shift_sec = shift / 1000;
-				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+//				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
+//				long shift_sec = shift / 1000;
+//				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+				long future_hour = metList.get(idx).getStartTime().getTime() / 3600000;
+				long now_hour = now.getTime() / 3600000;
+				long shift_hour = future_hour - now_hour - 1;	// to include element 0
 				
 				if (shift_hour >= 168)
 					return null;
@@ -959,7 +963,14 @@ public class Controller {
 				for (idx=0;idx<empList.size();++idx) {
 					if (att_emp_id == empList.get(idx).getUsrId()) {
 						empList.remove(idx);
-						break;	// Xing: not sure if this break is right
+						
+						// Also, update the accept to NULL
+						sql = "update attendee set `att_accept`=NULL "
+								+ "where att_emp_id=" + att_emp_id.toString() + " and "
+								+ "att_sch_id=" + sch_id.toString();
+						statement = connection.createStatement();
+						statement.executeUpdate(sql);
+						break;
 					}
 				}
 				
@@ -1175,17 +1186,17 @@ public class Controller {
 				return false;
 			
 			// Delete Attendee Table
-			sql = "delete * from attendee where att_sch_id='" + sch_id.toString() + "'";
+			sql = "delete from attendee where att_sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 	
 			// Delete Meeting Table
-			sql = "delete * from meeting where met_sch_id='" + sch_id.toString() + "'";
+			sql = "delete from meeting where met_sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			
 			// Delete Schedule Table
-			sql = "delete * from schedule where sch_id='" + sch_id.toString() + "'";
+			sql = "delete from schedule where sch_id='" + sch_id.toString() + "'";
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 			

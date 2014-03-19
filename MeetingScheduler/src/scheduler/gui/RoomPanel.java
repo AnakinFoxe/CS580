@@ -18,14 +18,13 @@ import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
-import scheduler.model.Meeting;
+import scheduler.model.MeetingModel;
 import scheduler.model.Room;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +49,8 @@ public class RoomPanel extends JPanel {
 	private Flag rPanelVisible;
 	private Flag fromMeetingDet;
 	private Room selectedRoom;
-	private Meeting meet;
+	private MeetingModel meet;
+
 
 	public RoomPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -102,7 +102,8 @@ public class RoomPanel extends JPanel {
 				//				List<Employee> attendees = attendeeList.getList();
 				//				Date selectedDate = this.selectedDate.getDate();
 				if(fromMeetingDet.getFlag()){
-					Controller.updateMeeting(meet, attendeeList.getList(), 
+					Controller.updateMeeting(meet.getMeeting(), 
+							attendeeList.getList(), 
 							this.selectedDate.getDate(), 
 							availableRooms.get(i));
 					fromMeetingDet.setFlag(false);
@@ -189,7 +190,7 @@ public class RoomPanel extends JPanel {
 		this.selectedRoom = model;
 	}
 	
-	public void setMeeting(Meeting meeting){
+	public void setModel(MeetingModel meeting){
 		this.meet = meeting;
 	}
 }
