@@ -1,4 +1,3 @@
-
 package scheduler.model;
 
 import java.beans.PropertyChangeListener;
@@ -30,4 +29,3 @@ public class MeetingModel {
 		pcSupport.firePropertyChange(modelName, oldMeeting, newMeeting);
 	}
 }
-

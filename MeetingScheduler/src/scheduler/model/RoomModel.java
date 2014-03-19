@@ -1,4 +1,3 @@
-
 package scheduler.model;
 
 import java.beans.PropertyChangeListener;
