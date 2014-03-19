@@ -564,7 +564,6 @@ public class Controller {
 	}
 
 	
-	
 	public static List<Date> genAvailableTime(Employee host, List<Employee> attendee) {
 		if (Controller.connection == null)
 			return null;

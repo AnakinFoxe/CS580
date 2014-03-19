@@ -10,9 +10,10 @@ import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 import scheduler.model.RoomListModel;
-
 import scheduler.model.MeetingModel;
 import scheduler.model.RoomModel;
+
+
 
 public class SchedulerPanel extends JPanel {
 
@@ -45,8 +46,14 @@ public class SchedulerPanel extends JPanel {
 	private Flag timePVisible;
 	private Flag roomPVisible;
 	private Flag fromMeetingDet;
+
+	private DelEmpPanel delempPanel;
+	private DelRoomPanel delroomPanel;
+	private EmployeeModel employeeAdmin;
+
 	private MeetingModel meetingModel;
 	private Flag meetingDetVisible;
+
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
@@ -67,8 +74,11 @@ public class SchedulerPanel extends JPanel {
 		loginPanel.setModel(homeVisible);
 		loginPanel.setModel(roomListModel);
 		loginPanel.setModel(employeeList);
+		employeeAdmin = new EmployeeModel();
+		//calendar.setModel(homeVisible);
+
+
 		
-		new JCalendar();
 		
 		calenderDateModel = new DateModel();
 		homePanel = new HomePanel();
@@ -123,6 +133,8 @@ public class SchedulerPanel extends JPanel {
 		adminPanel = new AdministratorPanel();
 		adminPanel.setModel(employeeList);
 		adminPanel.setModel(roomListModel);
+		adminPanel.setModel(employeeAdmin);
+
 		
 		adminRoomPanel = new AMRoomPanel();
 		adminRoomPanel.setModel(roomListModel);
@@ -132,6 +144,10 @@ public class SchedulerPanel extends JPanel {
 		
 		profilePanel = new ProfilePanel();
 		profilePanel.setModel(employeeModel);
+		
+		delempPanel = new DelEmpPanel();
+		delroomPanel = new DelRoomPanel();
+		delempPanel.setModel(employeeAdmin);
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");
@@ -143,5 +159,8 @@ public class SchedulerPanel extends JPanel {
 		this.add(profilePanel, "profile");
 		this.add(adminRoomPanel,"roomPanel");
 		this.add(adminEmpPanel, "empPanel");
+		this.add(delempPanel, "delempPanel");
+		this.add(delroomPanel, "delroomPanel");
+
 	}
 }

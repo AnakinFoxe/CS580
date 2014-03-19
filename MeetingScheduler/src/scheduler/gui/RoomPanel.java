@@ -164,6 +164,7 @@ public class RoomPanel extends JPanel {
 					attendees = attendeeList.getList();
 					roomBox.removeAll();
 					roomGroup = new ButtonGroup();
+					scrollPane.setFocusable(true);
 					availableRooms = Controller.genRoomList(selected, attendees.size());
 					for(int i = 0; i < availableRooms.size(); i++){
 						JRadioButton rdbtn = new JRadioButton(availableRooms.get(i).getName().toString()); 
@@ -173,6 +174,7 @@ public class RoomPanel extends JPanel {
 						roomBox.add(rdbtn);
 						roomGroup.add(rdbtn);
 					}
+					scrollPane.repaint();
 				}
 			}
 		});

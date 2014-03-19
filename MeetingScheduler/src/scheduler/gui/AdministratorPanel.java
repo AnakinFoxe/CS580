@@ -17,6 +17,7 @@ import scheduler.controller.Controller;
 import scheduler.model.DateModel;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
+import scheduler.model.EmployeeModel;
 import scheduler.model.Room;
 import scheduler.model.RoomListModel;
 
@@ -37,22 +38,23 @@ public class AdministratorPanel extends JPanel {
 	private JButton btnDeleteEmp;
 	private CardLayout cardlayout;
 	private JPanel controller;
+
+	protected RoomDialog roomDialog;
+	
 	
 	private Box employeeBox;
 	private JScrollPane jscrlempBox;
 	private List<Employee> employeeList;
 	private EmployeeListModel employeeListModel;
 	private ButtonGroup empGroup;
+	private EmployeeModel employeeModel;
 	
 	private Box roomBox;
 	private JScrollPane jscrlroomBox;
 	private List<Room> roomList;
 	private RoomListModel roomListModel;
 	private ButtonGroup roomGroup;
-
-	protected RoomDialog roomDialog;
-	
-	
+		
 	public AdministratorPanel() {
 		lblEmployees = new JLabel("Employees");
 		lblRooms = new JLabel("Rooms");
@@ -87,8 +89,14 @@ public class AdministratorPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}       	
-            	DelEmpDialog delempDialog = new DelEmpDialog();
-            	delempDialog.setVisible(true);
+            	JRadioButton rdbtn;
+            	for(int i = 0; i < employeeBox.getComponentCount(); i++){
+            		rdbtn = (JRadioButton) employeeBox.getComponent(i);
+            		if(rdbtn.isSelected()){
+            			employeeModel.setEmployee(employeeList.get(i));
+            		}
+            	}
+            	cardlayout.show(controller,"delempPanel");
             }
             
 		});		
@@ -106,9 +114,9 @@ public class AdministratorPanel extends JPanel {
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
             		getData();
-            	}       	
-            	EmployeeDialog employeeDialog = new EmployeeDialog();
-            	employeeDialog.setVisible(true);
+            	}   
+            	
+            	cardlayout.show(controller,"empPanel");
             }
             
 		});
@@ -127,9 +135,8 @@ public class AdministratorPanel extends JPanel {
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
             		getData();
-            	}       	
-            	DelRoomDialog delroomDialog = new DelRoomDialog();
-            	delroomDialog.setVisible(true);
+            	}
+            	cardlayout.show(controller, "delroomPanel");
             }
 		});	
 		
@@ -138,8 +145,7 @@ public class AdministratorPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}       	
-            	RoomDialog roomDialog = new RoomDialog();
-            	roomDialog.setVisible(true);
+            	cardlayout.show(controller, "roomPanel");
             }
             
 		});
@@ -248,6 +254,10 @@ public class AdministratorPanel extends JPanel {
 		//jscrlroomBox.repaint();
 	}
 	
+	public void setModel(EmployeeModel model){
+		this.employeeModel = model;
+	}
+
 	protected void getData() {
 		// TODO Auto-generated method stub
 		controller = (JPanel) this.getParent();
