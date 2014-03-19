@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2014 at 03:14 AM
+-- Generation Time: Mar 19, 2014 at 01:54 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -60,18 +60,34 @@ CREATE TABLE IF NOT EXISTS `attendee` (
 --
 
 INSERT INTO `attendee` (`att_sch_id`, `att_emp_id`, `att_accept`) VALUES
-(1, 1, 'YES'),
 (1, 3, 'YES'),
 (1, 4, 'YES'),
 (1, 5, 'YES'),
-(6, 4, 'YES'),
-(6, 5, 'YES'),
 (7, 3, 'YES'),
 (7, 4, 'YES'),
 (7, 5, 'YES'),
 (8, 1, 'YES'),
 (8, 4, 'YES'),
-(8, 5, 'YES');
+(8, 5, 'YES'),
+(9, 3, 'YES'),
+(9, 4, NULL),
+(9, 5, NULL),
+(12, 3, NULL),
+(12, 4, NULL),
+(12, 5, NULL),
+(13, 3, NULL),
+(14, 1, NULL),
+(14, 3, NULL),
+(14, 5, NULL),
+(15, 1, NULL),
+(15, 3, NULL),
+(15, 5, NULL),
+(16, 3, NULL),
+(16, 5, NULL),
+(17, 6, NULL),
+(17, 7, NULL),
+(1, 6, NULL),
+(1, 7, NULL);
 
 -- --------------------------------------------------------
 
@@ -95,10 +111,12 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`emp_usr_id`, `emp_first_name`, `emp_middle_name`, `emp_last_name`, `emp_title`, `emp_position`, `emp_email`) VALUES
-(1, 'Xing', NULL, 'Hu', NULL, 'Manager', 'xingh@csupomona.edu'),
+(1, 'Xing', NULL, 'Hu', NULL, 'Student', 'xingh@csupomona.edu'),
 (3, 'Yiming', NULL, 'Shan', NULL, NULL, 'shanyiming@hotmail.com'),
 (4, 'Brian', NULL, 'Truong', NULL, NULL, 'brntruong@gmail.com'),
-(5, 'Lupe', NULL, 'Talavera', NULL, NULL, 'lupe.talavera@gmail.com');
+(5, 'Lupe', NULL, 'Talavera', NULL, NULL, 'lupe.talavera@gmail.com'),
+(6, 'Jimmy', '', 'Chen', 'null', 'Student', ''),
+(7, 'Andy', '', 'Zhang', 'null', 'Student', '');
 
 -- --------------------------------------------------------
 
@@ -110,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `meeting` (
   `met_sch_id` int(32) NOT NULL,
   `met_rom_id` int(32) NOT NULL,
   `met_emp_id` int(32) NOT NULL,
-  `emt_description` varchar(1024) DEFAULT NULL,
+  `met_description` varchar(1024) DEFAULT NULL,
   KEY `met_sch_id` (`met_sch_id`,`met_rom_id`,`met_emp_id`),
   KEY `met_rom_id` (`met_rom_id`),
   KEY `met_emp_id` (`met_emp_id`)
@@ -120,11 +138,17 @@ CREATE TABLE IF NOT EXISTS `meeting` (
 -- Dumping data for table `meeting`
 --
 
-INSERT INTO `meeting` (`met_sch_id`, `met_rom_id`, `met_emp_id`, `emt_description`) VALUES
-(1, 1, 1, 'first meeting for cs 580'),
-(6, 3, 1, NULL),
+INSERT INTO `meeting` (`met_sch_id`, `met_rom_id`, `met_emp_id`, `met_description`) VALUES
+(1, 3, 1, 'first meeting for cs 580'),
 (7, 3, 1, NULL),
-(8, 1, 3, NULL);
+(8, 1, 3, NULL),
+(9, 4, 1, NULL),
+(12, 1, 1, NULL),
+(13, 1, 4, NULL),
+(14, 1, 4, NULL),
+(15, 1, 4, NULL),
+(16, 3, 4, NULL),
+(17, 3, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -151,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `room` (
   `rom_capacity` int(32) NOT NULL,
   PRIMARY KEY (`rom_id`),
   UNIQUE KEY `rom_name` (`rom_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `room`
@@ -160,7 +184,8 @@ CREATE TABLE IF NOT EXISTS `room` (
 INSERT INTO `room` (`rom_id`, `rom_name`, `rom_capacity`) VALUES
 (1, 'cs 580', 4),
 (2, 'cs 535', 2),
-(3, 'cs 599', 10);
+(3, 'cs 599', 10),
+(4, 'cs 331', 35);
 
 -- --------------------------------------------------------
 
@@ -173,17 +198,23 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   `sch_start_time` datetime NOT NULL,
   `sch_end_time` datetime DEFAULT NULL,
   PRIMARY KEY (`sch_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `schedule`
 --
 
 INSERT INTO `schedule` (`sch_id`, `sch_start_time`, `sch_end_time`) VALUES
-(1, '2014-03-15 10:00:00', '2014-03-15 11:00:00'),
-(6, '2014-03-16 13:00:00', '2014-03-16 14:00:00'),
+(1, '2014-03-19 10:00:00', '2014-03-19 11:00:00'),
 (7, '2014-03-16 11:00:00', '2014-03-16 12:00:00'),
-(8, '2014-03-16 21:00:00', '2014-03-16 22:00:00');
+(8, '2014-03-16 21:00:00', '2014-03-16 22:00:00'),
+(9, '2014-03-19 07:00:00', '2014-03-19 08:00:00'),
+(12, '2014-03-19 16:00:00', '2014-03-19 17:00:00'),
+(13, '2014-03-20 06:00:00', '2014-03-20 07:00:00'),
+(14, '2014-03-24 16:00:00', '2014-03-24 17:00:00'),
+(15, '2014-03-25 19:00:00', '2014-03-25 20:00:00'),
+(16, '2014-03-19 20:00:00', '2014-03-19 21:00:00'),
+(17, '2014-03-19 17:00:00', '2014-03-19 18:00:00');
 
 -- --------------------------------------------------------
 
@@ -197,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `usr_password` varchar(255) NOT NULL,
   PRIMARY KEY (`usr_id`),
   UNIQUE KEY `usr_username` (`usr_username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `user`
@@ -208,7 +239,9 @@ INSERT INTO `user` (`usr_id`, `usr_username`, `usr_password`) VALUES
 (2, 'admin', 'admin'),
 (3, 'yiming', 'yiming'),
 (4, 'brian', 'brian'),
-(5, 'lupe', 'lupe');
+(5, 'lupe', 'lupe'),
+(6, 'jimmy', 'jimmy'),
+(7, 'null', 'andy');
 
 --
 -- Constraints for dumped tables
