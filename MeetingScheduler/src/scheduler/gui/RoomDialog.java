@@ -10,17 +10,23 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import scheduler.controller.Controller;
 import scheduler.model.Room;
+import scheduler.model.RoomListModel;
 
 public class RoomDialog extends JDialog {
 
 	private JTextField txfName;
 	private JTextField txfCapacity;
+	private RoomListModel roomListModel;
 
 	/**
 	 * Launch the application.
@@ -57,7 +63,11 @@ public class RoomDialog extends JDialog {
 
 						room.setName(txfName.getText());
 						room.setCapacity(Integer.parseInt(txfCapacity.getText()));
-
+						
+						List <Room> oldRoomList = new ArrayList<Room>(roomListModel.getList());
+						oldRoomList.add(room);
+						
+						roomListModel.setRoomList(oldRoomList);
 						Controller.insertRoom(room);
 
 					}
@@ -99,5 +109,10 @@ public class RoomDialog extends JDialog {
 		txfCapacity.setColumns(10);
 		txfCapacity.setBounds(246, 130, 134, 29);
 		getContentPane().add(txfCapacity);
+	}
+	public void setModel(RoomListModel roomList1){
+		this.roomListModel = roomList1;
+			
+	
 	}
 }

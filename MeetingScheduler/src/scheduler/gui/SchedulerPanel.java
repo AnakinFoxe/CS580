@@ -9,6 +9,7 @@ import scheduler.model.DateModel;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.RoomListModel;
 
 public class SchedulerPanel extends JPanel {
 
@@ -32,15 +33,23 @@ public class SchedulerPanel extends JPanel {
 	private DateModel date;
 	private DateModel calenderDateModel;
 	private JCalendar calendar;
+	private EmployeeListModel employeeList;
+	private RoomListModel roomListModel;
+	private AMRoomPanel adminRoomPanel;
+	private AMEmpPanel adminEmpPanel;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
 		homeVisible = new Flag(false);
 		
+		roomListModel = new RoomListModel();
+		employeeList = new EmployeeListModel();
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
 		loginPanel.setModel(homeVisible);
+		loginPanel.setModel(roomListModel);
+		loginPanel.setModel(employeeList);
 		
 		calendar = new JCalendar();
 		calendar.setModel(homeVisible);
@@ -76,6 +85,14 @@ public class SchedulerPanel extends JPanel {
 		detailsPanel.setModel(calenderDateModel);
 		
 		adminPanel = new AdministratorPanel();
+		adminPanel.setModel(employeeList);
+		adminPanel.setModel(roomListModel);
+		
+		adminRoomPanel = new AMRoomPanel();
+		adminRoomPanel.setModel(roomListModel);
+		
+		adminEmpPanel = new AMEmpPanel();
+		adminEmpPanel.setModel(employeeList);
 		
 		profilePanel = new ProfilePanel();
 		profilePanel.setModel(employeeModel);
@@ -88,5 +105,7 @@ public class SchedulerPanel extends JPanel {
 		this.add(detailsPanel, "meetingDetails");
 		this.add(adminPanel, "adminHome");
 		this.add(profilePanel, "profile");
+		this.add(adminRoomPanel,"roomPanel");
+		this.add(adminEmpPanel, "empPanel");
 	}
 }

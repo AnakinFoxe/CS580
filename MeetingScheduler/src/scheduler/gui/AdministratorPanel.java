@@ -2,11 +2,23 @@ package scheduler.gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
+
+import scheduler.controller.Controller;
+import scheduler.model.DateModel;
+import scheduler.model.Employee;
+import scheduler.model.EmployeeListModel;
+import scheduler.model.Room;
+import scheduler.model.RoomListModel;
 
 
 public class AdministratorPanel extends JPanel {
@@ -17,41 +29,52 @@ public class AdministratorPanel extends JPanel {
 	
 	private JLabel lblEmployees;
 	private JLabel lblRooms;
-	private JScrollPane emScrollPane;
-	private JScrollPane roomScrollPane;
 	private JButton btnAddEmp;
 	private JButton btnModifyEmp;
 	private JButton btnAddRoom;
 	private JButton btnModifyRoom;
 	private JButton btnDeleteRoom;
 	private JButton btnDeleteEmp;
-	private JList emList;
-	private JList roomList;
 	private CardLayout cardlayout;
 	private JPanel controller;
+	
+	private Box employeeBox;
+	private JScrollPane jscrlempBox;
+	private List<Employee> employeeList;
+	private EmployeeListModel employeeListModel;
+	private ButtonGroup empGroup;
+	
+	private Box roomBox;
+	private JScrollPane jscrlroomBox;
+	private List<Room> roomList;
+	private RoomListModel roomListModel;
+	private ButtonGroup roomGroup;
+
+	protected RoomDialog roomDialog;
+	
 	
 	public AdministratorPanel() {
 		lblEmployees = new JLabel("Employees");
 		lblRooms = new JLabel("Rooms");
-		emScrollPane = new JScrollPane();
-		roomScrollPane = new JScrollPane();
 		btnAddEmp = new JButton("Add Employee");
 		btnModifyEmp = new JButton("Modify Employee");
 		btnAddRoom = new JButton("Add Room");
 		btnModifyRoom = new JButton("Modify Room");
 		btnDeleteRoom = new JButton("Delete Room");
 		btnDeleteEmp = new JButton("Delete Employee");
-		emList = new JList();
-		roomList = new JList();
 		
+		employeeBox = Box.createVerticalBox();
+		jscrlempBox = new JScrollPane(employeeBox);
+		add(jscrlempBox);
+		jscrlempBox.setPreferredSize(new Dimension(140,90));
 		
-		emScrollPane.setViewportView(emList);
-		roomScrollPane.setViewportView(roomList);
+		roomBox = Box.createVerticalBox();
+		jscrlroomBox = new JScrollPane(roomBox);
+		add(jscrlroomBox);
+		jscrlempBox.setPreferredSize(new Dimension(140,90));
 		
 		add(lblEmployees);
 		add(lblRooms);
-		add(emScrollPane);
-		add(roomScrollPane);
 		add(btnAddRoom);
 		add(btnModifyRoom);
 		add(btnDeleteRoom);
@@ -75,8 +98,7 @@ public class AdministratorPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}       
-            	EmployeeDialog employeeDialog = new EmployeeDialog();
-            	employeeDialog.setVisible(true);
+            	cardlayout.show(controller,"empPanel");
             }       
             
 		});
@@ -96,8 +118,7 @@ public class AdministratorPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}       	
-            	RoomDialog roomDialog = new RoomDialog();
-            	roomDialog.setVisible(true);
+            	cardlayout.show(controller,"roomPanel");
             }
             
 		});
@@ -129,13 +150,13 @@ public class AdministratorPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblEmployees, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblEmployees, 20, SpringLayout.NORTH, this);
 		
-		springLayout.putConstraint(SpringLayout.WEST, emScrollPane, 20, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, emScrollPane, 5, SpringLayout.SOUTH, lblEmployees);
-		springLayout.putConstraint(SpringLayout.EAST, emScrollPane, -20, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.WEST, jscrlempBox, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, jscrlempBox, 5, SpringLayout.SOUTH, lblEmployees);
+		springLayout.putConstraint(SpringLayout.EAST, jscrlempBox, -20, SpringLayout.WEST, lblRooms);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnAddEmp, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddEmp, 0, SpringLayout.EAST, btnModifyEmp);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddEmp, 5, SpringLayout.SOUTH, emScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddEmp, 5, SpringLayout.SOUTH, jscrlempBox);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnModifyEmp, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, btnModifyEmp, 5, SpringLayout.SOUTH, btnAddEmp);
@@ -148,13 +169,13 @@ public class AdministratorPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRooms, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblRooms, 0, SpringLayout.NORTH, lblEmployees);
 	
-		springLayout.putConstraint(SpringLayout.WEST, roomScrollPane, 0, SpringLayout.WEST, lblRooms);
-		springLayout.putConstraint(SpringLayout.NORTH, roomScrollPane, 5, SpringLayout.SOUTH, lblEmployees);
-		springLayout.putConstraint(SpringLayout.EAST, roomScrollPane, -75, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, roomScrollPane, 0, SpringLayout.SOUTH, emScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, jscrlroomBox, 0, SpringLayout.WEST, lblRooms);
+		springLayout.putConstraint(SpringLayout.NORTH, jscrlroomBox, 5, SpringLayout.SOUTH, lblEmployees);
+		springLayout.putConstraint(SpringLayout.EAST, jscrlroomBox, -75, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, jscrlroomBox, 0, SpringLayout.SOUTH, jscrlempBox);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnAddRoom, 0, SpringLayout.WEST, lblRooms);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddRoom, 5, SpringLayout.SOUTH, roomScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddRoom, 5, SpringLayout.SOUTH, jscrlroomBox);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddRoom, 0, SpringLayout.EAST, btnModifyRoom);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnModifyRoom, 0, SpringLayout.WEST, lblRooms);
@@ -168,6 +189,63 @@ public class AdministratorPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, this, 5, SpringLayout.SOUTH, btnDeleteEmp);
 		
 		setLayout(springLayout);
+	}
+	
+	public void setModel(RoomListModel roomList1){
+		this.roomListModel = roomList1;
+		System.out.println("Seeting room list model");
+		roomListModel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				if(RoomListModel.modelName.equals(arg0.getPropertyName())){
+					//add method for date
+					roomBox.removeAll();
+					roomGroup = new ButtonGroup();
+					jscrlroomBox.setFocusable(true);
+					roomList = roomListModel.getList();//Controller.genRoomList();
+					
+					for(int i = 0; i < roomList.size(); i++){
+						JRadioButton rdbtn = new JRadioButton(roomList.get(i).getName().toString()); 
+						roomBox.add(rdbtn);
+						roomGroup.add(rdbtn);
+					}
+				}
+			}
+		});
+		roomBox.revalidate();
+		roomBox.repaint();
+		roomBox.setVisible(true);
+		//jscrlroomBox.repaint();
+	}
+	
+	public void setModel(EmployeeListModel employeeList1){
+		this.employeeListModel=employeeList1;//EmployeeListModel.ListModel = empList1;
+		
+		employeeListModel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				if(EmployeeListModel.modelName.equals(arg0.getPropertyName())){
+					//add method for date
+					
+					employeeBox.removeAll();
+					empGroup = new ButtonGroup();
+					jscrlempBox.setFocusable(true);
+					employeeList = employeeListModel.getList();//Controller.genRoomList();
+					
+					for(int i = 0; i < employeeList.size(); i++){
+						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName())); 
+						employeeBox.add(rdbtn);
+						empGroup.add(rdbtn);
+					}
+				}
+			}
+		});
+		roomBox.revalidate();
+		roomBox.repaint();
+		roomBox.setVisible(true);
+		//jscrlroomBox.repaint();
 	}
 	
 	protected void getData() {
