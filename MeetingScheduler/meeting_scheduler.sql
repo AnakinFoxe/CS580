@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2014 at 02:25 AM
+-- Generation Time: Mar 19, 2014 at 03:14 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -50,9 +50,28 @@ INSERT INTO `administrator` (`adm_usr_id`, `adm_description`) VALUES
 CREATE TABLE IF NOT EXISTS `attendee` (
   `att_sch_id` int(32) NOT NULL,
   `att_emp_id` int(32) NOT NULL,
+  `att_accept` varchar(32) DEFAULT NULL,
   KEY `att_sch_id` (`att_sch_id`,`att_emp_id`),
   KEY `att_emp_id` (`att_emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `attendee`
+--
+
+INSERT INTO `attendee` (`att_sch_id`, `att_emp_id`, `att_accept`) VALUES
+(1, 1, 'YES'),
+(1, 3, 'YES'),
+(1, 4, 'YES'),
+(1, 5, 'YES'),
+(6, 4, 'YES'),
+(6, 5, 'YES'),
+(7, 3, 'YES'),
+(7, 4, 'YES'),
+(7, 5, 'YES'),
+(8, 1, 'YES'),
+(8, 4, 'YES'),
+(8, 5, 'YES');
 
 -- --------------------------------------------------------
 
@@ -76,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`emp_usr_id`, `emp_first_name`, `emp_middle_name`, `emp_last_name`, `emp_title`, `emp_position`, `emp_email`) VALUES
-(1, 'Xing', NULL, 'Hu', NULL, 'Student', 'xingh@csupomona.edu'),
+(1, 'Xing', NULL, 'Hu', NULL, 'Manager', 'xingh@csupomona.edu'),
 (3, 'Yiming', NULL, 'Shan', NULL, NULL, 'shanyiming@hotmail.com'),
 (4, 'Brian', NULL, 'Truong', NULL, NULL, 'brntruong@gmail.com'),
 (5, 'Lupe', NULL, 'Talavera', NULL, NULL, 'lupe.talavera@gmail.com');
@@ -96,6 +115,16 @@ CREATE TABLE IF NOT EXISTS `meeting` (
   KEY `met_rom_id` (`met_rom_id`),
   KEY `met_emp_id` (`met_emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `meeting`
+--
+
+INSERT INTO `meeting` (`met_sch_id`, `met_rom_id`, `met_emp_id`, `emt_description`) VALUES
+(1, 1, 1, 'first meeting for cs 580'),
+(6, 3, 1, NULL),
+(7, 3, 1, NULL),
+(8, 1, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -122,7 +151,16 @@ CREATE TABLE IF NOT EXISTS `room` (
   `rom_capacity` int(32) NOT NULL,
   PRIMARY KEY (`rom_id`),
   UNIQUE KEY `rom_name` (`rom_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `room`
+--
+
+INSERT INTO `room` (`rom_id`, `rom_name`, `rom_capacity`) VALUES
+(1, 'cs 580', 4),
+(2, 'cs 535', 2),
+(3, 'cs 599', 10);
 
 -- --------------------------------------------------------
 
@@ -132,10 +170,20 @@ CREATE TABLE IF NOT EXISTS `room` (
 
 CREATE TABLE IF NOT EXISTS `schedule` (
   `sch_id` int(32) NOT NULL AUTO_INCREMENT,
-  `sch_start_time` date NOT NULL,
-  `sch_end_time` date NOT NULL,
+  `sch_start_time` datetime NOT NULL,
+  `sch_end_time` datetime DEFAULT NULL,
   PRIMARY KEY (`sch_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`sch_id`, `sch_start_time`, `sch_end_time`) VALUES
+(1, '2014-03-15 10:00:00', '2014-03-15 11:00:00'),
+(6, '2014-03-16 13:00:00', '2014-03-16 14:00:00'),
+(7, '2014-03-16 11:00:00', '2014-03-16 12:00:00'),
+(8, '2014-03-16 21:00:00', '2014-03-16 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -176,8 +224,8 @@ ALTER TABLE `administrator`
 -- Constraints for table `attendee`
 --
 ALTER TABLE `attendee`
-  ADD CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`att_emp_id`) REFERENCES `employee` (`emp_usr_id`),
-  ADD CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`att_sch_id`) REFERENCES `schedule` (`sch_id`);
+  ADD CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`att_sch_id`) REFERENCES `schedule` (`sch_id`),
+  ADD CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`att_emp_id`) REFERENCES `employee` (`emp_usr_id`);
 
 --
 -- Constraints for table `employee`
