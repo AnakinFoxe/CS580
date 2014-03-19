@@ -460,6 +460,37 @@ public class Controller {
 			return null;
 		}
 	}
+	public static List<Employee> genEmployeeList() {
+		if (Controller.connection == null)
+			return null;
+		
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			sql = "select * from employee";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Employee emp = new Employee(resultSet.getString("emp_first_name"),
+						 					resultSet.getString("emp_middle_name"),
+						 					resultSet.getString("emp_last_name"),
+						 					resultSet.getInt("emp_usr_id"));
+				empList.add(emp);
+			}
+			
+			return empList;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
 	
 	
 	public static List<Room> genRoomList(Date date, Integer empNum) {
@@ -534,6 +565,40 @@ public class Controller {
 	}
 	
 	public static List<Room> genRoomList() {
+<<<<<<< Upstream, based on Master/master
+=======
+		if (Controller.connection == null)
+			return null;
+		
+		List<Room> romList = new ArrayList<Room>();
+		
+		try {
+			sql = "select * from room";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while (resultSet.next()) {
+				Room rom = new Room(resultSet.getInt("rom_id"),
+						 			resultSet.getString("rom_name"),
+						 			resultSet.getInt("rom_capacity"));
+				romList.add(rom);
+			}				
+			return romList;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	
+	
+	public static List<Date> genAvailableTime(List<Employee> attendee) {
+>>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
 		if (Controller.connection == null)
 			return null;
 		

@@ -10,7 +10,10 @@ import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 import scheduler.model.RoomListModel;
+<<<<<<< Upstream, based on Master/master
 import scheduler.model.RoomModel;
+=======
+>>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
 
 public class SchedulerPanel extends JPanel {
 
@@ -38,10 +41,13 @@ public class SchedulerPanel extends JPanel {
 	private RoomListModel roomListModel;
 	private AMRoomPanel adminRoomPanel;
 	private AMEmpPanel adminEmpPanel;
+<<<<<<< Upstream, based on Master/master
 	private RoomModel room;
 	private Flag timePVisible;
 	private Flag roomPVisible;
 	private Flag fromMeetingDet;
+=======
+>>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
@@ -50,9 +56,12 @@ public class SchedulerPanel extends JPanel {
 		
 		roomListModel = new RoomListModel();
 		employeeList = new EmployeeListModel();
+<<<<<<< Upstream, based on Master/master
 		timePVisible = new Flag(false);
 		roomPVisible = new Flag(false);
 		fromMeetingDet = new Flag(false);
+=======
+>>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
 		loginPanel.setModel(homeVisible);
