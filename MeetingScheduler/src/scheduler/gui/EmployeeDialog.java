@@ -28,6 +28,7 @@ public class EmployeeDialog extends JDialog {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	private JTextField textField_6;
 
 	/**
 	 * Launch the application.
@@ -58,12 +59,22 @@ public class EmployeeDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						Employee emp = new Employee(){
-							
-						};
-
+						dispose();
+						
+						Employee emp = new Employee();
+						emp.setFirstName(textField.getText().toString());
+						emp.setMiddleName(textField_1.getText());
+						emp.setLastName(textField_2.getText());
+						emp.setPosition(textField_3.getText());
+						emp.setUsername(textField_4.getText());
+						emp.setEmail(textField_6.getText());
+											
+						Controller Controller = new Controller();
+						Controller.insertEmployee(emp, textField_5.getText());
+						
 						//Employee emp = new Employee();
 						//Controller.insertEmployee(emp);
+						
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -91,16 +102,16 @@ public class EmployeeDialog extends JDialog {
 		lblFirstName.setBounds(98, 26, 80, 16);
 		getContentPane().add(lblFirstName);
 		
-		JLabel lblLastName = new JLabel("Last Name");
-		lblLastName.setBounds(98, 57, 80, 16);
+		JLabel lblLastName = new JLabel("Middle Name");
+		lblLastName.setBounds(98, 57, 90, 16);
 		getContentPane().add(lblLastName);
 		{
-			JLabel lblPosition = new JLabel("Position");
+			JLabel lblPosition = new JLabel("Last Name");
 			lblPosition.setBounds(98, 88, 80, 16);
 			getContentPane().add(lblPosition);
 		}
 		{
-			JLabel lblTitle = new JLabel("Title");
+			JLabel lblTitle = new JLabel("Position");
 			lblTitle.setBounds(98, 116, 80, 16);
 			getContentPane().add(lblTitle);
 		}
@@ -149,6 +160,17 @@ public class EmployeeDialog extends JDialog {
 			textField_5.setColumns(10);
 			textField_5.setBounds(257, 166, 102, 22);
 			getContentPane().add(textField_5);
+		}
+		{
+			textField_6 = new JTextField();
+			textField_6.setColumns(10);
+			textField_6.setBounds(257, 199, 207, 22);
+			getContentPane().add(textField_6);
+		}
+		{
+			JLabel lblEmail = new JLabel("Email");
+			lblEmail.setBounds(98, 205, 80, 16);
+			getContentPane().add(lblEmail);
 		}
 	}
 	private static class __Tmp {
