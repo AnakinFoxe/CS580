@@ -636,9 +636,12 @@ public class Controller {
 			}
 		
 			for (idx=0;idx<metList.size();++idx) {
-				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
-				long shift_sec = shift / 1000;
-				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+//				long shift = metList.get(idx).getStartTime().getTime() - now.getTime();
+//				long shift_sec = shift / 1000;
+//				long shift_hour = shift_sec / 3600 - 1;	// to include element 0
+				long future_hour = metList.get(idx).getStartTime().getTime() / 3600000;
+				long now_hour = now.getTime() / 3600000;
+				long shift_hour = future_hour - now_hour - 1;	// to include element 0
 				
 				if (shift_hour >= 168)
 					return null;
