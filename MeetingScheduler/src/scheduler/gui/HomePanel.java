@@ -179,13 +179,16 @@ public class HomePanel extends JPanel {
 						meetings = Controller.getMeetingDate(employee.getEmployee());
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(calenderPanel.getCalendarView());
-						for(int i = 0; i < meetings.size(); i++){
-							int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
-							if( range >= 0 && range <=  30){
-								calenderPanel.setDateHighlight(meetings.get(i), Color.ORANGE);
+						if(meetings != null){
+							for(int i = 0; i < meetings.size(); i++){
+								int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
+								if( range >= 0 && range <=  30){
+									calenderPanel.setDateHighlight(meetings.get(i), Color.ORANGE);
+								}
+								
 							}
-							
 						}
+						
 					}
 				}
 			});
