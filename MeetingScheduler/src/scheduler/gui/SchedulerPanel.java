@@ -46,11 +46,13 @@ public class SchedulerPanel extends JPanel {
 	private Flag roomPVisible;
 	private Flag fromMeetingDet;
 	private MeetingModel meetingModel;
+	private Flag meetingDetVisible;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
 		this.setLayout(cardLayout);
 		homeVisible = new Flag(false);
+		meetingDetVisible = new Flag(false);
 		
 		roomListModel = new RoomListModel();
 		employeeList = new EmployeeListModel();
@@ -72,6 +74,7 @@ public class SchedulerPanel extends JPanel {
 		homePanel = new HomePanel();
 		homePanel.setModel(homeVisible, 1);
 		homePanel.setModel(calenderDateModel);
+		homePanel.setMeetDetFlag(meetingDetVisible);
 		
 		loginPanel.setModel(employeeModel);
 		
@@ -115,6 +118,7 @@ public class SchedulerPanel extends JPanel {
 		detailsPanel.setFlag(fromMeetingDet);
 		detailsPanel.setModel(meetingModel);
 		detailsPanel.setHFlag(homeVisible);
+		detailsPanel.setMeetFlag(meetingDetVisible);
 		
 		adminPanel = new AdministratorPanel();
 		adminPanel.setModel(employeeList);

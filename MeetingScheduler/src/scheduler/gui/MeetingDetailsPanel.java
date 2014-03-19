@@ -68,6 +68,7 @@ public class MeetingDetailsPanel extends JPanel {
 	private Flag fromMeetingDet;
 	private MeetingModel meetingModel;
 	private Flag homeVisible;
+	private Flag meetingDetVisible;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -147,6 +148,7 @@ public class MeetingDetailsPanel extends JPanel {
 				roomModel.setRoom(meeting.getRom());
 				fromMeetingDet.setFlag(true);
 				meetingModel.setMeeting(meeting);
+				meetingDetVisible.setFlag(false);
             	cardlayout.show(controller,"meeting");
 			}
 
@@ -160,6 +162,8 @@ public class MeetingDetailsPanel extends JPanel {
             		getData();
             	}
 				Controller.deleteMeeting(meeting);
+				homeVisible.setFlag(true);
+				meetingDetVisible.setFlag(false);
             	cardlayout.show(controller,"home");
 			}
 
@@ -177,6 +181,7 @@ public class MeetingDetailsPanel extends JPanel {
             		getData();
             	}
 				fromMeetingDet.setFlag(false);
+				meetingDetVisible.setFlag(false);
             	cardlayout.show(controller,"home");
 			}
 
@@ -225,28 +230,6 @@ public class MeetingDetailsPanel extends JPanel {
 
 	public void setModel(DateModel calenderDateModel) {
 		this.dateModel = calenderDateModel;
-		dateModel.addPropertyChangeListener(new PropertyChangeListener() {
-			
-
-			public void propertyChange(PropertyChangeEvent evt) {
-				// TODO Auto-generated method stub
-				SimpleDateFormat dtFormat = new SimpleDateFormat("hh:mm");
-				selectedDate = dateModel.getDate();
-				//timeDetails.setText(dtFormat.format(selectedDate.getDate()));
-				meetingDate = Controller.genMeetingList(selectedDate, user.getEmployee().getUsrId());
-
-				String timeString;
-				comboBox.removeAllItems();
-				for(int i=0; i < meetingDate.size(); i++){
-					Meeting meeting = meetingDate.get(i);
-					timeString = dtFormat.format(meeting.getStartTime());
-					comboBox.addItem(timeString);
-				}
-				displayMeetingDetails(0);
-				comboBox.setSelectedIndex(0);
-				
-			}
-		});
 	}
 	
 	protected void displayMeetingDetails(int index) {
@@ -308,5 +291,32 @@ public class MeetingDetailsPanel extends JPanel {
 	public void setHFlag(Flag homeVisible) {
 		// TODO Auto-generated method stub
 		this.homeVisible = homeVisible;
+	}
+
+	public void setMeetFlag(Flag flag) {
+		// TODO Auto-generated method stub
+		this.meetingDetVisible = flag;
+		meetingDetVisible.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evt) {
+				// TODO Auto-generated method stub
+				if(meetingDetVisible.getFlag()){
+					SimpleDateFormat dtFormat = new SimpleDateFormat("hh:mm");
+					selectedDate = dateModel.getDate();
+					//timeDetails.setText(dtFormat.format(selectedDate.getDate()));
+					meetingDate = Controller.genMeetingList(selectedDate, user.getEmployee().getUsrId());
+
+					String timeString;
+					comboBox.removeAllItems();
+					for(int i=0; i < meetingDate.size(); i++){
+						Meeting meeting = meetingDate.get(i);
+						timeString = dtFormat.format(meeting.getStartTime());
+						comboBox.addItem(timeString);
+					}
+					displayMeetingDetails(0);
+					comboBox.setSelectedIndex(0);
+				}
+			}
+		});
 	}
 }

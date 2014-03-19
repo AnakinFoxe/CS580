@@ -57,6 +57,7 @@ public class HomePanel extends JPanel {
 	private Flag isVisible;
 	protected List<Date> meetings;
 	protected DateModel selectedDate;
+	private Flag meetingDetVisible;
 	
 	public HomePanel() {
 		setBackground(Color.LIGHT_GRAY);
@@ -145,6 +146,7 @@ public class HomePanel extends JPanel {
 		                		getData();
 		                	}
 		                    isVisible.setFlag(false);
+		                    meetingDetVisible.setFlag(true);
 		                    cardlayout.show(controller,"meetingDetails");
 		                }
 		            }
@@ -280,6 +282,11 @@ public class HomePanel extends JPanel {
 	
 	public void setModel(DateModel dateModel){
 		this.selectedDate = dateModel;
+	}
+
+	public void setMeetDetFlag(Flag meetingDetVisible) {
+		// TODO Auto-generated method stub
+		this.meetingDetVisible = meetingDetVisible;
 	}
 }
 
