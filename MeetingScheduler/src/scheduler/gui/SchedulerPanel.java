@@ -9,7 +9,10 @@ import scheduler.model.DateModel;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+<<<<<<< Upstream, based on master/master
 import scheduler.model.RoomListModel;
+=======
+>>>>>>> e4d4fdb added fixed for ppanel to update
 import scheduler.model.RoomModel;
 
 public class SchedulerPanel extends JPanel {
