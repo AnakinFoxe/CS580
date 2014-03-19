@@ -67,6 +67,7 @@ public class MeetingDetailsPanel extends JPanel {
 	private Flag rPanelVisible;
 	private Flag fromMeetingDet;
 	private MeetingModel meetingModel;
+	private Flag homeVisible;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -158,6 +159,7 @@ public class MeetingDetailsPanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				Controller.deleteMeeting(meeting);
             	cardlayout.show(controller,"home");
 			}
 
@@ -174,6 +176,7 @@ public class MeetingDetailsPanel extends JPanel {
 				if (controller == null){
             		getData();
             	}
+				fromMeetingDet.setFlag(false);
             	cardlayout.show(controller,"home");
 			}
 
@@ -300,5 +303,10 @@ public class MeetingDetailsPanel extends JPanel {
 	
 	public void setModel(MeetingModel model){
 		this.meetingModel = model;
+	}
+
+	public void setHFlag(Flag homeVisible) {
+		// TODO Auto-generated method stub
+		this.homeVisible = homeVisible;
 	}
 }
