@@ -10,10 +10,8 @@ import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 import scheduler.model.RoomListModel;
-<<<<<<< Upstream, based on Master/master
 import scheduler.model.RoomModel;
-=======
->>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
+
 
 public class SchedulerPanel extends JPanel {
 
@@ -41,13 +39,13 @@ public class SchedulerPanel extends JPanel {
 	private RoomListModel roomListModel;
 	private AMRoomPanel adminRoomPanel;
 	private AMEmpPanel adminEmpPanel;
-<<<<<<< Upstream, based on Master/master
 	private RoomModel room;
 	private Flag timePVisible;
 	private Flag roomPVisible;
 	private Flag fromMeetingDet;
-=======
->>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
+	private DelEmpPanel delempPanel;
+	private DelRoomPanel delroomPanel;
+	private EmployeeModel employeeAdmin;
 	
 	public SchedulerPanel(){
 		cardLayout = new CardLayout();
@@ -56,18 +54,15 @@ public class SchedulerPanel extends JPanel {
 		
 		roomListModel = new RoomListModel();
 		employeeList = new EmployeeListModel();
-<<<<<<< Upstream, based on Master/master
 		timePVisible = new Flag(false);
 		roomPVisible = new Flag(false);
 		fromMeetingDet = new Flag(false);
-=======
->>>>>>> 9c6a43e add emp and room, now is working!!! YEAH lol
 		employeeModel = new EmployeeModel();
 		loginPanel = new LoginPanel();
 		loginPanel.setModel(homeVisible);
 		loginPanel.setModel(roomListModel);
 		loginPanel.setModel(employeeList);
-		
+		employeeAdmin = new EmployeeModel();
 		calendar = new JCalendar();
 		//calendar.setModel(homeVisible);
 		
@@ -119,6 +114,7 @@ public class SchedulerPanel extends JPanel {
 		adminPanel = new AdministratorPanel();
 		adminPanel.setModel(employeeList);
 		adminPanel.setModel(roomListModel);
+		adminPanel.setModel(employeeAdmin);
 		
 		adminRoomPanel = new AMRoomPanel();
 		adminRoomPanel.setModel(roomListModel);
@@ -128,6 +124,10 @@ public class SchedulerPanel extends JPanel {
 		
 		profilePanel = new ProfilePanel();
 		profilePanel.setModel(employeeModel);
+		
+		delempPanel = new DelEmpPanel();
+		delroomPanel = new DelRoomPanel();
+		delempPanel.setModel(employeeAdmin);
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");
@@ -139,5 +139,7 @@ public class SchedulerPanel extends JPanel {
 		this.add(profilePanel, "profile");
 		this.add(adminRoomPanel,"roomPanel");
 		this.add(adminEmpPanel, "empPanel");
+		this.add(delempPanel, "delempPanel");
+		this.add(delroomPanel, "delroomPanel");
 	}
 }
