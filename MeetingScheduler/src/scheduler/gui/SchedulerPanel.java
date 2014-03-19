@@ -61,6 +61,7 @@ public class SchedulerPanel extends JPanel {
 		meetingPanel = new MeetingPanel();
 		meetingPanel.setModel(flag1);
 		meetingPanel.setModel(attendeeList);
+		meetingPanel.setModel(employeeModel);
 		
 		date = new DateModel();
 		timePanel = new TimePanel();
@@ -74,6 +75,7 @@ public class SchedulerPanel extends JPanel {
 		
 		detailsPanel = new MeetingDetailsPanel();
 		detailsPanel.setModel(calenderDateModel);
+		detailsPanel.setModel(employeeModel);
 		
 		adminPanel = new AdministratorPanel();
 		
