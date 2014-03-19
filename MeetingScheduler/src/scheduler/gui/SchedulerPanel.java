@@ -43,14 +43,13 @@ public class SchedulerPanel extends JPanel {
 		loginPanel.setModel(homeVisible);
 		
 		calendar = new JCalendar();
-		calendar.setModel(homeVisible);
+		//calendar.setModel(homeVisible);
+		
 		calenderDateModel = new DateModel();
-		calenderDateModel.set(new Date());
-		calendar.setDateModel(calenderDateModel);
-		
-		
-		homePanel = new HomePanel(calendar);
+		homePanel = new HomePanel();
 		homePanel.setModel(homeVisible, 1);
+		homePanel.setModel(calenderDateModel);
+		
 		loginPanel.setModel(employeeModel);
 		
 		flag1 = new Flag(false);

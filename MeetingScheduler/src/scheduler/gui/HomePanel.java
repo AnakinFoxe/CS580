@@ -10,16 +10,23 @@ import javax.swing.SpringLayout;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
 import scheduler.controller.Controller;
+import scheduler.gui.JCalendar.BasicDate;
+import scheduler.model.DateModel;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +41,7 @@ public class HomePanel extends JPanel {
 	private JButton btnCreateMeeting;
 	private JButton btnUpdateProfile;
 	private JLabel lblUsername;
-	private JCalendar calenderPanel;
+	private static JCalendar calenderPanel;
 	private CardLayout cardlayout;
 	private JPanel controller;
 	private EmployeeModel employee;
@@ -47,8 +54,9 @@ public class HomePanel extends JPanel {
 	private Flag flag;
 	private Flag isVisible;
 	protected List<Date> meetings;
+	protected DateModel selectedDate;
 	
-	public HomePanel(JCalendar calender) {
+	public HomePanel() {
 		setBackground(Color.LIGHT_GRAY);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -97,6 +105,51 @@ public class HomePanel extends JPanel {
 		add(lblEmail);
 		
 		calenderPanel = new JCalendar();
+		
+		calenderPanel.addMouseListener(new MouseListener() {
+			private Date beginClickDate;
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("got here");
+				if (beginClickDate != null) {
+		            Date mouseOverDate = calenderPanel.getDate(arg0.getX(),arg0.getY());
+		            Color color = calenderPanel.getDateHighlight(mouseOverDate);
+		            
+		            if (mouseOverDate != null && beginClickDate.equals(mouseOverDate) && color != null) {
+		            	Date select = null;  
+		        		select = calenderPanel.getCursorDate();
+		                if(select != null){
+		                	selectedDate.set(select);
+		                    if (controller == null){
+		                		getData();
+		                	}
+		                    isVisible.setFlag(false);
+		                    cardlayout.show(controller,"meetingDetails");
+		                }
+		            }
+				}
+			}
+			
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				beginClickDate = calenderPanel.getCursorDate();
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		springLayout.putConstraint(SpringLayout.NORTH, calenderPanel, 65, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, calenderPanel, -588, SpringLayout.EAST, this);
@@ -179,6 +232,7 @@ public class HomePanel extends JPanel {
 						meetings = Controller.getMeetingDate(employee.getEmployee());
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(calenderPanel.getCalendarView());
+						
 						if(meetings != null){
 							for(int i = 0; i < meetings.size(); i++){
 								int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
@@ -194,4 +248,9 @@ public class HomePanel extends JPanel {
 			});
 		}
 	}
+	
+	public void setModel(DateModel dateModel){
+		this.selectedDate = dateModel;
+	}
 }
+

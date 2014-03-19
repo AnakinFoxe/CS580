@@ -245,8 +245,8 @@ public class MeetingDetailsPanel extends JPanel {
 		String startTime = dtFormat.format(meeting.getStartTime());
 		//String endTime = dtFormat.format(meeting.getEndTime());
 		timeDetails.setText(startTime);
-		//rooDetails.setText(meeting.getRoom_id());
-		//hostDetails.setText(meeting.getHost());
+		rooDetails.setText(meeting.getRom().getName());
+		hostDetails.setText(meeting.getHost().getFirstName());
 		
 		
 	}
