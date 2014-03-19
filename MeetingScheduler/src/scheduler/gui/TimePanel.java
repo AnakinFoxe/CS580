@@ -12,6 +12,7 @@ import javax.swing.JRadioButton;
 import scheduler.controller.Controller;
 import scheduler.model.DateModel;
 import scheduler.model.EmployeeListModel;
+import scheduler.model.EmployeeModel;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -38,6 +39,7 @@ public class TimePanel extends JPanel {
 	private ButtonGroup group; 
 	private DateModel selectedTime;
 	private JLabel lblPleaseSelectOne;
+	private EmployeeModel user;
 	
 	public TimePanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -130,6 +132,9 @@ public class TimePanel extends JPanel {
 		selectedTime = date;
 	}
 	
-	
+	public void setModel(EmployeeModel employee) {
+		// TODO Auto-generated method stub
+		this.user = employee;
+	}
 	
 }
