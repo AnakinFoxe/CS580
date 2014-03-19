@@ -210,6 +210,7 @@ public class MeetingDetailsPanel extends JPanel {
 				selectedDate = dateModel.getDate();
 				//timeDetails.setText(dtFormat.format(selectedDate.getDate()));
 				meetingDate = Controller.genMeetingList(selectedDate, user.getEmployee().getUsrId());
+
 				String timeString;
 				comboBox.removeAllItems();
 				for(int i=0; i < meetingDate.size(); i++){
@@ -219,6 +220,7 @@ public class MeetingDetailsPanel extends JPanel {
 				}
 				displayMeetingDetails(0);
 				comboBox.setSelectedIndex(0);
+				
 			}
 		});
 	}

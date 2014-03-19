@@ -113,7 +113,7 @@ public class TimePanel extends JPanel {
 			public void propertyChange(PropertyChangeEvent evt) {
 				// TODO Auto-generated method stub
 				if(EmployeeListModel.modelName.equals(evt.getPropertyName())){
-					times = Controller.genAvailableTime(null, attendeeList.getList());
+					times = Controller.genAvailableTime(user.getEmployee(), attendeeList.getList());
 					timeBox.removeAll();
 					group = new ButtonGroup();
 					for (int i = 0; i < times.size(); i++) {

@@ -90,6 +90,37 @@ public class Controller {
 		}
 	}
 	
+	public static List<Meeting> checkAcceptance(Integer usr_id) {
+		if (connection == null || usr_id == null)
+			return null;
+		
+		
+		try {
+			sql = "select * from attendee where att_usr_id='" + usr_id.toString() + "'";
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+	
+//			while (resultSet.next()) {
+//				Integer usr_id = resultSet.getInt("usr_id");
+//				String usr_username = resultSet.getString("usr_username");
+//				
+//				System.out.println("Successfully Login: id=" + usr_id + " username=" + usr_username);
+//				return usr_id;
+//			}
+			
+		
+			return null;
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+	
 	
 	public static User getUser(Integer usr_id) {
 		if (connection == null)
@@ -149,12 +180,28 @@ public class Controller {
 		if (emp == null)
 			return null;
 		
+		List<Date> dates = new ArrayList<Date>();
+		
 		try {
-			sql = "select * from attendee where att_emp_id=" + emp.getUsrId().toString();
+			// Meetings this guy hosting
+			sql = "select * from meeting where met_emp_id='" + emp.getUsrId().toString() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				Integer sch_id = resultSet.getInt("met_sch_id");
+				
+				sql = "select * from schedule where sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				ResultSet moreResultSet = statement.executeQuery(sql);
+				while (moreResultSet.next()) {
+					dates.add(moreResultSet.getDate("sch_start_time"));
+				}
+			}
 			
-			List<Date> dates = new ArrayList<Date>();
+			// Meeting this guy attends
+			sql = "select * from attendee where att_emp_id=" + emp.getUsrId().toString();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);				
 			while (resultSet.next()) {
 				Integer sch_id = resultSet.getInt("att_sch_id");
 				
@@ -216,7 +263,7 @@ public class Controller {
 				String startTime = resultSet.getString("sch_start_time");
 				String endTime = resultSet.getString("sch_end_time");
 				met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
-				met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
+				//met.setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(endTime));
 			} else
 				return null;
 			
@@ -517,15 +564,15 @@ public class Controller {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static List<Meeting> genMeetingList(Date date, Integer usr_id) {
-		if (Controller.connection == null)
-			return null;
-		
-		if (date == null || usr_id == null)
-			return null;
-		
-		List<Integer> metIdList = new ArrayList<Integer>();
 		List<Meeting> metList = new ArrayList<Meeting>();
+		
+		if (Controller.connection == null || date == null || usr_id == null)
+			return metList;
+
+		List<Integer> metIdList = new ArrayList<Integer>();
+		
 		
 		try {
 			// Meetings this guy hosting
@@ -559,7 +606,11 @@ public class Controller {
 					met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
 					met.setSchId(sch_id);
 				} else
-					return null;
+					continue;
+				
+				Date metDate = met.getStartTime();
+				if ((metDate.getMonth() != date.getMonth()) || (metDate.getDate() != date.getDate()))
+					continue;
 				
 				sql = "select * from meeting where met_sch_id='" + sch_id + "'";
 				statement = connection.createStatement();
@@ -567,7 +618,7 @@ public class Controller {
 				if (moreResultSet.next()) {
 					met.setMeetingDescription(moreResultSet.getString("met_description"));
 				} else
-					return null;
+					continue;
 				
 				metList.add(met);
 			}
@@ -580,10 +631,10 @@ public class Controller {
 		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
 			e.printStackTrace();
 			
-			return null;
+			return metList;
 		} catch (ParseException e) {
 			System.out.println("Parse Time Error");  
-			return null;
+			return metList;
 		}
 	}
 	
