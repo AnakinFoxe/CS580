@@ -88,7 +88,7 @@ public class LoginPanel extends JPanel {
             			if (usr instanceof Employee) {
             				employee.setEmployee((Employee) usr);
             				
-            				
+            				homeVisible.setFlag(true);
             				cardlayout.show(controller,"home");
             			} else if (usr instanceof Administrator) {
             				cardlayout.show(controller,"adminHome");
@@ -114,7 +114,7 @@ public class LoginPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}
-            	homeVisible.setFlag(true);
+            	//homeVisible.setFlag(true);
             	cardlayout.show(controller,"adminHome");
             }
             
