@@ -92,6 +92,9 @@ public class Controller {
 	
 	
 	public static User getUser(Integer usr_id) {
+		if (connection == null)
+			return null;
+		
 		if (usr_id == 0)
 			return null;
 		
@@ -139,8 +142,50 @@ public class Controller {
 		}
 	}
 	
+	public static List<Date> getMeetingDate(Employee emp) {
+		if (connection == null)
+			return null;
+		
+		if (emp == null)
+			return null;
+		
+		try {
+			sql = "select * from attendee where att_emp_id=" + emp.getUsrId().toString();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			List<Date> dates = new ArrayList<Date>();
+			while (resultSet.next()) {
+				Integer sch_id = resultSet.getInt("att_sch_id");
+				
+				sql = "select * from schedule where sch_id=" + sch_id.toString();
+				statement = connection.createStatement();
+				ResultSet moreResultSet = statement.executeQuery(sql);
+				while (moreResultSet.next()) {
+					dates.add(moreResultSet.getDate("sch_start_time"));
+				}
+			}
+			
+			if (dates.size() > 0)
+				return dates;
+			else
+				return null;
+			
+		} catch (SQLException e) {
+			Integer ec = e.getErrorCode();
+			String msg = e.getMessage();  
+			String state = e.getSQLState();
+		    System.out.println("The problem is : "+ec+" : "+msg+" : "+state);  
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
 	
 	public static Meeting getMeetingDetail(Integer sch_id) {
+		if (connection == null)
+			return null;
+		
 		if (sch_id == 0)
 			return null;
 		
@@ -259,6 +304,9 @@ public class Controller {
 	
 	public static List<Room> genRoomList(Date date, Integer empNum) {
 		if (Controller.connection == null)
+			return null;
+		
+		if (date == null || empNum <= 0)
 			return null;
 		
 		List<Room> romList = new ArrayList<Room>();
@@ -417,33 +465,49 @@ public class Controller {
 		
 	}
 	
-	
-	public static List<Date> getMeetingDate(Employee emp) {
-		if (emp == null)
+	public static List<Meeting> genMeetingList(Date date, Integer usr_id) {
+		if (Controller.connection == null)
 			return null;
 		
+		if (date == null || usr_id == null)
+			return null;
+		
+		
+		List<Meeting> metList = new ArrayList<Meeting>();
+		
 		try {
-			sql = "select * from attendee where att_emp_id=" + emp.getUsrId().toString();
+			sql = "select * from attendee where att_emp_id='" + usr_id + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			
-			List<Date> dates = new ArrayList<Date>();
 			while (resultSet.next()) {
 				Integer sch_id = resultSet.getInt("att_sch_id");
+				Meeting met = new Meeting();
 				
-				sql = "select * from schedule where sch_id=" + sch_id.toString();
+				// Only provide start/end time, description
+				sql = "select * from schedule where sch_id='" + sch_id + "'";
 				statement = connection.createStatement();
 				ResultSet moreResultSet = statement.executeQuery(sql);
-				while (moreResultSet.next()) {
-					dates.add(moreResultSet.getDate("sch_start_time"));
-				}
+				if (moreResultSet.next()) {
+					String startTime = moreResultSet.getString("sch_start_time");
+					String endTime = moreResultSet.getString("sch_end_time");
+					met.setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH).parse(startTime));
+					met.setSchId(sch_id);
+				} else
+					return null;
+				
+				sql = "select * from meeting where met_sch_id='" + sch_id + "'";
+				statement = connection.createStatement();
+				moreResultSet = statement.executeQuery(sql);
+				if (moreResultSet.next()) {
+					met.setMeetingDescription(moreResultSet.getString("met_description"));
+				} else
+					return null;
+				
+				metList.add(met);
 			}
-			
-			if (dates.size() > 0)
-				return dates;
-			else
-				return null;
-			
+
+			return metList;
 		} catch (SQLException e) {
 			Integer ec = e.getErrorCode();
 			String msg = e.getMessage();  
@@ -452,8 +516,12 @@ public class Controller {
 			e.printStackTrace();
 			
 			return null;
+		} catch (ParseException e) {
+			System.out.println("Parse Time Error");  
+			return null;
 		}
 	}
+	
 	
 	public static boolean insertMeeting(Employee host, List<Employee> empList, Date date, Room rom) {
 		if (host == null || empList == null || date == null || rom == null) 
