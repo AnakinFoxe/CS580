@@ -301,4 +301,5 @@ public class MeetingDetailsPanel extends JPanel {
 	public void setModel(MeetingModel model){
 		this.meetingModel = model;
 	}
+	
 }

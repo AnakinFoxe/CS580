@@ -234,10 +234,15 @@ public class HomePanel extends JPanel {
 					// TODO Auto-generated method stub
 					// refresh calender
 					if(isVisible.getFlag()){
+						
 						meetings = Controller.getMeetingDate(employee.getEmployee());
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(calenderPanel.getCalendarView());
-						
+						if(selectedDate != null){
+							if(!meetings.contains(selectedDate.getDate())){
+								calenderPanel.setDateHighlight(selectedDate.getDate(), null);
+							}
+						}
 						if(meetings != null){
 							for(int i = 0; i < meetings.size(); i++){
 								int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
