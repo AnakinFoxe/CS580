@@ -50,6 +50,7 @@ public class LoginPanel extends JPanel {
 		
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		this.setBackground(new Color(255, 255, 255));
 		
 		lblMeetingScheduler = new JLabel();
 		lblMeetingScheduler.setText("Meeting Scheduler");
@@ -68,7 +69,7 @@ public class LoginPanel extends JPanel {
 		lblPassword = new JLabel();
 		lblPassword.setText("Password");
 		lblPassword.setFont(new Font("Consolas", Font.PLAIN, 14));
-		lblPassword.setBackground(new Color(240, 240, 240));
+		
 		add(lblPassword);
 		
 		psfPassword = new JPasswordField();

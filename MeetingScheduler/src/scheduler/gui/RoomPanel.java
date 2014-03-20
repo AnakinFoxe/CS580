@@ -9,7 +9,9 @@ import javax.swing.SpringLayout;
 import javax.swing.JScrollPane;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 
@@ -56,6 +58,7 @@ public class RoomPanel extends JPanel {
 	public RoomPanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		this.setBackground(new Color(255, 255, 255));
 
 		roomBox = Box.createVerticalBox();
 		scrollPane = new JScrollPane(roomBox);
@@ -64,7 +67,8 @@ public class RoomPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 194, SpringLayout.WEST, this);
 		add(scrollPane);
 
-		roomLabel = new JLabel("Choose a Room");
+		roomLabel = new JLabel("Last Step: Choose a Room");
+		roomLabel.setFont(new Font("Arial", Font.PLAIN, 24));
 		springLayout.putConstraint(SpringLayout.NORTH, roomLabel, 32, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, roomLabel, 199, SpringLayout.WEST, this);
 		add(roomLabel);

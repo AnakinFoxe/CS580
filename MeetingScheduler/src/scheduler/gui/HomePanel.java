@@ -66,7 +66,8 @@ public class HomePanel extends JPanel {
 
 
 	public HomePanel() {
-		setBackground(Color.LIGHT_GRAY);
+//		setBackground(Color.LIGHT_GRAY);
+		this.setBackground(new Color(255, 255, 255));
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 

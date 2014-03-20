@@ -2,7 +2,9 @@ package scheduler.gui;
 
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -47,8 +49,10 @@ public class MeetingPanel extends JPanel {
 	public MeetingPanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		this.setBackground(new Color(255, 255, 255));
 
-		lblSelectAttendees = new JLabel("Select Attendees");
+		lblSelectAttendees = new JLabel("Step 1: Select Attendees");
+		lblSelectAttendees.setFont(new Font("Arial", Font.PLAIN, 24));
 		add(lblSelectAttendees);
 
 		btnContinue = new JButton("Continue");
@@ -65,18 +69,24 @@ public class MeetingPanel extends JPanel {
 			}
 
 		});
-		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
+		
 		add(btnContinue);
 		employeeBox = Box.createVerticalBox();
 		jscrlBox = new JScrollPane(employeeBox);
-		springLayout.putConstraint(SpringLayout.NORTH, jscrlBox, 24, SpringLayout.SOUTH, lblSelectAttendees);
-		springLayout.putConstraint(SpringLayout.WEST, jscrlBox, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, jscrlBox, 0, SpringLayout.SOUTH, btnContinue);
-		springLayout.putConstraint(SpringLayout.EAST, jscrlBox, 211, SpringLayout.WEST, this);
 		jscrlBox.setPreferredSize(new Dimension(140,90));
 		add(jscrlBox);
-
+		
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, lblSelectAttendees, 20, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblSelectAttendees, 20, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, jscrlBox, 30, SpringLayout.SOUTH, lblSelectAttendees);
+		springLayout.putConstraint(SpringLayout.WEST, jscrlBox, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, jscrlBox, 0, SpringLayout.SOUTH, btnContinue);
+		springLayout.putConstraint(SpringLayout.EAST, jscrlBox, 300, SpringLayout.WEST, this);
 	}
 
 	protected void getAttendees() {

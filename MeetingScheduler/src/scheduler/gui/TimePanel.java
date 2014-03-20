@@ -17,6 +17,7 @@ import scheduler.model.Flag;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -49,14 +50,14 @@ public class TimePanel extends JPanel {
 	public TimePanel() {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		JLabel lblNewLabel = new JLabel("Select a Time");
-		springLayout.putConstraint(SpringLayout.NORTH, lblNewLabel, 27, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblNewLabel, 186, SpringLayout.WEST, this);
+		this.setBackground(new Color(255, 255, 255));
+		
+		JLabel lblNewLabel = new JLabel("Step 2: Select a Time");
+		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 24));		
 		add(lblNewLabel);
 		
 		lblPleaseSelectOne = new JLabel("Please select one of the available time slots:");
-		springLayout.putConstraint(SpringLayout.NORTH, lblPleaseSelectOne, 64, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblPleaseSelectOne, 10, SpringLayout.WEST, this);
+		lblPleaseSelectOne.setFont(new Font("Arial", Font.PLAIN, 14));	
 		add(lblPleaseSelectOne);
 		
 		btnContinue = new JButton("Continue");
@@ -80,18 +81,25 @@ public class TimePanel extends JPanel {
 			}
 
 		});
-		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
 		add(btnContinue);
 		
 		timeBox = Box.createVerticalBox();
 		jscrlBox = new JScrollPane(timeBox);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, jscrlBox, 6, SpringLayout.SOUTH, lblPleaseSelectOne);
-		springLayout.putConstraint(SpringLayout.WEST, jscrlBox, 10, SpringLayout.WEST, lblPleaseSelectOne);
-		springLayout.putConstraint(SpringLayout.SOUTH, jscrlBox, 0, SpringLayout.SOUTH, btnContinue);
-		springLayout.putConstraint(SpringLayout.EAST, jscrlBox, 56, SpringLayout.EAST, lblPleaseSelectOne);
 		add(jscrlBox);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, lblNewLabel, 20, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblNewLabel, 20, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, lblPleaseSelectOne, 10, SpringLayout.SOUTH, lblNewLabel);
+		springLayout.putConstraint(SpringLayout.WEST, lblPleaseSelectOne, 20, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, jscrlBox, 30, SpringLayout.SOUTH, lblNewLabel);
+		springLayout.putConstraint(SpringLayout.WEST, jscrlBox, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, jscrlBox, 0, SpringLayout.SOUTH, btnContinue);
+		springLayout.putConstraint(SpringLayout.EAST, jscrlBox, 300, SpringLayout.WEST, this);
 	}
 	
 	protected boolean getTime() {
