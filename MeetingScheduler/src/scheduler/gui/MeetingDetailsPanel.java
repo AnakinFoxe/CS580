@@ -1,6 +1,8 @@
 package scheduler.gui;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 
@@ -11,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +37,10 @@ import javax.swing.JTextPane;
 import java.awt.Color;
 
 import javax.swing.UIManager;
+import javax.swing.JSplitPane;
+
+import java.awt.Component;
+import java.awt.Button;
 
 public class MeetingDetailsPanel extends JPanel {
 	private JLabel lblRoom;
@@ -52,7 +59,7 @@ public class MeetingDetailsPanel extends JPanel {
 	private DateModel dateModel;
 	private JComboBox<String> comboBox;
 	private Box attendeesBox;
-	private EmployeeModel user;
+	private EmployeeModel employeeModel;
 	protected Date selectedDate;
 	protected List<Meeting> meetingDate;
 	private List<Employee> attendeeList;
@@ -63,12 +70,16 @@ public class MeetingDetailsPanel extends JPanel {
 	private DateModel timeModel;
 	private RoomModel roomModel;
 	private Meeting meeting;
-	private Flag tPanelVisible;
-	private Flag rPanelVisible;
 	private Flag fromMeetingDet;
 	private MeetingModel meetingModel;
 	private Flag homeVisible;
 	private Flag meetingDetVisible;
+	private Box acceptBox;
+	private Box mainbox;
+	private JOptionPane optionPane;
+	private List<Date> need2Accept;
+	private Button btnReject;
+	private Button btnAccept;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -99,8 +110,21 @@ public class MeetingDetailsPanel extends JPanel {
 		add(rooDetails);
 		
 		attendeesBox = Box.createVerticalBox();
+		attendeesBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		attendeesBox.setAlignmentY(Component.TOP_ALIGNMENT);
+		acceptBox = Box.createVerticalBox();
+		acceptBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		acceptBox.setAlignmentY(Component.TOP_ALIGNMENT);
+		mainbox = Box.createHorizontalBox();
+		mainbox.add(attendeesBox);
+		mainbox.add(acceptBox);
+		JLabel accept = new JLabel("Accept");
+		accept.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		acceptBox.add(accept);
+		scrollPane = new JScrollPane(mainbox);
+		JLabel accept1 = new JLabel("blah");
+		attendeesBox.add(accept1);
 		
-		scrollPane = new JScrollPane(attendeesBox);
 		springLayout.putConstraint(SpringLayout.WEST, lblRoom, 23, SpringLayout.EAST, scrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, rooDetails, 64, SpringLayout.EAST, scrollPane);
 		springLayout.putConstraint(SpringLayout.SOUTH, lblAttendees, -8, SpringLayout.NORTH, scrollPane);
@@ -137,6 +161,15 @@ public class MeetingDetailsPanel extends JPanel {
 		add(hostDetails);
 		
 		btnModify = new JButton("Modify");
+		
+		optionPane = new JOptionPane(
+			    "The only way to close this dialog is by\n"
+			    + "pressing one of the following buttons.\n"
+			    + "Do you understand?",
+			    JOptionPane.QUESTION_MESSAGE,
+			    JOptionPane.YES_NO_OPTION);
+		optionPane.setVisible(false);
+		
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -158,13 +191,28 @@ public class MeetingDetailsPanel extends JPanel {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if (controller == null){
             		getData();
             	}
-				Controller.deleteMeeting(meeting);
-				homeVisible.setFlag(true);
-				meetingDetVisible.setFlag(false);
-            	cardlayout.show(controller,"home");
+				Object[] options = {"Confrm",
+						"Cancel",};
+				int isDeleted = JOptionPane.showOptionDialog(controller,
+						"Are you sure you want to"
+								+ "delete this meeting?",
+								"Cancel meeting",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								options,
+								options[1]);
+				
+				if (isDeleted == 0){
+					Controller.deleteMeeting(meeting);
+					homeVisible.setFlag(true);
+					meetingDetVisible.setFlag(false);
+	            	cardlayout.show(controller,"home");
+				}
 			}
 
 		});
@@ -182,6 +230,7 @@ public class MeetingDetailsPanel extends JPanel {
             	}
 				fromMeetingDet.setFlag(false);
 				meetingDetVisible.setFlag(false);
+				homeVisible.setFlag(true);
             	cardlayout.show(controller,"home");
 			}
 
@@ -221,6 +270,36 @@ public class MeetingDetailsPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, descriptDetail, -35, SpringLayout.EAST, this);
 		add(descriptDetail);
 		
+		btnAccept = new Button("Accept");
+		btnAccept.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Employee user = employeeModel.getEmployee();
+				Controller.updateAcceptance(user.getUsrId(), meeting.getSchId(), "YES");
+				btnAccept.setVisible(false);
+				btnReject.setVisible(false);
+			}
+		});
+		springLayout.putConstraint(SpringLayout.SOUTH, btnAccept, 0, SpringLayout.SOUTH, btnModify);
+		springLayout.putConstraint(SpringLayout.EAST, btnAccept, -350, SpringLayout.EAST, this);
+		add(btnAccept);
+		
+		btnReject = new Button("Reject");
+		btnReject.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Employee user = employeeModel.getEmployee();
+				Controller.updateAcceptance(user.getUsrId(), meeting.getSchId(), "NO");
+				btnAccept.setVisible(false);
+				btnReject.setVisible(false);
+			}
+		});
+		springLayout.putConstraint(SpringLayout.WEST, btnReject, 12, SpringLayout.EAST, btnAccept);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnReject, 0, SpringLayout.SOUTH, btnModify);
+		add(btnReject);
+		
 	}
 	
 	protected void getData() {
@@ -240,14 +319,28 @@ public class MeetingDetailsPanel extends JPanel {
 		attendeeList = meeting.getAttendee();
 		Employee employee;
 		attendeesBox.removeAll();
+		acceptBox.removeAll();
+		JLabel attendee = new JLabel("Attendees");
+		JLabel accept = new JLabel("Accept");
+		attendeesBox.add(attendee);
+		acceptBox.add(accept);
 		if(attendeeList != null){
 			for (int j = 0; j < attendeeList.size(); j++) {
 				employee = attendeeList.get(j);
-				JLabel attendee = new JLabel(employee.getFirstName() + " " + employee.getLastName());
+				attendee = new JLabel(employee.getFirstName() + " " + employee.getLastName());
+				accept = new JLabel("YES");
 				attendeesBox.add(attendee);
+				acceptBox.add(accept);
 			}
 		}
 		
+		if(need2Accept != null && need2Accept.contains(meeting.getStartTime())){
+			btnAccept.setVisible(true);
+			btnReject.setVisible(true);
+		}else{
+			btnAccept.setVisible(false);
+			btnReject.setVisible(false);
+		}
 		SimpleDateFormat dtFormat = new SimpleDateFormat("hh:mm");
 		String startTime = dtFormat.format(meeting.getStartTime());
 		//String endTime = dtFormat.format(meeting.getEndTime());
@@ -259,7 +352,7 @@ public class MeetingDetailsPanel extends JPanel {
 	}
 
 	public void setModel(EmployeeModel model){
-		this.user = model;
+		this.employeeModel = model;
 	}
 	
 	public void setModel(EmployeeListModel model){
@@ -300,11 +393,12 @@ public class MeetingDetailsPanel extends JPanel {
 			
 			public void propertyChange(PropertyChangeEvent evt) {
 				// TODO Auto-generated method stub
+				Employee user = employeeModel.getEmployee();
 				if(meetingDetVisible.getFlag()){
 					SimpleDateFormat dtFormat = new SimpleDateFormat("hh:mm");
 					selectedDate = dateModel.getDate();
 					//timeDetails.setText(dtFormat.format(selectedDate.getDate()));
-					meetingDate = Controller.genMeetingList(selectedDate, user.getEmployee().getUsrId());
+					meetingDate = Controller.genMeetingList(selectedDate, user.getUsrId());
 
 					String timeString;
 					comboBox.removeAllItems();
@@ -312,6 +406,15 @@ public class MeetingDetailsPanel extends JPanel {
 						Meeting meeting = meetingDate.get(i);
 						timeString = dtFormat.format(meeting.getStartTime());
 						comboBox.addItem(timeString);
+					}
+					List<Meeting> meetUnAccept = Controller.checkAcceptance(user.getUsrId());
+					need2Accept = new ArrayList<Date>();
+					Meeting meet;
+					Date date;
+					for(int i = 0; i < meetUnAccept.size(); i++){
+						 meet = meetUnAccept.get(i);
+						 date = meet.getStartTime();
+						need2Accept.add(date);
 					}
 					displayMeetingDetails(0);
 					comboBox.setSelectedIndex(0);
