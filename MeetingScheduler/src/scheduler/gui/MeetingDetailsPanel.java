@@ -63,6 +63,7 @@ public class MeetingDetailsPanel extends JPanel {
 	protected Date selectedDate;
 	protected List<Meeting> meetingDate;
 	private List<Employee> attendeeList;
+	private List<String> acceptList;
 	private JLabel lblDescript;
 	private JTextPane descriptDetail;
 	private EmployeeListModel attendeeListModel;
@@ -78,8 +79,8 @@ public class MeetingDetailsPanel extends JPanel {
 	private Box mainbox;
 	private JOptionPane optionPane;
 	private List<Date> need2Accept;
-	private Button btnReject;
-	private Button btnAccept;
+	private JButton btnReject;
+	private JButton btnAccept;
 	
 	public MeetingDetailsPanel() {
 		SpringLayout springLayout = new SpringLayout();
@@ -270,30 +271,46 @@ public class MeetingDetailsPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, descriptDetail, -35, SpringLayout.EAST, this);
 		add(descriptDetail);
 		
-		btnAccept = new Button("Accept");
+		btnAccept = new JButton("Accept");
 		btnAccept.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				if (controller == null){
+            		getData();
+            	}
 				// TODO Auto-generated method stub
 				Employee user = employeeModel.getEmployee();
 				Controller.updateAcceptance(user.getUsrId(), meeting.getSchId(), "YES");
 				btnAccept.setVisible(false);
 				btnReject.setVisible(false);
+				
+				fromMeetingDet.setFlag(false);
+				meetingDetVisible.setFlag(false);
+				homeVisible.setFlag(true);
+            	cardlayout.show(controller,"home");
 			}
 		});
 		springLayout.putConstraint(SpringLayout.SOUTH, btnAccept, 0, SpringLayout.SOUTH, btnModify);
 		springLayout.putConstraint(SpringLayout.EAST, btnAccept, -350, SpringLayout.EAST, this);
 		add(btnAccept);
 		
-		btnReject = new Button("Reject");
+		btnReject = new JButton("Reject");
 		btnReject.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				if (controller == null){
+            		getData();
+            	}
 				// TODO Auto-generated method stub
 				Employee user = employeeModel.getEmployee();
 				Controller.updateAcceptance(user.getUsrId(), meeting.getSchId(), "NO");
 				btnAccept.setVisible(false);
 				btnReject.setVisible(false);
+				
+				fromMeetingDet.setFlag(false);
+				meetingDetVisible.setFlag(false);
+				homeVisible.setFlag(true);
+            	cardlayout.show(controller,"home");
 			}
 		});
 		springLayout.putConstraint(SpringLayout.WEST, btnReject, 12, SpringLayout.EAST, btnAccept);
@@ -317,6 +334,7 @@ public class MeetingDetailsPanel extends JPanel {
 		descriptDetail.setText(meeting.getMeetingDescription());
 		meeting = Controller.getMeetingDetail(meeting.getSchId());
 		attendeeList = meeting.getAttendee();
+		acceptList = meeting.getAccept();
 		Employee employee;
 		attendeesBox.removeAll();
 		acceptBox.removeAll();
@@ -327,9 +345,17 @@ public class MeetingDetailsPanel extends JPanel {
 		if(attendeeList != null){
 			for (int j = 0; j < attendeeList.size(); j++) {
 				employee = attendeeList.get(j);
+				String acceptStatus = acceptList.get(j);
 				attendee = new JLabel(employee.getFirstName() + " " + employee.getLastName());
-				accept = new JLabel("YES");
 				attendeesBox.add(attendee);
+				accept = new JLabel("NA");
+				if (acceptStatus == null) 
+					accept.setText("Not Respond");
+				else if (acceptStatus.equals("YES"))
+					accept.setText("Accepted");
+				else if (acceptStatus.equals("NO"))
+					accept.setText("Rejected");
+				
 				acceptBox.add(accept);
 			}
 		}
