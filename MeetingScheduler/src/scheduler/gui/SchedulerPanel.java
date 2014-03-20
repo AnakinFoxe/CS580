@@ -53,7 +53,8 @@ public class SchedulerPanel extends JPanel {
 
 	private MeetingModel meetingModel;
 	private Flag meetingDetVisible;
-	private Flag Adminflag;
+	private Flag adminFlag;
+	private RoomModel adminRoom;
 
 
 	
@@ -79,7 +80,7 @@ public class SchedulerPanel extends JPanel {
 		employeeAdmin = new EmployeeModel();
 		//calendar.setModel(homeVisible);
 
-		Adminflag = new Flag(false);
+		adminFlag = new Flag(false);
 
 		
 		
@@ -90,7 +91,7 @@ public class SchedulerPanel extends JPanel {
 		homePanel.setMeetDetFlag(meetingDetVisible);
 		
 		loginPanel.setModel(employeeModel);
-		loginPanel.setAdminFlag(Adminflag);
+		loginPanel.setAdminFlag(adminFlag);
 		
 		flag1 = new Flag(false);
 		homePanel.setModel(employeeModel);
@@ -134,29 +135,35 @@ public class SchedulerPanel extends JPanel {
 		detailsPanel.setHFlag(homeVisible);
 		detailsPanel.setMeetFlag(meetingDetVisible);
 		
+		adminRoom = new RoomModel();
 		adminPanel = new AdministratorPanel();
 		adminPanel.setModel(employeeList);
 		adminPanel.setModel(roomListModel);
 		adminPanel.setModel(employeeAdmin);
-		adminPanel.setModel(Adminflag);
+		adminPanel.setModel(adminFlag);
+		adminPanel.setModel(adminRoom);
 
 		
 		adminRoomPanel = new AMRoomPanel();
 		adminRoomPanel.setModel(roomListModel);
+		adminRoomPanel.setModel(adminRoom);
+		adminRoomPanel.setModel(adminFlag);
 		
+		delroomPanel = new DelRoomPanel();
+		delroomPanel.setModel(adminRoom);
+		delroomPanel.setModel(adminFlag);
 		
 		adminEmpPanel = new AMEmpPanel();
 		adminEmpPanel.setModel(employeeList);
-		adminEmpPanel.setModel(Adminflag);
-		
+		adminEmpPanel.setModel(adminFlag);
+		adminEmpPanel.setModel(employeeAdmin);
 		
 		profilePanel = new ProfilePanel();
 		profilePanel.setModel(employeeModel);
 		
 		delempPanel = new DelEmpPanel();
-		delroomPanel = new DelRoomPanel();
 		delempPanel.setModel(employeeAdmin);
-		delempPanel.setModel(Adminflag);
+		delempPanel.setModel(adminFlag);
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");

@@ -25,7 +25,7 @@ public class Flag {
 		boolean y  = f;
 		f = s;
 		boolean n = f;
-		System.out.println("f is : " + f);
+		//System.out.println("f is : " + f);
 		pcSupport.firePropertyChange(modelName, y, n);
 	}
 	
