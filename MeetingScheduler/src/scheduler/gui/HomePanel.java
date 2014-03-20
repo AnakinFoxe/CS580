@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.SpringLayout;
@@ -65,6 +66,7 @@ public class HomePanel extends JPanel {
 		setLayout(springLayout);
 		
 		btnCreateMeeting = new JButton("Create Meeting");
+		btnCreateMeeting.setPreferredSize(new Dimension(121, 30));
 		btnCreateMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -78,6 +80,7 @@ public class HomePanel extends JPanel {
 		add(btnCreateMeeting);
 		
 		btnUpdateProfile = new JButton("Update Profile");
+		btnUpdateProfile.setPreferredSize(new Dimension(121, 30));
 		btnUpdateProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -90,6 +93,7 @@ public class HomePanel extends JPanel {
 		add(btnUpdateProfile);
 		
 //		btnLogout = new JButton("Logout");
+//		btnLogout.setPreferredSize(new Dimension(121, 30));
 //		btnLogout.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
 //				if (controller == null){

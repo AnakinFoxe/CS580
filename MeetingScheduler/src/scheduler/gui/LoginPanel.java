@@ -19,6 +19,7 @@ import scheduler.model.User;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,6 +76,7 @@ public class LoginPanel extends JPanel {
 		psfPassword.setColumns(10);
 		
 		btnLogin = new JButton("Login");
+		btnLogin.setPreferredSize(new Dimension(121, 30));
 		btnLogin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){

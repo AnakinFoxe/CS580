@@ -16,6 +16,7 @@ import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -59,6 +60,7 @@ public class TimePanel extends JPanel {
 		add(lblPleaseSelectOne);
 		
 		btnContinue = new JButton("Continue");
+		btnContinue.setPreferredSize(new Dimension(121, 30));
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -78,8 +80,8 @@ public class TimePanel extends JPanel {
 			}
 
 		});
-		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -23, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -35, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
 		add(btnContinue);
 		
 		timeBox = Box.createVerticalBox();

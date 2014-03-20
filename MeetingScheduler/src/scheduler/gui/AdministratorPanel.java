@@ -3,6 +3,7 @@ package scheduler.gui;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -64,6 +65,15 @@ public class AdministratorPanel extends JPanel {
 		btnModifyRoom = new JButton("Modify Room");
 		btnDeleteRoom = new JButton("Delete Room");
 		btnDeleteEmp = new JButton("Delete Employee");
+		
+		lblEmployees.setFont(new Font("Arial", Font.PLAIN, 24));
+		lblRooms.setFont(new Font("Arial", Font.PLAIN, 24));
+		btnAddEmp.setPreferredSize(new Dimension(150, 30));
+		btnModifyEmp.setPreferredSize(new Dimension(150, 30));
+		btnDeleteEmp.setPreferredSize(new Dimension(150, 30));
+		btnAddRoom.setPreferredSize(new Dimension(150, 30));
+		btnModifyRoom.setPreferredSize(new Dimension(150, 30));
+		btnDeleteRoom.setPreferredSize(new Dimension(150, 30));
 		
 		employeeBox = Box.createVerticalBox();
 		jscrlempBox = new JScrollPane(employeeBox);
@@ -161,7 +171,7 @@ public class AdministratorPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, jscrlempBox, -20, SpringLayout.WEST, lblRooms);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnAddEmp, 20, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnAddEmp, 0, SpringLayout.EAST, btnModifyEmp);
+//		springLayout.putConstraint(SpringLayout.EAST, btnAddEmp, 0, SpringLayout.EAST, btnModifyEmp);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddEmp, 5, SpringLayout.SOUTH, jscrlempBox);
 		
 		springLayout.putConstraint(SpringLayout.WEST, btnModifyEmp, 20, SpringLayout.WEST, this);
@@ -213,6 +223,7 @@ public class AdministratorPanel extends JPanel {
 					
 					for(int i = 0; i < roomList.size(); i++){
 						JRadioButton rdbtn = new JRadioButton(roomList.get(i).getName().toString()); 
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
 						roomBox.add(rdbtn);
 						roomGroup.add(rdbtn);
 					}
@@ -241,7 +252,8 @@ public class AdministratorPanel extends JPanel {
 					employeeList = employeeListModel.getList();//Controller.genRoomList();
 					
 					for(int i = 0; i < employeeList.size(); i++){
-						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName())); 
+						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName()));
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
 						employeeBox.add(rdbtn);
 						empGroup.add(rdbtn);
 					}

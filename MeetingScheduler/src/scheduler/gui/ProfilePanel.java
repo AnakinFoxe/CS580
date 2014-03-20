@@ -1,6 +1,7 @@
 package scheduler.gui;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,12 +9,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import scheduler.controller.Controller;
 import scheduler.model.Employee;
@@ -78,7 +81,7 @@ public class ProfilePanel extends JPanel {
 		
 		lblHeading = new JLabel();
 		lblHeading.setText("Update Profile");
-		lblHeading.setFont(new Font("Consolas", Font.PLAIN, 20));
+		lblHeading.setFont(new Font("Arial", Font.PLAIN, 24));
 		add(lblHeading);
 		
 		lblUsername = new JLabel();
@@ -168,6 +171,7 @@ public class ProfilePanel extends JPanel {
 		txfEmail.setColumns(10);		
 		
 		btnUpdate = new JButton("Update");
+		btnUpdate.setPreferredSize(new Dimension(70, 30));
 		btnUpdate.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
@@ -192,13 +196,13 @@ public class ProfilePanel extends JPanel {
             	
             	if(errorMessage.equals("")){
             		employee.setEmployee(oldEmp);
-            		JOptionPane.showMessageDialog(null, "Profile Updated", "Status Message", JOptionPane.INFORMATION_MESSAGE);
+            		JOptionPane.showMessageDialog(controller.getParent(), "Profile Updated", "Status Message", JOptionPane.INFORMATION_MESSAGE);
             		clearFields();
             		cardlayout.show(controller,"home");
             	}
               	else{ 
             	
-            		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            		JOptionPane.showMessageDialog(controller.getParent(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             		clearFields();
             	}
             }           
@@ -207,6 +211,7 @@ public class ProfilePanel extends JPanel {
 		add(btnUpdate);
 		
 		btnClear = new JButton("Clear");
+		btnClear.setPreferredSize(new Dimension(70, 30));
 		btnClear.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
@@ -219,6 +224,7 @@ public class ProfilePanel extends JPanel {
 		add(btnClear);
 		
 		btnBack = new JButton("Back");
+		btnBack.setPreferredSize(new Dimension(70, 30));
 		btnBack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	if (controller == null){

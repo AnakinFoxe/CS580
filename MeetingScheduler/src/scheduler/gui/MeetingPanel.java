@@ -52,6 +52,7 @@ public class MeetingPanel extends JPanel {
 		add(lblSelectAttendees);
 
 		btnContinue = new JButton("Continue");
+		btnContinue.setPreferredSize(new Dimension(121, 30));
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller == null){
@@ -64,8 +65,8 @@ public class MeetingPanel extends JPanel {
 			}
 
 		});
-		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -44, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -65, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnContinue, -40, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnContinue, -50, SpringLayout.EAST, this);
 		add(btnContinue);
 		employeeBox = Box.createVerticalBox();
 		jscrlBox = new JScrollPane(employeeBox);

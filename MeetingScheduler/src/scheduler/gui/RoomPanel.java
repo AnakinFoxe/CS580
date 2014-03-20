@@ -9,6 +9,7 @@ import javax.swing.SpringLayout;
 import javax.swing.JScrollPane;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 
@@ -68,7 +69,8 @@ public class RoomPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, roomLabel, 199, SpringLayout.WEST, this);
 		add(roomLabel);
 
-		finishBtn = new JButton("finish");
+		finishBtn = new JButton("FINISH");
+		finishBtn.setPreferredSize(new Dimension(121, 30));
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, finishBtn);
 		finishBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,10 +87,9 @@ public class RoomPanel extends JPanel {
 			}
 
 		});
-		springLayout.putConstraint(SpringLayout.NORTH, finishBtn, -58, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, finishBtn, -136, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, finishBtn, -26, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, finishBtn, -26, SpringLayout.EAST, this);
+
+		springLayout.putConstraint(SpringLayout.SOUTH, finishBtn, -40, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, finishBtn, -50, SpringLayout.EAST, this);
 		add(finishBtn);
 	}
 

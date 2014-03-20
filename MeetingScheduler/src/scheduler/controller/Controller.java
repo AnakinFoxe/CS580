@@ -287,6 +287,7 @@ public class Controller {
 		try {
 			Meeting met = new Meeting();
 			List<Employee> attendee = new ArrayList<Employee>();
+			List<String> acceptList = new ArrayList<String>();
 			
 			// Find the Meeting
 			sql = "select * from meeting where met_sch_id='" + sch_id + "'";
@@ -354,8 +355,6 @@ public class Controller {
 				
 				// Only display those who accept the meeting request
 				String accept = resultSet.getString("att_accept");
-				if (accept == null || accept.equals("NO"))
-					continue;
 				
 				sql = "select * from employee where emp_usr_id='" + usr_id + "'";
 				statement = connection.createStatement();
@@ -370,6 +369,7 @@ public class Controller {
 					emp.setTitle(moreResultSet.getString("emp_title"));
 					
 					attendee.add(emp);
+					acceptList.add(accept);
 				} else {
 					System.out.println("Employee mismatching");  
 					return null;
@@ -377,6 +377,7 @@ public class Controller {
 			}
 			
 			met.setAttendee(attendee);
+			met.setAccept(acceptList);
 			
 			return met;
 		} catch (SQLException e) {
