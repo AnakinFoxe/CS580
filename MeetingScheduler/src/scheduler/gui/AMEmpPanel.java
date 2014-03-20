@@ -21,6 +21,7 @@ import scheduler.controller.Controller;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 
 
 public class AMEmpPanel extends JPanel {
@@ -64,6 +65,7 @@ public class AMEmpPanel extends JPanel {
 	private JButton btnBack;
 	
 	private EmployeeListModel empListModel;
+	private Flag adminVisible;
 	
 	
 	public AMEmpPanel() {
@@ -172,6 +174,7 @@ public class AMEmpPanel extends JPanel {
 				empListModel.setEmployeeList(oldEmpList);
 				Controller.insertEmployee(emp, newPassword);
 				clearFields();
+				adminVisible.setFlag(true);
 				cardlayout.show(controller, "adminHome");
   
             }           
@@ -287,6 +290,9 @@ public class AMEmpPanel extends JPanel {
 	
 	public void setModel( EmployeeListModel empList) {
 		  this.empListModel = empList;
+	}
+	public void setModel(Flag model){
+		this.adminVisible = model;
 	}
 	      
 }

@@ -45,6 +45,7 @@ public class LoginPanel extends JPanel {
 	private Flag homeVisible;
 	private EmployeeListModel empListModel;
 	private RoomListModel roomListModel;
+	private Flag adminVisible;
 
 	public LoginPanel() {
 		
@@ -112,7 +113,7 @@ public class LoginPanel extends JPanel {
             				
             				List<Employee> empList = Controller.genEmployeeList();
             				empListModel.setEmployeeList(empList);
-            				
+            				adminVisible.setFlag(true);
             				cardlayout.show(controller,"adminHome");
             			
             				System.out.println(roomListModel.getList().get(1).getName());
@@ -191,4 +192,7 @@ public class LoginPanel extends JPanel {
 		 this.empListModel = empListModel;
 	 }
 
+	 public void setAdminFlag(Flag model){
+		 this.adminVisible = model;
+	 }
 }

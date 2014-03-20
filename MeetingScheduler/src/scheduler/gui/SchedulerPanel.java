@@ -53,6 +53,8 @@ public class SchedulerPanel extends JPanel {
 
 	private MeetingModel meetingModel;
 	private Flag meetingDetVisible;
+	private Flag Adminflag;
+
 
 	
 	public SchedulerPanel(){
@@ -77,6 +79,7 @@ public class SchedulerPanel extends JPanel {
 		employeeAdmin = new EmployeeModel();
 		//calendar.setModel(homeVisible);
 
+		Adminflag = new Flag(false);
 
 		
 		
@@ -87,6 +90,7 @@ public class SchedulerPanel extends JPanel {
 		homePanel.setMeetDetFlag(meetingDetVisible);
 		
 		loginPanel.setModel(employeeModel);
+		loginPanel.setAdminFlag(Adminflag);
 		
 		flag1 = new Flag(false);
 		homePanel.setModel(employeeModel);
@@ -134,13 +138,17 @@ public class SchedulerPanel extends JPanel {
 		adminPanel.setModel(employeeList);
 		adminPanel.setModel(roomListModel);
 		adminPanel.setModel(employeeAdmin);
+		adminPanel.setModel(Adminflag);
 
 		
 		adminRoomPanel = new AMRoomPanel();
 		adminRoomPanel.setModel(roomListModel);
 		
+		
 		adminEmpPanel = new AMEmpPanel();
 		adminEmpPanel.setModel(employeeList);
+		adminEmpPanel.setModel(Adminflag);
+		
 		
 		profilePanel = new ProfilePanel();
 		profilePanel.setModel(employeeModel);
@@ -148,6 +156,7 @@ public class SchedulerPanel extends JPanel {
 		delempPanel = new DelEmpPanel();
 		delroomPanel = new DelRoomPanel();
 		delempPanel.setModel(employeeAdmin);
+		delempPanel.setModel(Adminflag);
 		
 		this.add(loginPanel, "login");
 		this.add(homePanel, "home");
@@ -161,6 +170,8 @@ public class SchedulerPanel extends JPanel {
 		this.add(adminEmpPanel, "empPanel");
 		this.add(delempPanel, "delempPanel");
 		this.add(delroomPanel, "delroomPanel");
+		
+		
 
 	}
 }
