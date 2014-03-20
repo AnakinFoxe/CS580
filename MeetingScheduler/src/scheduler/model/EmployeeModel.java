@@ -19,14 +19,16 @@ public class EmployeeModel {
 	
 	public void setEmployee(Employee e){
 		Employee oldEmployee = this.employee;
-		this.employee = new Employee();
-		if (e.getUsrId() != null)
+		
+		if (e != null && e.getUsrId() != null){
+			this.employee = new Employee();
 			employee.setUsrId(e.getUsrId());
-		employee.setFirstName (e.getFirstName());
-		employee.setLastName(e.getLastName());
-		employee.setMiddleName(e.getMiddleName());
-		employee.setPosition(e.getPosition());
-		employee.setEmail(e.getEmail());
+			employee.setFirstName (e.getFirstName());
+			employee.setLastName(e.getLastName());
+			employee.setMiddleName(e.getMiddleName());
+			employee.setPosition(e.getPosition());
+			employee.setEmail(e.getEmail());
+		}
 		Employee newEmployee = this.employee;
 		pcSupport.firePropertyChange(modelName, oldEmployee, newEmployee);
 	}

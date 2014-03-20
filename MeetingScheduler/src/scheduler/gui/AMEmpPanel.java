@@ -205,7 +205,7 @@ public class AMEmpPanel extends JPanel {
     				//oldEmpList.add(emp);
     				
     				//empListModel.setEmployeeList(oldEmpList);
-                	if(empModel != null){
+                	if(empModel.getEmployee() != null){
                 		Employee employee = empModel.getEmployee();
                 		Controller.updateProfile(employee, username, newPassword, newPassword, newPassword, firstname, 
                 				middlename, lastname, title, position, email);
