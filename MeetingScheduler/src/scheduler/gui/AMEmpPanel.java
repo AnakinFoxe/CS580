@@ -22,6 +22,7 @@ import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import java.awt.Color;
 
 
 public class AMEmpPanel extends JPanel {
@@ -56,7 +57,6 @@ public class AMEmpPanel extends JPanel {
 	private String position;
 	private String email;
 	
-	
 	private CardLayout cardlayout;
 	private JPanel controller;
 	
@@ -66,6 +66,12 @@ public class AMEmpPanel extends JPanel {
 	
 	private EmployeeListModel empListModel;
 	private Flag adminVisible;
+	private EmployeeModel empModel;
+	private JLabel userNameError;
+	private JLabel firstNameError;
+	private JLabel lastNameError;
+	private JLabel passwordError;
+	private Flag isModify;
 	
 	
 	public AMEmpPanel() {
@@ -166,16 +172,50 @@ public class AMEmpPanel extends JPanel {
             	title=txfTitle.getText().trim();
             	position=txfPosition.getText().trim();
             	email=txfEmail.getText().trim();
-            	Employee emp = new Employee(firstname, middlename, lastname, position, email);
-
-				List <Employee> oldEmpList = new ArrayList<Employee>(empListModel.getList());
-				oldEmpList.add(emp);
-				
-				empListModel.setEmployeeList(oldEmpList);
-				Controller.insertEmployee(emp, newPassword);
-				clearFields();
-				adminVisible.setFlag(true);
-				cardlayout.show(controller, "adminHome");
+            	
+            	if(username.isEmpty()){
+            		userNameError.setVisible(true);
+            	}else{
+            		userNameError.setVisible(false);
+            	}
+            	
+            	if(newPassword.isEmpty()){
+            		passwordError.setVisible(true);
+            	}else{
+            		passwordError.setVisible(false);
+            	}
+            	
+            	if(firstname.isEmpty()){
+            		firstNameError.setVisible(true);
+            	}else{
+            		firstNameError.setVisible(false);
+            	}
+            	
+            	if(lastname.isEmpty()){
+            		lastNameError.setVisible(true);
+            	}else{
+            		lastNameError.setVisible(false);
+            	}
+            	
+            	if(!username.isEmpty() && !newPassword.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty()){
+            		Employee emp = new Employee(firstname, middlename, lastname, position, email);
+                	emp.setUsername(username);
+                	
+    				//List <Employee> oldEmpList = new ArrayList<Employee>(empListModel.getList());
+    				//oldEmpList.add(emp);
+    				
+    				//empListModel.setEmployeeList(oldEmpList);
+                	if(empModel != null){
+                		Employee employee = empModel.getEmployee();
+                		Controller.updateProfile(employee, username, newPassword, newPassword, newPassword, firstname, 
+                				middlename, lastname, title, position, email);
+                	}else{
+                		Controller.insertEmployee(emp, newPassword);
+                	}
+    				clearFields();
+    				adminVisible.setFlag(true);
+    				cardlayout.show(controller, "adminHome");
+            	}
   
             }           
 		});
@@ -269,6 +309,35 @@ public class AMEmpPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.BASELINE, btnBack, 0, SpringLayout.BASELINE, btnClear);
 		springLayout.putConstraint(SpringLayout.WEST, btnBack, 0, SpringLayout.EAST, btnClear);
+		
+		userNameError = new JLabel("Please provide a username");
+		userNameError.setForeground(Color.RED);
+		springLayout.putConstraint(SpringLayout.WEST, userNameError, 6, SpringLayout.EAST, txfUsername);
+		springLayout.putConstraint(SpringLayout.SOUTH, userNameError, 0, SpringLayout.SOUTH, lblUsername);
+		add(userNameError);
+		
+		firstNameError = new JLabel("Please provide your first name");
+		firstNameError.setForeground(Color.RED);
+		springLayout.putConstraint(SpringLayout.WEST, firstNameError, 6, SpringLayout.EAST, txfFirstname);
+		springLayout.putConstraint(SpringLayout.SOUTH, firstNameError, 0, SpringLayout.SOUTH, lblFirstname);
+		add(firstNameError);
+		
+		lastNameError = new JLabel("Please provide your last name");
+		lastNameError.setForeground(Color.RED);
+		springLayout.putConstraint(SpringLayout.NORTH, lastNameError, 0, SpringLayout.NORTH, lblLastname);
+		springLayout.putConstraint(SpringLayout.WEST, lastNameError, 6, SpringLayout.EAST, txfLastname);
+		add(lastNameError);
+		
+		passwordError = new JLabel("Please provide a password");
+		passwordError.setForeground(Color.RED);
+		springLayout.putConstraint(SpringLayout.NORTH, passwordError, 0, SpringLayout.NORTH, lblNewPassword);
+		springLayout.putConstraint(SpringLayout.WEST, passwordError, 6, SpringLayout.EAST, psfNewPassword);
+		add(passwordError);
+		
+		userNameError.setVisible(false);
+		firstNameError.setVisible(false);
+		lastNameError.setVisible(false);
+		passwordError.setVisible(false);
 	}
 	
 	
@@ -286,13 +355,42 @@ public class AMEmpPanel extends JPanel {
 		txfTitle.setText(null);
 		txfPosition.setText(null);		
 		txfEmail.setText(null);
+		
+		userNameError.setVisible(false);
+		passwordError.setVisible(false);
+		firstNameError.setVisible(false);
+		lastNameError.setVisible(false);
 	}
 	
 	public void setModel( EmployeeListModel empList) {
 		  this.empListModel = empList;
 	}
+	
+	public void setModel(EmployeeModel model){
+		this.empModel = model;
+		empModel.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evt) {
+				// TODO Auto-generated method stub
+				if(empModel.getEmployee() != null){
+					Employee employee = empModel.getEmployee();
+					txfUsername.setText(employee.getUsername());
+						
+					txfFirstname.setText(employee.getFirstName());
+					txfMiddlename.setText(employee.getMiddleName());
+					txfLastname.setText(employee.getLastName());
+					txfTitle.setText(employee.getTitle());
+					txfPosition.setText(employee.getPosition());		
+					txfEmail.setText(employee.getEmail());
+				}
+				
+			}
+		});
+	}
 	public void setModel(Flag model){
 		this.adminVisible = model;
 	}
-	      
+	public void setModifyFlag(Flag model){
+		this.isModify = model;
+	}
 }

@@ -1112,15 +1112,13 @@ public class Controller {
 			
 			Integer rom_id = -1;
 			if (resultSet.next())
-				rom_id = resultSet.getInt("rom_id");
-			else
 				return false;
-				
+						
 			// Update room
 			sql = "update room set "
 					+ "`rom_name`='" + rom.getName() + "', "
 					+ "`rom_capacity`=" + rom.getCapacity().toString()
-					+ " where rom_id='" + rom_id.toString() + "'";
+					+ " where rom_id='" + rom.getId().toString() + "'";
 			
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
@@ -1218,7 +1216,7 @@ public class Controller {
 		
 		try {
 			// Check existence 
-			sql = "select * from user where usr_username='" + emp.getUsername() + "'";
+			sql = "select * from user where usr_id='" + emp.getUsrId() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			
@@ -1286,7 +1284,7 @@ public class Controller {
 		
 		try {
 			// Check existence 
-			sql = "select * from rom where rom_name='" + rom.getName() + "'";
+			sql = "select * from room where rom_name='" + rom.getName() + "'";
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			

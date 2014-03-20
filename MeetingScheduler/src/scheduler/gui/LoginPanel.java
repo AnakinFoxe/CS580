@@ -111,8 +111,8 @@ public class LoginPanel extends JPanel {
             				List<Room> roomList = Controller.genRoomList();
             				roomListModel.setRoomList(roomList);
             				
-            				List<Employee> empList = Controller.genEmployeeList();
-            				empListModel.setEmployeeList(empList);
+            				//List<Employee> empList = Controller.genEmployeeList();
+            				//empListModel.setEmployeeList(empList);
             				adminVisible.setFlag(true);
             				cardlayout.show(controller,"adminHome");
             			

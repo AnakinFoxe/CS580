@@ -41,9 +41,10 @@ public class DelEmpPanel extends JPanel {
             		getData();
 				}
 				Employee employee = employeeModel.getEmployee();
+				
 				Controller.deleteEmployee(employee);
-				adminVisible.setFlag(true);
 				cardlayout.show(controller, "adminHome");
+				adminVisible.setFlag(true);
 			}
 		});
 		btnNewButton.setBounds(6, 101, 117, 29);
