@@ -19,6 +19,7 @@ import scheduler.model.DateModel;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeListModel;
 import scheduler.model.EmployeeModel;
+import scheduler.model.Flag;
 import scheduler.model.Room;
 import scheduler.model.RoomListModel;
 
@@ -55,6 +56,8 @@ public class AdministratorPanel extends JPanel {
 	private List<Room> roomList;
 	private RoomListModel roomListModel;
 	private ButtonGroup roomGroup;
+
+	private Flag adminPVisible;
 		
 	public AdministratorPanel() {
 		lblEmployees = new JLabel("Employees");
@@ -106,6 +109,7 @@ public class AdministratorPanel extends JPanel {
             			employeeModel.setEmployee(employeeList.get(i));
             		}
             	}
+            	adminPVisible.setFlag(false);
             	cardlayout.show(controller,"delempPanel");
             }
             
@@ -115,7 +119,8 @@ public class AdministratorPanel extends JPanel {
             public void actionPerformed(ActionEvent e){
             	if (controller == null){
             		getData();
-            	}       
+            	}
+            	adminPVisible.setFlag(false);
             	cardlayout.show(controller,"empPanel");
             }       
             
@@ -125,7 +130,7 @@ public class AdministratorPanel extends JPanel {
             	if (controller == null){
             		getData();
             	}   
-            	
+            	adminPVisible.setFlag(false);
             	cardlayout.show(controller,"empPanel");
             }
             
@@ -246,17 +251,17 @@ public class AdministratorPanel extends JPanel {
 				if(EmployeeListModel.modelName.equals(arg0.getPropertyName())){
 					//add method for date
 					
-					employeeBox.removeAll();
-					empGroup = new ButtonGroup();
-					jscrlempBox.setFocusable(true);
-					employeeList = employeeListModel.getList();//Controller.genRoomList();
-					
-					for(int i = 0; i < employeeList.size(); i++){
-						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName()));
-						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
-						employeeBox.add(rdbtn);
-						empGroup.add(rdbtn);
-					}
+//					employeeBox.removeAll();
+//					empGroup = new ButtonGroup();
+//					jscrlempBox.setFocusable(true);
+//					employeeList = employeeListModel.getList();//Controller.genRoomList();
+//					
+//					for(int i = 0; i < employeeList.size(); i++){
+//						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName()));
+//						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
+//						employeeBox.add(rdbtn);
+//						empGroup.add(rdbtn);
+//					}
 				}
 			}
 		});
@@ -270,9 +275,34 @@ public class AdministratorPanel extends JPanel {
 		this.employeeModel = model;
 	}
 
+	public void setModel(Flag model){
+		this.adminPVisible = model;
+		adminPVisible.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			public void propertyChange(PropertyChangeEvent evt) {
+				// TODO Auto-generated method stub
+				if(adminPVisible.getFlag()){
+					employeeBox.removeAll();
+					empGroup = new ButtonGroup();
+					//jscrlempBox.setFocusable(true);
+					employeeList = employeeListModel.getList();//Controller.genRoomList();
+					
+					for(int i = 0; i < employeeList.size(); i++){
+						JRadioButton rdbtn = new JRadioButton(employeeList.get(i).getFirstName().concat(" ").concat(employeeList.get(i).getLastName()));
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
+						employeeBox.add(rdbtn);
+						empGroup.add(rdbtn);
+					}	
+				}
+			}
+		});
+		
+	}
 	protected void getData() {
 		// TODO Auto-generated method stub
 		controller = (JPanel) this.getParent();
 		cardlayout  = (CardLayout) controller.getLayout();
 	}
+
 }
+
