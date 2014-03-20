@@ -62,15 +62,10 @@ public class RoomPanel extends JPanel {
 
 		roomBox = Box.createVerticalBox();
 		scrollPane = new JScrollPane(roomBox);
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 68, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 41, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 194, SpringLayout.WEST, this);
 		add(scrollPane);
 
 		roomLabel = new JLabel("Last Step: Choose a Room");
 		roomLabel.setFont(new Font("Arial", Font.PLAIN, 24));
-		springLayout.putConstraint(SpringLayout.NORTH, roomLabel, 32, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, roomLabel, 199, SpringLayout.WEST, this);
 		add(roomLabel);
 
 		finishBtn = new JButton("FINISH");
@@ -91,10 +86,20 @@ public class RoomPanel extends JPanel {
 			}
 
 		});
+		add(finishBtn);
 
+		springLayout.putConstraint(SpringLayout.NORTH, roomLabel, 20, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, roomLabel, 20, SpringLayout.WEST, this);
+		
 		springLayout.putConstraint(SpringLayout.SOUTH, finishBtn, -40, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, finishBtn, -50, SpringLayout.EAST, this);
-		add(finishBtn);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 30, SpringLayout.SOUTH, roomLabel);
+		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, finishBtn);
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 300, SpringLayout.WEST, this);
+		
+		
 	}
 
 	protected boolean getRoom() {
@@ -172,7 +177,10 @@ public class RoomPanel extends JPanel {
 					scrollPane.setFocusable(true);
 					availableRooms = Controller.genRoomList(selected, attendees.size());
 					for(int i = 0; i < availableRooms.size(); i++){
-						JRadioButton rdbtn = new JRadioButton(availableRooms.get(i).getName().toString()); 
+						String roomDisplay = availableRooms.get(i).getName().toString()
+											+ "  (size: " + availableRooms.get(i).getCapacity().toString()
+											+ ")";
+						JRadioButton rdbtn = new JRadioButton(roomDisplay); 
 						if(selectedRoom != null && fromMeetingDet.getFlag()){
 							rdbtn.setSelected(true);
 						}

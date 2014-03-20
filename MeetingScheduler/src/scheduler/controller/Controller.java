@@ -249,9 +249,9 @@ public class Controller {
 			resultSet = statement.executeQuery(sql);				
 			while (resultSet.next()) {
 				Integer sch_id = resultSet.getInt("att_sch_id");
-				String accept = resultSet.getString("att_accept");
-				if (accept == null || accept.equals("NO"))
-					continue;
+//				String accept = resultSet.getString("att_accept");
+//				if (accept == null || accept.equals("NO"))
+//					continue;
 				
 				sql = "select * from schedule where sch_id=" + sch_id.toString();
 				statement = connection.createStatement();
@@ -353,7 +353,6 @@ public class Controller {
 			while (resultSet.next()) {
 				Integer usr_id = resultSet.getInt("att_emp_id");
 				
-				// Only display those who accept the meeting request
 				String accept = resultSet.getString("att_accept");
 				
 				sql = "select * from employee where emp_usr_id='" + usr_id + "'";
@@ -702,9 +701,9 @@ public class Controller {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
-				String accept = resultSet.getString("att_accept");
-				if (accept != null && accept.equals("YES"))
-					metIdList.add(resultSet.getInt("att_sch_id"));
+//				String accept = resultSet.getString("att_accept");
+//				if (accept != null && accept.equals("YES"))
+				metIdList.add(resultSet.getInt("att_sch_id"));
 			}
 			
 			Integer idx;
