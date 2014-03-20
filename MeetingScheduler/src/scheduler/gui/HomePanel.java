@@ -1,6 +1,7 @@
 package scheduler.gui;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.CardLayout;
@@ -26,9 +27,11 @@ import scheduler.model.DateModel;
 import scheduler.model.Employee;
 import scheduler.model.EmployeeModel;
 import scheduler.model.Flag;
+import scheduler.model.Meeting;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +40,7 @@ public class HomePanel extends JPanel {
 	/**
 	 * 
 	 */
-	
+
 	// some comments 
 	private static final long serialVersionUID = -5218352851092235305L;
 	private JButton btnCreateMeeting;
@@ -59,7 +62,9 @@ public class HomePanel extends JPanel {
 	protected List<Date> meetings;
 	protected DateModel selectedDate;
 	private Flag meetingDetVisible;
-	
+	protected List<Date> needToAccept;
+
+
 	public HomePanel() {
 		setBackground(Color.LIGHT_GRAY);
 		SpringLayout springLayout = new SpringLayout();
@@ -259,25 +264,55 @@ public class HomePanel extends JPanel {
 					// TODO Auto-generated method stub
 					// refresh calender
 					if(isVisible.getFlag()){
+						Employee user = employee.getEmployee();
+						meetings = Controller.getMeetingDate(user);
+						List<Meeting> meetings2Accept = Controller.checkAcceptance(user.getUsrId());
+						needToAccept = new ArrayList<Date>();
 						
-						meetings = Controller.getMeetingDate(employee.getEmployee());
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(calenderPanel.getCalendarView());
+						for(int i=0; i < meetings2Accept.size(); i++){
+							Date date = meetings2Accept.get(i).getStartTime();
+							needToAccept.add(date);
+							//System.out.println(dtFormat.format(date));
+						}
+						
 						if(selectedDate != null){
 							if(!meetings.contains(selectedDate.getDate())){
 								calenderPanel.setDateHighlight(selectedDate.getDate(), null);
 							}
 						}
 						if(meetings != null){
+							Color color = Color.ORANGE;
 							for(int i = 0; i < meetings.size(); i++){
 								int range = meetings.get(i).compareTo(calenderPanel.getCalendarView());
+
 								if( range >= 0 && range <=  30){
-									calenderPanel.setDateHighlight(meetings.get(i), Color.ORANGE);
+									calenderPanel.setDateHighlight(meetings.get(i), color);
 								}
-								
+
 							}
+							color = Color.RED;
+							for(int i = 0; i < needToAccept.size(); i++){
+								int range = needToAccept.get(i).compareTo(calenderPanel.getCalendarView());
+
+								if( range >= 0 && range <=  30){
+									calenderPanel.setDateHighlight(needToAccept.get(i), color);
+								}
+
+							}
+							
 						}
-						
+						/*if(needToAccept.size() > 0){
+							String[] option = {"ok"};
+							int notify = JOptionPane.showOptionDialog(controller,
+									"You have a new meeting marked red"+
+											"please confirm if you are going",
+											"Confirm meeting",
+											JOptionPane.OK_OPTION,
+											JOptionPane.INFORMATION_MESSAGE,
+											null,
+											option,
+											option);
+						}*/
 					}
 				}
 			});
