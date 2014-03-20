@@ -394,7 +394,6 @@ public class MeetingDetailsPanel extends JPanel {
 					accept.setForeground(Color.RED);
 				}
 				accept.setFont(new Font("Arial", Font.PLAIN, 14));
-
 				acceptBox.add(accept);
 			}
 		}
