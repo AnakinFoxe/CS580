@@ -181,6 +181,7 @@ public class RoomPanel extends JPanel {
 											+ "  (size: " + availableRooms.get(i).getCapacity().toString()
 											+ ")";
 						JRadioButton rdbtn = new JRadioButton(roomDisplay); 
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
 						if(selectedRoom != null && fromMeetingDet.getFlag()){
 							rdbtn.setSelected(true);
 						}

@@ -152,6 +152,7 @@ public class TimePanel extends JPanel {
 						Date current = times.get(i);
 						String dateString = new SimpleDateFormat("HH:mm dd-MM-yyyy").format(current);
 						JRadioButton rdbtn = new JRadioButton(dateString);
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
 						if(selectedTime != null && fromMeetingDet.getFlag()){
 							if(current.equals(selectedTime)){
 								rdbtn.setSelected(true);

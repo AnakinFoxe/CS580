@@ -138,8 +138,10 @@ public class MeetingPanel extends JPanel {
 					employeeList = Controller.genEmployeeList(host);	
 					employeeBox.removeAll();
 					for (Integer idx=0; idx<employeeList.size(); ++idx){
-						//System.out.println(employeeList.get(idx).getFirstName());
-						JRadioButton rdbtn = new JRadioButton(employeeList.get(idx).getFirstName());
+						String empName = employeeList.get(idx).getFirstName() 
+										+ " " + employeeList.get(idx).getLastName();
+						JRadioButton rdbtn = new JRadioButton(empName);
+						rdbtn.setFont(new Font("Arial", Font.PLAIN, 14));
 						employeeBox.add(rdbtn);
 					}
 				}
